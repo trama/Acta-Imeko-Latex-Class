@@ -28,12 +28,16 @@
 %% latex style practice
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{imeko_acta}[2023/09/12 v1.0 - Acta Imeko]
+\ProvidesClass{imeko_acta}[2023/09/12 Acta Imeko paper class v1.0]
 
-%\AtEndOfClass{\RequirePackage{microtype}}
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
-\ProcessOptions\relax
-\LoadClass[a4paper]{article}
+
+\LoadClass[10pt,a4paper]{article}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+% using EB-Garamond for serif text
+\RequirePackage[lining]{ebgaramond}
+% using Helvetica for sans-serif
+\renewcommand{\sfdefault}{phv}
 
 \RequirePackage{ifthen}
 \RequirePackage{calc}
@@ -46,17 +50,10 @@
 \RequirePackage[explicit]{titlesec}
 \RequirePackage{fancyhdr}  % Needed to define custom headers/footers
 \RequirePackage{lastpage}  % Number of pages in the document
-\RequirePackage{enumitem}  % Verify if needed
+\RequirePackage{enumitem}
 \RequirePackage{array,booktabs}
-\RequirePackage{stfloats} %only needed if we want to have a double column float * mandatory* at the bottom (because latex only put them at th etop by default)
-\RequirePackage{hyperref}
-
-%----------------------------------------------------------------------
-%	FONTS
-%----------------------------------------------------------------------
-\RequirePackage[utf8]{inputenc}
-\RequirePackage[lining]{ebgaramond}
-\renewcommand{\sfdefault}{phv}
+%only needed if we want to have a double column float * mandatory* at the bottom (because latex only put them at th etop by default)
+%\RequirePackage{stfloats} 
 
 \ifxetex
 \RequirePackage{fontspec,unicode-math}
@@ -64,30 +61,39 @@
 \setmathfont{Cambria Math}
 \fi
 
-%\setlength{\paperheight}{297mm}%
-%\setlength{\paperwidth}{210mm}%
-%\topmargin        -42.0pt%49.0pt
-%\textheight        58pc % = 9.63in or 696pt
-%\textwidth         43pc   % 2 x 21pc + 1pc = 43pc
-%\columnsep          1pc % 1 pc is 12 pt
-%\def\@IEEEmarginE{15mm}%
-%\oddsidemargin    \@IEEEmarginE
-%\addtolength{\oddsidemargin}{-1in}% compensate for LaTeX's 1in offset
-%\evensidemargin   \@IEEEmarginE
-%\addtolength{\evensidemargin}{-1in}% compensate for LaTeX's 1in offset
+
+%% To choose the type of manuscript
+\DeclareOption{article}{\gdef\@arttype{Article}}
+\DeclareOption{technicalnote}{\gdef\@arttype{Technical Note}}
+\DeclareOption{editorial}{\gdef\@arttype{Editorial}}
+
+%% To choose the status of the manuscript
+\DeclareOption{submit}{\gdef\@status{submit}}
+\DeclareOption{final}{\gdef\@status{final}}
+
+%\AtEndOfClass{\RequirePackage{microtype}}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+
+%% Defaults
+\ExecuteOptions{10pt,a4paper,article,submit}
+
+\ProcessOptions\relax
+
+% Set page layout options (no geometry package)
+\setlength{\paperheight}{297mm}%
+\setlength{\paperwidth}{210mm}%
+\topmargin        -51.0pt%49.0pt
+\textheight        717pt% 58pc % = 9.63in or 696pt
+\textwidth         512pt% 43pc   % 2 x 21pc + 1pc = 43pc
+\columnsep          16pt%1pc % 1 pc is 12 pt
+\def\@ActaMarginE{15mm}%
+\oddsidemargin    \@ActaMarginE
+\addtolength{\oddsidemargin}{-1in}% compensate for LaTeX's 1in offset
+\evensidemargin   \@ActaMarginE
+\addtolength{\evensidemargin}{-1in}% compensate for LaTeX's 1in offset
 
 % Set correct margins
-\RequirePackage[left=1.5cm,right=1.5cm,top=2.0cm,bottom=2.5cm,headheight=11pt,a4paper]{geometry}
-
-%----------------------------------------------------------------------
-% Various efinitions
-%----------------------------------------------------------------------
-
-%Tweak first line indent width
-\parindent 1.0em
-
-\definecolor{ActaBlue}{RGB}{19,33,94}
-\definecolor{color2}{RGB}{205,217,240} % Color of the boxes behind the abstract and headings
+%\RequirePackage[left=1.5cm,right=1.5cm,top=2.0cm,bottom=2.5cm,headheight=11pt,a4paper]{geometry}
 
 % Font tweaks (mostly on the baseline skip) to match Word template
 %\typeout{-- This is a 10 point document.}
@@ -114,6 +120,39 @@
 \def\huge{\@setfontsize{\huge}{20}{24pt}}
 \def\Huge{\@setfontsize{\Huge}{24}{28pt}}
 %\fi
+
+%---------------------------------------------------------------------% Various definitions
+%---------------------------------------------------------------------
+
+%Tweak first line indent width
+\parindent 1.0em
+
+\definecolor{ActaBlue}{RGB}{19,33,94}
+\definecolor{color2}{RGB}{205,217,240} % Color of the boxes behind the abstract and headings
+
+\RequirePackage[unicode=true,
+	bookmarksopen={true},
+	pdffitwindow=true, 
+	colorlinks=true, 
+	linkcolor=ActaBlue, 
+	citecolor=ActaBlue, 
+	urlcolor=ActaBlue, 
+	hyperfootnotes=true, 
+	pdfstartview={FitH},
+	pdfpagemode= UseNone]{hyperref}
+
+%%%% Metadata
+\newcommand{\org@maketitle}{}% LATEX-Check
+\let\org@maketitle\maketitle
+\def\maketitle{%
+	\hypersetup{
+		pdftitle={\@PaperTitle},
+		pdfsubject={\@Abstract},
+		pdfkeywords={\@Keywords},
+		pdfauthor={\@Authors}
+		}%
+	\org@maketitle
+}
 
 % IEEE uses 5) not 5.
 \def\labelenumi{\theenumi)}     \def\theenumi{\arabic{enumi}}
@@ -146,14 +185,13 @@
 % but the appearance will be much better "right out
 % of the box" than that under V1.5 and prior.
 % TeX default is 50
-\hyphenpenalty=750
+\hyphenpenalty=100
 % If we didn't adjust the interword spacing, 2200 might be better.
 % The TeX default is 1000
 \hbadness=2200
 % IEEE does not use extra spacing after punctuation
 \frenchspacing
 
-\setlength{\columnsep}{0.55cm} % Distance between the two columns of text
 \setlength{\fboxrule}{0.75pt} % Width of the border around the abstract
 
 % normally zero, should be relative to font height.
@@ -161,11 +199,12 @@
 \parskip 0ex plus 0.2ex minus 0.1ex
 \setlength{\mathindent}{0pt}
 
+% adjust caption properties
 \captionsetup{format=plain,indention=0in,singlelinecheck=false,font={sf,footnotesize},labelsep=period,justification=justified}
-
 \setlength{\abovecaptionskip}{6pt}
 \setlength{\belowcaptionskip}{0pt}
 
+% set tabular/tables to use sans-serif small fonts
 \renewcommand{\tabular}{\let\@halignto\@empty\sffamily\footnotesize\@tabular}
 
 % Set the page header
@@ -233,6 +272,13 @@
 %	LIST CONTROL
 %----------------------------------------------------------------------  
 
+%%%% URL
+\RequirePackage{url}
+\urlstyle{same}
+% Line breaks in URL
+\def\UrlDigits{\do\1\do\2\do\3\do\4\do\5\do\6\do\7\do\8\do\9\do\0}
+\g@addto@macro{\UrlBreaks}{\UrlOrds}
+\g@addto@macro{\UrlBreaks}{\UrlDigits}
 
 %\setlist{nolistsep} % Uncomment to remove spacing between items in lists (enumerate, itemize)
 

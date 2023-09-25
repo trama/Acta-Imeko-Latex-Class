@@ -274,47 +274,29 @@
 \let\authorsep\@empty
 \let\sep\@empty
 
-\newcounter{author}
+%\newcounter{author}
 \def\author{\@@author}
 
-\def\elsRef#1{\@ifundefined{X@#1}{0}{\csname X@#1\endcsname}}
-
-\def\cormark[#1]{\edef\cnotenum{\elsRef{#1}}%
-    \unskip\textsuperscript{\sep\ifcase\cnotenum\or
-       $\ast$\or$\ast\ast$\fi\hspace{-1pt}}\let\sep=,}
-
-%\let\@cormark\@empty
-%\let\@cornotes\@empty
-\newcounter{cnote}
-\def\cortext[#1]#2{\g@addto@macro\CorrespAut{%
-	\refstepcounter{cnote}\elsLabel{#1}%
-	\def\thefootnote{\ifcase\thecnote\or$\ast$\or
-	$\ast\ast$\fi}%
-	#2}}%\footnotetext{#2}}}
-
-\let\@corref\@empty
-\def\corref#1{\edef\cnotenum{\elsRef{#1}}%
-	\edef\@corref{\ifcase\cnotenum\or
-		$\ast$\or$\ast\ast$\fi\hskip-1pt}}
+\def\AiRef#1{\@ifundefined{X@#1}{0}{\csname X@#1\endcsname}}
+\def\elsLabel#1{\@bsphack\protected@write\@auxout{}%
+	  {\string\Newlabel{#1}{\@currentlabel}}\@esphack}
+\def\Newlabel#1#2{\expandafter\xdef\csname X@#1\endcsname{#2}}
 
 %% tentative to avoid refmarks
 \def\@@author[#1]#2{%
     \g@addto@macro\@AIauthors{%
-    \def\baselinestretch{1.2}%
+    \def\baselinestretch{1}%
     \authorsep#2\unskip\textsuperscript{%#1%
-      \@for\@@affmark:=#1\do{%
-       \edef\affnum{\@ifundefined{X@\@@affmark}{1}{\elsRef{\@@affmark}}}%
-     \unskip\sep\affnum\let\sep=,}%
-      \ifx\@corref\@empty\else\unskip\sep\@corref\let\sep=,\fi
-      }%
+      	\@for\@@affmark:=#1\do{%
+       		\edef\affnum{\@ifundefined{X@\@@affmark}{err}{\AiRef{\@@affmark}}}%
+     		\unskip\sep\affnum\let\sep=,}%
+      	\ifx\@corref\@empty\else\unskip\sep\@corref\let\sep=,\fi
+      	}%
     \def\authorsep{\unskip,\space}%
-    \global\let\sep\@empty\global\let\@corref\@empty}
-    \g@addto@macro\@AuthorsNames{#2; }%
+    \global\let\sep\@empty%
+	\global\let\@corref\@empty}
+    \g@addto@macro\@AuthorsNames{#2, }%
 }
-
-\def\elsLabel#1{\@bsphack\protected@write\@auxout{}%
-         {\string\Newlabel{#1}{\@currentlabel}}\@esphack}
-\def\Newlabel#1#2{\expandafter\xdef\csname X@#1\endcsname{#2}}
 
 \def\affiliation{\@@affiliation}
 
@@ -327,7 +309,26 @@
       \refstepcounter{affn}%
       \xdef\@currentlabel{\theaffn}%
       \elsLabel{#1}%
-      \textsuperscript{\theaffn}#2\par}}
+      \textsuperscript{\theaffn}#2\par}%
+	  }
+
+\let\@corref\@empty
+\def\corref#1{\edef\cnotenum{\AiRef{#1}}%
+ \edef\@corref{%$\ast$\hskip-1pt}}
+	 \ifcase\cnotenum\or
+	 $\ast$\or$\ast\ast$\fi\hskip-1pt}%
+	 \typeout{FT: the value of corref is \@corref}}
+
+\newcounter{cnote}
+\def\cortext[#1]#2{\g@addto@macro\CorrespAut{%
+\refstepcounter{cnote}%
+ \elsLabel{#1}#2}}
+
+% \def\cormark[#1]{\edef\cnotenum{\elsRef{#1}}%
+%  \unskip\textsuperscript{\sep\ifcase\cnotenum\or
+% 	$\ast$\or$\ast\ast$\fi\hspace{-1pt}}\let\sep=,}
+
+
 
 % \IEEEauthorrefmark{} produces a footnote type symbol to indicate author affiliation.
 % When given an argument of 1 to 9, \IEEEauthorrefmark{} follows the standard LaTeX footnote

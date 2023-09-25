@@ -38,13 +38,14 @@
 \RequirePackage[lining]{ebgaramond}
 % using Helvetica for sans-serif
 \renewcommand{\sfdefault}{phv}
+\usepackage{microtype} % without this, with ebgaramond many lines go out of the margin due to hyphenation issues
 
 \RequirePackage{ifthen}
 \RequirePackage{calc}
 \RequirePackage{ifpdf,ifxetex}      % Needed to pick between latex and pdflatex
 \RequirePackage[fleqn]{amsmath}
 \RequirePackage{graphicx,xcolor}
-\RequirePackage[english]{babel}
+%\RequirePackage[english]{babel}
 \RequirePackage{indentfirst}
 \RequirePackage{caption}
 \RequirePackage[explicit]{titlesec}
@@ -130,6 +131,33 @@
 \definecolor{ActaBlue}{RGB}{19,33,94}
 \definecolor{color2}{RGB}{205,217,240} % Color of the boxes behind the abstract and headings
 
+% Definitions for ABSTRACT+AUTHOR FRAME
+%----------------------------------------------------------------------  
+
+\newcommand{\PaperTitle}[1]{\def\@PaperTitle{#1}}
+\newcommand{\Archive}[1]{\def\@Archive{#1}}
+% \newcommand{\Authors}[1]{\def\@Authors{#1}}
+% \newcommand{\AuthorsNew}[2]{\def\@AuthorsNew[#1]{#2}}
+\newcommand{\Journal}[1]{\def\@Journal{#1}}
+\newcommand{\ISSN}[1]{\def\@ISSN{#1}}
+\newcommand{\JournalInfo}[1]{\def\@JournalInfo{#1}}
+\newcommand{\Abstract}[1]{\def\@Abstract{#1}}
+\newcommand{\Keywords}[1]{\def\@Keywords{#1}}
+\newcommand{\Section}[1]{\def\@Section{#1}}
+\newcommand{\Citation}[1]{\def\@Citation{#1}}
+\newcommand{\Editor}[1]{\def\@Editor{#1}}
+\newcommand{\CopyRight}[1]{\def\@CopyRight{#1}}
+\newcommand{\Funding}[1]{\def\@Funding{#1}}
+\newcommand{\CorAuthor}[1]{\def\@CorAuthor{#1}}
+\newcommand{\Received}[1]{\def\@Received{#1}}
+\newcommand{\FinalForm}[1]{\def\@FinalForm{#1}}
+\newcommand{\Published}[1]{\def\@Published{#1}}
+\def\@AIaffiliation{}
+\def\@AIauthors{}
+\def\@AuthorsNames{}
+\newcommand{\AuthorsNames}{\@AuthorsNames}
+
+
 \RequirePackage[unicode=true,
 	bookmarksopen={true},
 	pdffitwindow=true, 
@@ -149,7 +177,7 @@
 		pdftitle={\@PaperTitle},
 		pdfsubject={\@Abstract},
 		pdfkeywords={\@Keywords},
-		pdfauthor={\@Authors}
+		pdfauthor={\@AuthorsNames}
 		}%
 	\org@maketitle
 }
@@ -185,12 +213,16 @@
 % but the appearance will be much better "right out
 % of the box" than that under V1.5 and prior.
 % TeX default is 50
-\hyphenpenalty=100
+\hyphenpenalty=1000
 % If we didn't adjust the interword spacing, 2200 might be better.
 % The TeX default is 1000
 \hbadness=2200
 % IEEE does not use extra spacing after punctuation
 \frenchspacing
+%%%% Widows & orphans
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
 
 \setlength{\fboxrule}{0.75pt} % Width of the border around the abstract
 
@@ -217,31 +249,17 @@
 \chead{}%
 \rhead{}
 % Footers
-\lfoot{\fontsize{8}{9}\sffamily\selectfont {ACTA IMEKO \textbar{}  www.imeko.org}}%
+\lfoot{\footnotesize\sffamily\selectfont {ACTA IMEKO \textbar{}  www.imeko.org}}%
 \cfoot{}%
-\rfoot{\fontsize{8}{9}\sffamily\selectfont \@PaperFooter \thepage}%
+\rfoot{\footnotesize\sffamily\selectfont \@PaperFooter \thepage}%
 
 % Settings for titles of sections and subsections
-\titleformat{\section}
-{\sffamily\bfseries\normalsize}
-{}
-{0em}
-{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\sffamily{\arabic{section}.} \MakeUppercase{#1}}}}
-[]
+\titleformat{\section}{\sffamily\bfseries\normalsize}{}{0em}
+{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\sffamily{\arabic{section}.} \MakeUppercase{#1}}}}[]
 
-\titleformat{name=\section,numberless}
-{\sffamily\bfseries\normalsize}
-{}
-{0em}
-{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\MakeUppercase{#1}}}}
-[]
+\titleformat{name=\section,numberless}{\sffamily\bfseries\normalsize}{}{0em}{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\MakeUppercase{#1}}}}[]
 
-\titleformat{\subsection}
-{\sffamily\bfseries\small}
-{}
-{0em}
-{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{{\arabic{section}.\arabic{subsection}.} {#1}}}}
-[] 
+\titleformat{\subsection}{\sffamily\bfseries\small}{}{0em}{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{{\arabic{section}.\arabic{subsection}.} {#1}}}}[] 
 
 \titlespacing*{\section}{0pc}{3ex \@plus4pt \@minus3pt}{5pt}
 \titlespacing*{\subsection}{0pc}{2.5ex \@plus3pt \@minus2pt}{0pt}
@@ -249,23 +267,82 @@
 \titlespacing*{\paragraph}{0pc}{1.5ex \@plus2pt \@minus1pt}{10pt}
 
 % Definitions to manage multiple authors
-\newcount\@authcnt
-\newcount\@tmpcnt\@tmpcnt\z@
+% Definitions for management of multiple authors and affiliations
+% adapted from the code of elsarticle
 
-\def\@affiliation{%
-	\ifnum\@tmpcnt<\@authcnt
-	\global\advance\@tmpcnt1
-	\raggedright \csname @auth\romannumeral\the\@tmpcnt\endcsname\hfill\\%
-	\let\next\@affiliation \vskip1pt
-	\else
-	\let\next\relax
-	\fi
-	\next}
+\def\CorrespAut{}
+\let\authorsep\@empty
+\let\sep\@empty
 
-\newcommand{\affiliation}[1]{%
-	\global\advance\@authcnt1
-	\expandafter\gdef\csname @auth\romannumeral\the\@authcnt\endcsname
-	{#1}}
+\newcounter{author}
+\def\author{\@@author}
+
+\def\elsRef#1{\@ifundefined{X@#1}{0}{\csname X@#1\endcsname}}
+
+\def\cormark[#1]{\edef\cnotenum{\elsRef{#1}}%
+    \unskip\textsuperscript{\sep\ifcase\cnotenum\or
+       $\ast$\or$\ast\ast$\fi\hspace{-1pt}}\let\sep=,}
+
+%\let\@cormark\@empty
+%\let\@cornotes\@empty
+\newcounter{cnote}
+\def\cortext[#1]#2{\g@addto@macro\CorrespAut{%
+	\refstepcounter{cnote}\elsLabel{#1}%
+	\def\thefootnote{\ifcase\thecnote\or$\ast$\or
+	$\ast\ast$\fi}%
+	#2}}%\footnotetext{#2}}}
+
+\let\@corref\@empty
+\def\corref#1{\edef\cnotenum{\elsRef{#1}}%
+	\edef\@corref{\ifcase\cnotenum\or
+		$\ast$\or$\ast\ast$\fi\hskip-1pt}}
+
+%% tentative to avoid refmarks
+\def\@@author[#1]#2{%
+    \g@addto@macro\@AIauthors{%
+    \def\baselinestretch{1.2}%
+    \authorsep#2\unskip\textsuperscript{%#1%
+      \@for\@@affmark:=#1\do{%
+       \edef\affnum{\@ifundefined{X@\@@affmark}{1}{\elsRef{\@@affmark}}}%
+     \unskip\sep\affnum\let\sep=,}%
+      \ifx\@corref\@empty\else\unskip\sep\@corref\let\sep=,\fi
+      }%
+    \def\authorsep{\unskip,\space}%
+    \global\let\sep\@empty\global\let\@corref\@empty}
+    \g@addto@macro\@AuthorsNames{#2; }%
+}
+
+\def\elsLabel#1{\@bsphack\protected@write\@auxout{}%
+         {\string\Newlabel{#1}{\@currentlabel}}\@esphack}
+\def\Newlabel#1#2{\expandafter\xdef\csname X@#1\endcsname{#2}}
+
+\def\affiliation{\@@affiliation}
+
+\newcounter{affn}
+\renewcommand\theaffn{\arabic{affn}}
+
+\long\def\@@affiliation[#1]#2{%
+      \g@addto@macro\@AIaffiliation{%
+      \def\baselinestretch{1}%
+      \refstepcounter{affn}%
+      \xdef\@currentlabel{\theaffn}%
+      \elsLabel{#1}%
+      \textsuperscript{\theaffn}#2\par}}
+
+% \IEEEauthorrefmark{} produces a footnote type symbol to indicate author affiliation.
+% When given an argument of 1 to 9, \IEEEauthorrefmark{} follows the standard LaTeX footnote
+% symbol sequence convention. However, for arguments 10 and above, \IEEEauthorrefmark{} 
+% reverts to using lower case roman numerals, so it cannot overflow. Do note that you 
+% cannot use \footnotemark[] in place of \IEEEauthorrefmark{} within \author as the footnote
+% symbols will have been turned off to prevent \thanks from creating footnote marks.
+% \IEEEauthorrefmark{} produces a symbol that appears to LaTeX as having zero vertical
+% height - this allows for a more compact line packing, but the user must ensure that
+% the interline spacing is large enough to prevent \IEEEauthorrefmark{} from colliding
+% with the text above.
+% V1.7 make this a robust command
+% V1.8 transmag uses an arabic author affiliation symbol
+% \DeclareRobustCommand*{\AuthorRefmark}[1]{%\raisebox{0pt}[0pt][0pt]
+% {\textsuperscript{\scriptsize\mdseries #1}}}
 
 
 %----------------------------------------------------------------------
@@ -282,28 +359,6 @@
 
 %\setlist{nolistsep} % Uncomment to remove spacing between items in lists (enumerate, itemize)
 
-%----------------------------------------------------------------------
-%	ABSTRACT+AUTHOR FRAME
-%----------------------------------------------------------------------  
-
-\newcommand{\PaperTitle}[1]{\def\@PaperTitle{#1}}
-\newcommand{\Archive}[1]{\def\@Archive{#1}}
-\newcommand{\Authors}[1]{\def\@Authors{#1}}
-\newcommand{\Journal}[1]{\def\@Journal{#1}}
-\newcommand{\ISSN}[1]{\def\@ISSN{#1}}
-\newcommand{\JournalInfo}[1]{\def\@JournalInfo{#1}}
-\newcommand{\Abstract}[1]{\def\@Abstract{#1}}
-\newcommand{\Keywords}[1]{\def\@Keywords{#1}}
-\newcommand{\Section}[1]{\def\@Section{#1}}
-\newcommand{\Citation}[1]{\def\@Citation{#1}}
-\newcommand{\Editor}[1]{\def\@Editor{#1}}
-\newcommand{\CopyRight}[1]{\def\@CopyRight{#1}}
-\newcommand{\Funding}[1]{\def\@Funding{#1}}
-\newcommand{\CorAuthor}[1]{\def\@CorAuthor{#1}}
-\newcommand{\Received}[1]{\def\@Received{#1}}
-\newcommand{\FinalForm}[1]{\def\@FinalForm{#1}}
-\newcommand{\Published}[1]{\def\@Published{#1}}
-
 % ---------------------------------------------------------------------
 
 \renewcommand{\@maketitle}{%
@@ -312,9 +367,9 @@
 		\vskip-24pt%
 		\begin{minipage}[b]{0.925\textwidth}
 			{\raggedright
-				{\fontsize{11}{11}\sffamily\bfseries\selectfont {\@Journal}}\\
-				{\fontsize{8}{8}\sffamily\bfseries\selectfont {\@ISSN}}\\
-				{\fontsize{8}{8}\sffamily\itshape\selectfont {\@JournalInfo}}\\
+				{\sublargesize\sffamily\bfseries\selectfont {\@Journal}}\\
+				{\footnotesize\sffamily\bfseries\selectfont {\@ISSN}}\\
+				{\footnotesize\sffamily\itshape\selectfont {\@JournalInfo}}\\
 				\noindent\textcolor{ActaBlue}{\rule{\textwidth-2pt}{1.5pt}}}%
 		\end{minipage}
 		\begin{minipage}[b]{0.05\textwidth}
@@ -323,11 +378,12 @@
 		\vskip24pt%
 		{\raggedright{\fontsize{18}{18}\sffamily\bfseries\selectfont \@PaperTitle}\par}%
 		\vskip14pt%
-		{\raggedright{\fontsize{11}{11}\sffamily\bfseries\selectfont \@Authors}\par}%
+		{\raggedright{\sublargesize\sffamily\bfseries\selectfont \@AIauthors}\par}%
 		\vskip12pt%
 		\begingroup%
-		\raggedright\sffamily\small%
-		\footnotesize\@affiliation\par%
+		\raggedright\sffamily\itshape%\small%
+		\footnotesize%
+		\@AIaffiliation\par%
 		\endgroup%%
 		\vskip18pt%
 		\fcolorbox{color2}{color2}{%

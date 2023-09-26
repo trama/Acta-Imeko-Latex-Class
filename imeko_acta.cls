@@ -1,5 +1,10 @@
 %% ACTA IMEKO Latex class file
 %%
+%%Vers: 1.1
+%% By: Federico Tramarin (tramarin@unimore.it)
+%% Date: 25/09/2023
+%% Notes: This version adds support for all the needed PDF metadata
+%%
 %% Vers: 1.1
 %% By: Federico Tramarin (tramarin@unimore.it)
 %% Date: 25/09/2023
@@ -73,7 +78,7 @@
 
 
 %% To choose the type of manuscript
-\DeclareOption{article}{\gdef\@arttype{Article}}
+\DeclareOption{article}{\gdef\@arttype{Research Paper}}
 \DeclareOption{technicalnote}{\gdef\@arttype{Technical Note}}
 \DeclareOption{editorial}{\gdef\@arttype{Editorial}}
 
@@ -143,24 +148,21 @@
 
 \newcommand{\PaperTitle}[1]{\def\@PaperTitle{#1}}
 \newcommand{\Archive}[1]{\def\@Archive{#1}}
-% \newcommand{\Authors}[1]{\def\@Authors{#1}}
-% \newcommand{\AuthorsNew}[2]{\def\@AuthorsNew[#1]{#2}}
-\newcommand{\Journal}[1]{\def\@Journal{#1}}
-\newcommand{\ISSN}[1]{\def\@ISSN{#1}}
+%\newcommand{\Journal}[1]{\def\@Journal{#1}}
+%\newcommand{\ISSN}[1]{\def\@ISSN{#1}}
 \newcommand{\JournalInfo}[1]{\def\@JournalInfo{#1}}
 \newcommand{\Abstract}[1]{\def\@Abstract{#1}}
 \newcommand{\Keywords}[1]{\def\@Keywords{#1}}
-\newcommand{\Section}[1]{\def\@Section{#1}}
+%\newcommand{\Section}[1]{\def\@Section{#1}}
 \newcommand{\Citation}[1]{\def\@Citation{#1}}
 \newcommand{\Editor}[1]{\def\@Editor{#1}}
-\newcommand{\CopyRight}[1]{\def\@CopyRight{#1}}
-\newcommand{\Funding}[1]{\def\@Funding{#1}}
-\newcommand{\CorAuthor}[1]{\def\@CorAuthor{#1}}
+%\newcommand{\CopyRight}[1]{\def\@CopyRight{#1}}
+\newcommand{\Funding}[1]{\ifthenelse{\equal{#1}{}}{\def\@Funding{No funding specified.}}{\def\@Funding{#1}}}
+%\newcommand{\CorrespondingAuthor}[1]{\def\@CorAuthor{#1}}
 \newcommand{\Received}[1]{\def\@Received{#1}}
 \newcommand{\FinalForm}[1]{\def\@FinalForm{#1}}
 \newcommand{\Published}[1]{\def\@Published{#1}}
 \newcommand{\AuthorsNames}{\@AuthorsNames}
-
 
 \RequirePackage[unicode=true,
 	bookmarksopen={true},
@@ -184,6 +186,18 @@
 		pdfauthor={\@AuthorsNames},
 		%pdfcreator={FT},
 		%pdfproducer={FT},
+		pdfinfo={
+			Company={IMEKO - The International Measurement Confederation},
+			Acta IMEKO Issue Year={2023},
+			Acta IMEKO Issue Volume={12},
+			Acta IMEKO Issue Number={3},
+			Acta IMEKO Issue Month={September},
+			Acta IMEKO Article Number={54},
+			Acta IMEKO Article Authors={\@AuthorsNames},
+			Acta IMEKO Section Editor={Francesco Lamonaca, University of Calabria, Italy},
+			Acta IMEKO Received MonthDayYear={April 6, 2023},
+			Acta IMEKO InFinalForm MonthDayYear={June 14, 2023}
+			}
 		}%
 	\org@maketitle
 }
@@ -281,7 +295,7 @@
 \def\author{\@@author}
 \let\authorsep\@empty
 \let\sep\@empty
-\def\@AIaffiliation{}
+\def\@AIaffiliations{}
 \def\@AIauthors{}
 \def\@AuthorsNames{}
 \def\@AICorrespondingAuthor{}
@@ -290,7 +304,6 @@
 % However, at the first round, there can not be a match between author and affiliation
 % So first round we write affn?
 % then we process
-%\def\@currentAuthor{}
 \def\@@author[#1]#2{%
     \g@addto@macro\@AIauthors{%
     \def\baselinestretch{1}%
@@ -300,13 +313,17 @@
      		\unskip\sep\affnum\let\sep=,}%
       	\ifx\@corref\@empty%
 		\else\unskip\sep\@corref\let\sep=,%
-		\g@addto@macro\@AICorrespondingAuthor{#2, }%
+		\g@addto@macro\@AICorrespondingAuthor{#2}%
 		\fi
       	}%
-    \def\authorsep{\unskip,\space}%
+    \gdef\authorsep{\unskip,\space}%
     \global\let\sep\@empty%
-	\global\let\@corref\@empty}
-    \g@addto@macro\@AuthorsNames{#2, }%
+	\global\let\@corref\@empty}%
+	\ifx\@AuthorsNames\@empty
+		\g@addto@macro\@AuthorsNames{#2}%
+	\else
+		\g@addto@macro\@AuthorsNames{\authorsep#2}%
+	\fi
 }
 
 % we  process all the affiliations, creating an affLabel for each one
@@ -317,7 +334,7 @@
 \newcounter{affn}
 \renewcommand\theaffn{\arabic{affn}}
 \long\def\@@affiliation[#1]#2{%
-	\g@addto@macro\@AIaffiliation{%
+	\g@addto@macro\@AIaffiliations{%
 		\def\baselinestretch{1}%
 		\refstepcounter{affn}%
 		\xdef\@currentlabel{\theaffn}%
@@ -339,11 +356,10 @@
 		$\ast$\or$\ast\ast$\fi\hskip-1pt}}
 
 \newcounter{cnote}
-\def\cortext#1{\g@addto@macro\CorrespAut{%
-	\refstepcounter{cnote}%
+\def\EmailCorrespondingAuthor#1{\refstepcounter{cnote}%
 	\AIaffLabel{AIcorrAuthor}%
-	\@AICorrespondingAuthor
-	#1}}
+	\g@addto@macro\CorrespAut{%
+	\@AICorrespondingAuthor, e-mail: \url{#1}}}
 
 %----------------------------------------------------------------------
 %	LIST CONTROL
@@ -360,14 +376,21 @@
 %\setlist{nolistsep} % Uncomment to remove spacing between items in lists (enumerate, itemize)
 
 % ---------------------------------------------------------------------
+\def\@Journal{Acta IMEKO}
+\def\@ISSN{ISSN: 221-870X}
+\def\@CopyRight{This is an open-access article distributed under%
+	the terms of the Creative Commons Attribution 3.0 License, %
+	which permits unrestricted use, distribution, and reproduction %
+	in any medium, provided the original author and source are credited.}
+\def\@Citation{\@AuthorsNames, \@PaperTitle, \@Journal}
 
 \renewcommand{\@maketitle}{%
 	\twocolumn[{%
-	%	\thispagestyle{empty}%
+		%\thispagestyle{fancy}%
 		\vskip-24pt%
 		\begin{minipage}[b]{0.925\textwidth}
 			{\raggedright
-				{\sublargesize\sffamily\bfseries\selectfont {\@Journal}}\\
+				{\sublargesize\sffamily\bfseries\selectfont {\MakeUppercase{\@Journal}}}\\
 				{\footnotesize\sffamily\bfseries\selectfont {\@ISSN}}\\
 				{\footnotesize\sffamily\itshape\selectfont {\@JournalInfo}}\\
 				\noindent\textcolor{ActaBlue}{\rule{\textwidth-2pt}{1.5pt}}}%
@@ -383,7 +406,7 @@
 		\begingroup%
 		\raggedright\sffamily\itshape%\small%
 		\footnotesize%
-		\@AIaffiliation\par%
+		\@AIaffiliations\par%
 		\endgroup%%
 		\vskip18pt%
 		\fcolorbox{color2}{color2}{%
@@ -405,7 +428,7 @@
 		\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
 		\vskip10pt%
 		{\footnotesize\sffamily\bfseries\selectfont {{Section:}}}
-		{\footnotesize\sffamily\selectfont {\@Section}}
+		{\footnotesize\sffamily\selectfont {\@arttype}}
 		\vskip4pt%pt%
 		{\footnotesize\sffamily\bfseries\selectfont {{Keywords:}}}
 		{\footnotesize\sffamily\selectfont {\@Keywords}}
@@ -430,7 +453,7 @@
 		{\footnotesize\sffamily\selectfont {\@Funding}}
 		\vskip4pt%
 		{\footnotesize\sffamily\bfseries\selectfont {Corresponding Author:}}
-		{\footnotesize\sffamily\selectfont {\@CorAuthor}}
+		{\footnotesize\sffamily\selectfont {\CorrespAut}}
 		\vskip4pt%
 		\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
 		\vskip16pt%

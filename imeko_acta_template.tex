@@ -1,30 +1,12 @@
-% !TeX spellcheck = en_US
+% !TeX spellcheck = en_GB
 \documentclass[10pt]{imeko_acta}
-
-%\usepackage{breqn} %useful math pacakge for multiline equations
-%\usepackage{ebgaramond}
-%----------------------------------------------------------------------------------------
-%	ARTICLE INFORMATION
-%----------------------------------------------------------------------------------------
-\usepackage{layout}
-\usepackage{layouts}
-%\usepackage{pagegrid}
 %\usepackage{newtxtext}
+
 %----------------------------------------------------------------------------------------
 % Completed by Authors - Everything below here
 %
 
 \PaperTitle{Template for an Acta IMEKO paper} % Article title
-
-%\Authors{Thomas Bruns\AuthorRefmark{1}, Dirk Röske\AuthorRefmark{2}, Paul P. L. Regtien\AuthorRefmark{2}, Francisco Alegria\AuthorRefmark{3}, Corey Stambaugh\AuthorRefmark{1}} % Authors
-
-%\AuthorsNew[1]{Federico}
-
-%\affiliation{\AuthorRefmark{1}\textit{Physikalisch-Technische Bundesanstalt, Bundesallee 100, 38116 Braunschweig, Germany}} % Author affiliation 2
-%
-%\affiliation{\AuthorRefmark{2}\textit{Measurement Science Consultancy, Julia Culpstraat 66, 7558JB Hengelo, The Netherlands}} % Author affiliation 1
-%
-%\affiliation{\AuthorRefmark{3}\textit{Instituto de Telecomunicações and Instituto Superior Técnico, Universidade Técnica de Lisboa, Av. Rovisco Pais 1, 1049-001 Lisbon, Portugal}} % Author affiliation 2
 
 \author[1]{Thomas Bruns\corref}
 \author[2]{Dirk Röske}
@@ -35,61 +17,42 @@
 \affiliation[2]{Measurement Science Consultancy, Julia Culpstraat 66, 7558JB Hengelo, The Netherlands}
 \affiliation[3]{Instituto de Telecomunicações and Instituto Superior Técnico, Universidade Técnica de Lisboa, Av. Rovisco Pais 1, 1049-001 Lisbon, Portugal}
 
-\cortext{Corresponding}
+\EmailCorrespondingAuthor{corey.stambaugh@nist.gov}
 
-\Keywords{Journal; template; IMEKO; Microsoft Word} % Keywords - if you don't want any simply remove all the text between the curly brackets
-	
-\Section{RESEARCH PAPER}
+% Keywords - if you don't want any simply remove all the text between the curly brackets
+\Keywords{Journal; template; IMEKO; Microsoft Word} 
 
-\Funding{[Optional, if applicable] This work was supported by Measurement Science Consultancy, The Netherlands.} %Leave blank for no funding
+%Leave blank for no funding
+\Funding{[Optional, if applicable] This work was supported by Measurement Science Consultancy, The Netherlands.}
+%Leave blank for no funding, like this
+%\Funding{}
 
-\CorAuthor{\CorrespAut\ Corey Stambaugh, e-mail: corey.stambaugh@nist.gov} %enter corresponding author information
 %----------------------------------------------------------------
 % Completed by Editors - You can fill in but Editor will finalize
 %----------------------------------------------------------------
-\Journal{ACTA IMEKO} % Journal information
-\ISSN{ISSN: 221-870X}
+\Editor{Name, Surname}
 \JournalInfo{September 2018, Volume 1, Number 1, 5-10} % Journal information
-\PaperFooter{October 2018}{4}{1}
-\Citation{\AuthorsNames\ Template for an Acta IMEKO paper, Acta IMEKO, vol. A, no. B, article C, Month Year, identifier: IMEKO-ACTA-A (Year)-B-C}
-\Editor{Someone, Somewhere}
 \Received{January 1, 2021}
 \FinalForm{January 31, 2021}
 \Published{March 2018}
-\CopyRight{This is an open-access article distributed under the terms of the Creative Commons Attribution 3.0 License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.}
-%
-%------------------------------------------------------------------------------------------
+\PaperFooter{October 2018}{4}{1}
+%\Citation{\AuthorsNames\ Template for an Acta IMEKO paper, Acta IMEKO, vol. A, no. B, article C, Month Year, identifier: IMEKO-ACTA-A (Year)-B-C}
 
 %----------------------------------------------------------------------------------------
 %	ABSTRACT - Fill in with abstract - length less than 200 words. 
 %----------------------------------------------------------------------------------------
-
 \Abstract{The editorial team of Acta IMEKO strongly encourages authors to use this \LaTeXe template file to produce their manuscript. The abstract should be composed in a way suitable for publication in the abstract section of electronic journals, and should state concisely what it is written in the paper. Important items are the aim of the research, the basic method and the major achievement (also numerically, when applicable). The length should not exceed 200 words.
 }
 
 %----------------------------------------------------------------------------------------
 
 \begin{document}
-%%\layout
-%\setuplayouts
-%\begin{figure}
-%	\currentpage
-%	\twocolumnlayouttrue
-%	\pagedesign
-%	\drawdimensionstrue
-%	\drawparameterstrue
-%	\caption{Odd page layout for this document} \label{fig:ptrs}
-%\end{figure}
 %----------------------------------------------------------------------------------------
 % Do not change this small section
 %
 \flushbottom % Makes all text pages the same height
 \maketitle % Print the title and abstract box
 \thispagestyle{fancy} % Removes page numbering from the first page
-
-%----------------------------------------------------------------------------------------
-%	ARTICLE CONTENTS
-%----------------------------------------------------------------------------------------
 
 
 \section{Introduction}
@@ -193,7 +156,7 @@ Figure 2 shows the window where the configuration is done. It can be accessed by
 \end{enumerate}
 
 That window has 4 sections organized from top to bottom ("text wrapping", "size", "horizontal" and "vertical"). 
-Text wrapping should always be set to none. The size should be exactly 18 cm for page wide illustrations and tables and 8.75 cm for column wide ones. The horizontal setting should be center relative to the column or page for column wide or page wide content respectively. The vertical setting can be top relative to margin or bottom relative to margin depending where the frame is supposed to be located (top or bottom) of the page.
+Text wrapping should always be set to none. The size should be exactly 18 cm for page wide illustrations and tables and 8.75 cm for column wide ones. The horizontal setting should be centred relative to the column or page for column wide or page wide content respectively. The vertical setting can be top relative to margin or bottom relative to margin depending where the frame is supposed to be located (top or bottom) of the page.
 The frames in this template have all the proper formatting and can be used as is. The only setting the author will need to manage when crating new frames by copy and pasting existing ones is the vertical setting that will have to be changed from top to bottom depending on the new frame location.
 
 \begin{figure}[!tb]
@@ -299,7 +262,7 @@ Table 1 summarizing the various styles used in this template, whereas Table 2 sh
 
 Microsoft Word permits to have figure and table numbering done automatically. The author is asked to use this feature, if possible, instead of numbering them by hand. The captions in this template already use automatic numbering. The best way for the author is just to copy and paste those captions and change the text accordingly. Because the number in the copied caption label will not be automatically updated, the author can place the cursor in the caption number and press the key F9 to update it (the number background turns grey because it is a "field code").
 
-If the author wants to use automatic caption numbering but creates captions from scratch, he/she can right click on the picture or table and select "Insert Caption" from the pop-up menu. A window will be displayed (Figure 3) where one can choose the label "Figure" or "Table" and insert the caption text. If those labels are not in the dropdown list the author can add them by using the "New Label" button.
+If the author wants to use automatic caption numbering but creates captions from scratch, he/she can right click on the picture or table and select "Insert Caption" from the pop-up menu. A window will be displayed (Figure 3) where one can choose the label "Figure" or "Table" and insert the caption text. If those labels are not in the drop-down list the author can add them by using the "New Label" button.
 
 
 \subsection{Referring to figures and tables in the text}\label{sec:reffig}
@@ -379,14 +342,4 @@ Here persons or institutes may be acknowledged for their technical, scientific o
 \bibliographystyle{imeko_acta}
 \bibliography{imeko_acta}
 
-% ------------------------------------------------------------------------------------------------
-% This will force the number to letters in appendix, working on adding the class file
-%
-%
-\titleformat{\section}{\fontsize{9}{9}\sffamily\bfseries}{\thesection . \MakeUppercase{#1}}{0.5em}{}
-\titleformat{\subsection}{\fontsize{8}{9}\sffamily\bfseries}{\thesubsection { #1}}{0.5em}{}
-%	\appendix %uncommment for appendix
-
-%	\section{}
-%	\subsection{}
 \end{document} 

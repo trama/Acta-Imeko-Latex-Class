@@ -1,4 +1,13 @@
 %% ACTA IMEKO Latex class file
+%%
+%% Vers: 1.1
+%% By: Federico Tramarin (tramarin@unimore.it)
+%% Date: 25/09/2023
+%% Notes: This version builds over v1.0 (see below). Several futher bugs have been solved 
+%%    - added micro typography options to adress hyphenation and letters/words spacings
+%%    - removed dependence on some packages (e.g. geometry)
+%%    - added a new authors' management method
+%%
 %% Vers: 1.0
 %% By: Federico Tramarin (tramarin@unimore.it)
 %% Date: 12/09/2023
@@ -8,32 +17,31 @@
 %%    - removed unneded packges
 %%
 %% The main reasons is that matching with the Word template requires quite a lot of font tunings, and obsolete commands (like \bf \it) do not support LaTeX2e's new font selection scheme, or NFSS{\bf foo}, for example, resets all font attributes which had been set earlier. also, we need new options to produce the camera ready and final version, etc.
-
-% This class file was originally downloaded as SelfArx.cls
-% Template Source: This template has been downloaded from:
-% http://www.latextemplates.com/template/stylish-article
-% License: CC BY-NC-SA 3.0 
-% The vast majority of original markup has been removed. 
-% The class is now for:
-% IMEKO ACTA (https://acta.imeko.org/index.php/acta-imeko)
-% By: Corey Stambaugh (corey.stambaugh @ nist.gov)
-% Vers: 1.0
-% Date: 09/12/2018 
-% Notes: Sets up the majority of options to produce required formatting for ACTA IMEKO.
-%
-% The class has been written to mimic the template style of:
-% https://acta.imeko.org/index.php/acta-imeko/article/view/IMEKO-ACTA-00%282011%29-01-04
-% which is written as a .doc file by:
-% Thomas Bruns, Dirk Röske, Paul P. L. Regtien, Francisco Alegria
-%% latex style practice
+%%
+%% HISTORY:
+%% A first draft of the class has been produced by Corey Stambaugh (corey.stambaugh @ nist.gov)
+%% Date: 09/12/2018
+%%
+%% This class file was originally downloaded as SelfArx.cls
+%% Template Source: This template has been downloaded from:
+%% http://www.latextemplates.com/template/stylish-article
+%% License: CC BY-NC-SA 3.0
+%%
+%% The class has been written to mimic the template style of the ACTA IMEKO journal
+%% https://acta.imeko.org/    which is written as a .doc file by:
+%% Thomas Bruns, Dirk Röske, Paul P. L. Regtien, Francisco Alegria
+%%
+%% END HISTORY
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{imeko_acta}[2023/09/12 Acta Imeko paper class v1.0]
 
 
 \LoadClass[10pt,a4paper]{article}
+
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
+\RequirePackage[british]{babel}
 % using EB-Garamond for serif text
 \RequirePackage[lining]{ebgaramond}
 % using Helvetica for sans-serif
@@ -55,11 +63,12 @@
 \RequirePackage{array,booktabs}
 %only needed if we want to have a double column float * mandatory* at the bottom (because latex only put them at th etop by default)
 %\RequirePackage{stfloats} 
+\usepackage{cite}
 
 \ifxetex
-\RequirePackage{fontspec,unicode-math}
-\setsansfont{Calibri}
-\setmathfont{Cambria Math}
+	\RequirePackage{fontspec,unicode-math}
+	\setsansfont{Calibri}
+	\setmathfont{Cambria Math}
 \fi
 
 
@@ -71,6 +80,9 @@
 %% To choose the status of the manuscript
 \DeclareOption{submit}{\gdef\@status{submit}}
 \DeclareOption{final}{\gdef\@status{final}}
+
+%%
+\DeclareOption{showcorr}{\gdef\@showcorr{1}}
 
 %\AtEndOfClass{\RequirePackage{microtype}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
@@ -92,9 +104,6 @@
 \addtolength{\oddsidemargin}{-1in}% compensate for LaTeX's 1in offset
 \evensidemargin   \@ActaMarginE
 \addtolength{\evensidemargin}{-1in}% compensate for LaTeX's 1in offset
-
-% Set correct margins
-%\RequirePackage[left=1.5cm,right=1.5cm,top=2.0cm,bottom=2.5cm,headheight=11pt,a4paper]{geometry}
 
 % Font tweaks (mostly on the baseline skip) to match Word template
 %\typeout{-- This is a 10 point document.}
@@ -122,9 +131,7 @@
 \def\Huge{\@setfontsize{\Huge}{24}{28pt}}
 %\fi
 
-%---------------------------------------------------------------------% Various definitions
-%---------------------------------------------------------------------
-
+%% Various definitions
 %Tweak first line indent width
 \parindent 1.0em
 
@@ -164,7 +171,7 @@
 	urlcolor=ActaBlue, 
 	hyperfootnotes=true, 
 	pdfstartview={FitH},
-	pdfpagemode= UseNone]{hyperref}
+	pdfpagemode=UseNone]{hyperref}
 
 %%%% Metadata
 \newcommand{\org@maketitle}{}% LATEX-Check
@@ -174,7 +181,9 @@
 		pdftitle={\@PaperTitle},
 		pdfsubject={\@Abstract},
 		pdfkeywords={\@Keywords},
-		pdfauthor={\@AuthorsNames}
+		pdfauthor={\@AuthorsNames},
+		%pdfcreator={FT},
+		%pdfproducer={FT},
 		}%
 	\org@maketitle
 }
@@ -289,8 +298,10 @@
       	\@for\@@affmark:=#1\do{%
        		\edef\affnum{\@ifundefined{X@\@@affmark}{affn?}{\AIrefMark{\@@affmark}}}%
      		\unskip\sep\affnum\let\sep=,}%
-      	\ifx\@corref\@empty\else\unskip\sep a corref\g@addto@macro\@AICorrespondingAuthor{#2, }%
-		\@corref\let\sep=,\fi
+      	\ifx\@corref\@empty%
+		\else\unskip\sep\@corref\let\sep=,%
+		\g@addto@macro\@AICorrespondingAuthor{#2, }%
+		\fi
       	}%
     \def\authorsep{\unskip,\space}%
     \global\let\sep\@empty%

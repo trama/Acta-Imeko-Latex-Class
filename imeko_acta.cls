@@ -152,9 +152,6 @@
 \newcommand{\Received}[1]{\def\@Received{#1}}
 \newcommand{\FinalForm}[1]{\def\@FinalForm{#1}}
 \newcommand{\Published}[1]{\def\@Published{#1}}
-\def\@AIaffiliation{}
-\def\@AIauthors{}
-\def\@AuthorsNames{}
 \newcommand{\AuthorsNames}{\@AuthorsNames}
 
 
@@ -266,31 +263,34 @@
 \titlespacing*{\subsubsection}{0pc}{2ex \@plus2.5pt \@minus1.5pt}{0pt}
 \titlespacing*{\paragraph}{0pc}{1.5ex \@plus2pt \@minus1pt}{10pt}
 
+
 % Definitions to manage multiple authors
 % Definitions for management of multiple authors and affiliations
 % adapted from the code of elsarticle
-
 \def\CorrespAut{}
+
+\def\author{\@@author}
 \let\authorsep\@empty
 \let\sep\@empty
+\def\@AIaffiliation{}
+\def\@AIauthors{}
+\def\@AuthorsNames{}
+\def\@AICorrespondingAuthor{}
 
-%\newcounter{author}
-\def\author{\@@author}
-
-\def\AiRef#1{\@ifundefined{X@#1}{0}{\csname X@#1\endcsname}}
-\def\elsLabel#1{\@bsphack\protected@write\@auxout{}%
-	  {\string\Newlabel{#1}{\@currentlabel}}\@esphack}
-\def\Newlabel#1#2{\expandafter\xdef\csname X@#1\endcsname{#2}}
-
-%% tentative to avoid refmarks
+% Create Authors string with superscripts indicating their affiliation
+% However, at the first round, there can not be a match between author and affiliation
+% So first round we write affn?
+% then we process
+%\def\@currentAuthor{}
 \def\@@author[#1]#2{%
     \g@addto@macro\@AIauthors{%
     \def\baselinestretch{1}%
-    \authorsep#2\unskip\textsuperscript{%#1%
+    \authorsep#2\unskip\textsuperscript{%
       	\@for\@@affmark:=#1\do{%
-       		\edef\affnum{\@ifundefined{X@\@@affmark}{err}{\AiRef{\@@affmark}}}%
+       		\edef\affnum{\@ifundefined{X@\@@affmark}{affn?}{\AIrefMark{\@@affmark}}}%
      		\unskip\sep\affnum\let\sep=,}%
-      	\ifx\@corref\@empty\else\unskip\sep\@corref\let\sep=,\fi
+      	\ifx\@corref\@empty\else\unskip\sep a corref\g@addto@macro\@AICorrespondingAuthor{#2, }%
+		\@corref\let\sep=,\fi
       	}%
     \def\authorsep{\unskip,\space}%
     \global\let\sep\@empty%
@@ -298,53 +298,41 @@
     \g@addto@macro\@AuthorsNames{#2, }%
 }
 
+% we  process all the affiliations, creating an affLabel for each one
+% and then writing them down
+% in this phase, at the first round, we hence create the variables for cross referencing with 
+% authors, in the second round
 \def\affiliation{\@@affiliation}
-
 \newcounter{affn}
 \renewcommand\theaffn{\arabic{affn}}
-
 \long\def\@@affiliation[#1]#2{%
-      \g@addto@macro\@AIaffiliation{%
-      \def\baselinestretch{1}%
-      \refstepcounter{affn}%
-      \xdef\@currentlabel{\theaffn}%
-      \elsLabel{#1}%
-      \textsuperscript{\theaffn}#2\par}%
-	  }
+	\g@addto@macro\@AIaffiliation{%
+		\def\baselinestretch{1}%
+		\refstepcounter{affn}%
+		\xdef\@currentlabel{\theaffn}%
+		\AIaffLabel{#1}%here we create a first round of refmarks for each affiliation
+		\textsuperscript{\theaffn}#2\par}%
+	}
+
+% AIaffLabel used  in the first round to create a global variable for affiliation referencing
+\def\AIaffLabel#1{\@bsphack\protected@write\@auxout{}%
+	{\string\NewAIaffLabel{#1}{\@currentlabel}}\@esphack}
+	\def\NewAIaffLabel#1#2{\expandafter\xdef\csname X@#1\endcsname{#2}}
+% AIrefMark is used in the second round to xref the previous defined variables
+\def\AIrefMark#1{\@ifundefined{X@#1}{0}{\csname X@#1\endcsname}}
 
 \let\@corref\@empty
-\def\corref#1{\edef\cnotenum{\AiRef{#1}}%
- \edef\@corref{%$\ast$\hskip-1pt}}
-	 \ifcase\cnotenum\or
-	 $\ast$\or$\ast\ast$\fi\hskip-1pt}%
-	 \typeout{FT: the value of corref is \@corref}}
+\def\corref{\edef\cnotenum{\AIrefMark{AIcorrAuthor}}%
+ 	\edef\@corref{%
+		\ifcase\cnotenum\or%
+		$\ast$\or$\ast\ast$\fi\hskip-1pt}}
 
 \newcounter{cnote}
-\def\cortext[#1]#2{\g@addto@macro\CorrespAut{%
-\refstepcounter{cnote}%
- \elsLabel{#1}#2}}
-
-% \def\cormark[#1]{\edef\cnotenum{\elsRef{#1}}%
-%  \unskip\textsuperscript{\sep\ifcase\cnotenum\or
-% 	$\ast$\or$\ast\ast$\fi\hspace{-1pt}}\let\sep=,}
-
-
-
-% \IEEEauthorrefmark{} produces a footnote type symbol to indicate author affiliation.
-% When given an argument of 1 to 9, \IEEEauthorrefmark{} follows the standard LaTeX footnote
-% symbol sequence convention. However, for arguments 10 and above, \IEEEauthorrefmark{} 
-% reverts to using lower case roman numerals, so it cannot overflow. Do note that you 
-% cannot use \footnotemark[] in place of \IEEEauthorrefmark{} within \author as the footnote
-% symbols will have been turned off to prevent \thanks from creating footnote marks.
-% \IEEEauthorrefmark{} produces a symbol that appears to LaTeX as having zero vertical
-% height - this allows for a more compact line packing, but the user must ensure that
-% the interline spacing is large enough to prevent \IEEEauthorrefmark{} from colliding
-% with the text above.
-% V1.7 make this a robust command
-% V1.8 transmag uses an arabic author affiliation symbol
-% \DeclareRobustCommand*{\AuthorRefmark}[1]{%\raisebox{0pt}[0pt][0pt]
-% {\textsuperscript{\scriptsize\mdseries #1}}}
-
+\def\cortext#1{\g@addto@macro\CorrespAut{%
+	\refstepcounter{cnote}%
+	\AIaffLabel{AIcorrAuthor}%
+	\@AICorrespondingAuthor
+	#1}}
 
 %----------------------------------------------------------------------
 %	LIST CONTROL

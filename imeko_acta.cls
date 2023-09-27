@@ -87,15 +87,21 @@
 \DeclareOption{final}{\gdef\@status{final}}
 
 %%
-\DeclareOption{showcorr}{\gdef\@showcorr{1}}
+\newif\if@showcorr \@showcorrtrue
+\DeclareOption{showcorresponding}{\@showcorrtrue}
+\DeclareOption{noshowcorresponding}{\@showcorrfalse}
+%\gdef\@showcorrtrue
 
 %\AtEndOfClass{\RequirePackage{microtype}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 
 %% Defaults
-\ExecuteOptions{10pt,a4paper,article,submit}
+\ExecuteOptions{10pt,a4paper,article,submit,noshowcorresponding}
 
 \ProcessOptions\relax
+
+
+\flushbottom % Makes all text pages the same height
 
 % Set page layout options (no geometry package)
 \setlength{\paperheight}{297mm}%
@@ -148,21 +154,20 @@
 
 \newcommand{\PaperTitle}[1]{\def\@PaperTitle{#1}}
 \newcommand{\Archive}[1]{\def\@Archive{#1}}
-%\newcommand{\Journal}[1]{\def\@Journal{#1}}
-%\newcommand{\ISSN}[1]{\def\@ISSN{#1}}
 \newcommand{\JournalInfo}[1]{\def\@JournalInfo{#1}}
 \newcommand{\Abstract}[1]{\def\@Abstract{#1}}
 \newcommand{\Keywords}[1]{\def\@Keywords{#1}}
-%\newcommand{\Section}[1]{\def\@Section{#1}}
 \newcommand{\Citation}[1]{\def\@Citation{#1}}
 \newcommand{\Editor}[1]{\def\@Editor{#1}}
-%\newcommand{\CopyRight}[1]{\def\@CopyRight{#1}}
 \newcommand{\Funding}[1]{\ifthenelse{\equal{#1}{}}{\def\@Funding{No funding specified.}}{\def\@Funding{#1}}}
-%\newcommand{\CorrespondingAuthor}[1]{\def\@CorAuthor{#1}}
 \newcommand{\Received}[1]{\def\@Received{#1}}
 \newcommand{\FinalForm}[1]{\def\@FinalForm{#1}}
 \newcommand{\Published}[1]{\def\@Published{#1}}
-\newcommand{\AuthorsNames}{\@AuthorsNames}
+%\newcommand{\Journal}[1]{\def\@Journal{#1}}
+%\newcommand{\ISSN}[1]{\def\@ISSN{#1}}
+%\newcommand{\Section}[1]{\def\@Section{#1}}
+%\newcommand{\CopyRight}[1]{\def\@CopyRight{#1}}
+%\newcommand{\AIauthorsNames}{\@AIauthorsNames}
 
 \RequirePackage[unicode=true,
 	bookmarksopen={true},
@@ -183,7 +188,7 @@
 		pdftitle={\@PaperTitle},
 		pdfsubject={\@Abstract},
 		pdfkeywords={\@Keywords},
-		pdfauthor={\@AuthorsNames},
+		pdfauthor={\@AIauthorsNames},
 		%pdfcreator={FT},
 		%pdfproducer={FT},
 		pdfinfo={
@@ -193,25 +198,23 @@
 			Acta IMEKO Issue Number={3},
 			Acta IMEKO Issue Month={September},
 			Acta IMEKO Article Number={54},
-			Acta IMEKO Article Authors={\@AuthorsNames},
+			Acta IMEKO Article Authors={\@AIauthorsNames},
 			Acta IMEKO Section Editor={Francesco Lamonaca, University of Calabria, Italy},
 			Acta IMEKO Received MonthDayYear={April 6, 2023},
 			Acta IMEKO InFinalForm MonthDayYear={June 14, 2023}
 			}
 		}%
+		%\typeout{FT:1 \@AIauthorsNames}
 	\org@maketitle
 }
 
-% IEEE uses 5) not 5.
+% Acta IMEKO item lists: we uses 5) not 5.
+% a) not (a)
+% iii) not iii.
+% A) not A.
 \def\labelenumi{\theenumi)}     \def\theenumi{\arabic{enumi}}
-
-% IEEE uses a) not (a)
 \def\labelenumii{\theenumii)}  \def\theenumii{\alph{enumii}}
-
-% IEEE uses iii) not iii.
 \def\labelenumiii{\theenumiii)} \def\theenumiii{\roman{enumiii}}
-
-% IEEE uses A) not A.
 \def\labelenumiv{\theenumiv)}   \def\theenumiv{\Alph{enumiv}}
 
 % exactly the same as in article.cls
@@ -225,13 +228,7 @@
 \setlist[itemize,1]{label=-}
 
 
-% copied from IEEEtran
-% LaTeX is a little to quick to use hyphenations
-% So, we increase the penalty for their use and raise
-% the badness level that triggers an underfull hbox
-% warning. The author may still have to tweak things,
-% but the appearance will be much better "right out
-% of the box" than that under V1.5 and prior.
+% adapting some internal Latex parameters
 % TeX default is 50
 \hyphenpenalty=1000
 % If we didn't adjust the interword spacing, 2200 might be better.
@@ -262,16 +259,17 @@
 % Set the page header
 \renewcommand{\headrulewidth}{0pt}% % No header rule
 \renewcommand{\footrulewidth}{0.75pt}% % No footer rule
-\pagestyle{fancy}          % Enables the custom headers/footers
 \newcommand{\PaperFooter}[3]{\def\@PaperFooter{#1 \textbar{} Volume #2 \textbar{} Number #3 \textbar{} }}
 % Headers
-\lhead{}%
-\chead{}%
-\rhead{}
+\fancyhead[L]{}%
+\fancyhead[C]{}%
+\fancyhead[R]{}
 % Footers
-\lfoot{\footnotesize\sffamily\selectfont {ACTA IMEKO \textbar{}  www.imeko.org}}%
-\cfoot{}%
-\rfoot{\footnotesize\sffamily\selectfont \@PaperFooter \thepage}%
+\fancyfoot[L]{\footnotesize\sffamily\selectfont {ACTA IMEKO \textbar{}  www.imeko.org}}%
+\fancyfoot[C]{}%
+\fancyfoot[R]{\footnotesize\sffamily\selectfont \@PaperFooter \thepage}%
+\pagestyle{fancy}          % Enables the custom headers/footers
+\fancypagestyle{plain}{}
 
 % Settings for titles of sections and subsections
 \titleformat{\section}{\sffamily\bfseries\normalsize}{}{0em}
@@ -290,39 +288,52 @@
 % Definitions to manage multiple authors
 % Definitions for management of multiple authors and affiliations
 % adapted from the code of elsarticle
-\def\CorrespAut{}
 
 \def\author{\@@author}
-\let\authorsep\@empty
-\let\sep\@empty
 \def\@AIaffiliations{}
 \def\@AIauthors{}
-\def\@AuthorsNames{}
-\def\@AICorrespondingAuthor{}
+\def\@AIauthorsNames{}
 
-% Create Authors string with superscripts indicating their affiliation
+%some temporary variables for internal use
+\let\authorsep\@empty
+\let\sep\@empty
+\let\@cormark\@empty
+\def\CorrespondingAuthor{}
+\def\@CorrespondingAuthorName{}
+
+% Create Authors string with superscripts indicating their affiliation (\@@affmark)
 % However, at the first round, there can not be a match between author and affiliation
-% So first round we write affn?
+% So first round we write affn? and crate a reference for \@@affmark
 % then we process
+\newcounter{auth}
 \def\@@author[#1]#2{%
     \g@addto@macro\@AIauthors{%
     \def\baselinestretch{1}%
+	\refstepcounter{auth}%
     \authorsep#2\unskip\textsuperscript{%
       	\@for\@@affmark:=#1\do{%
        		\edef\affnum{\@ifundefined{X@\@@affmark}{affn?}{\AIrefMark{\@@affmark}}}%
-     		\unskip\sep\affnum\let\sep=,}%
-      	\ifx\@corref\@empty%
-		\else\unskip\sep\@corref\let\sep=,%
-		\g@addto@macro\@AICorrespondingAuthor{#2}%
-		\fi
+     		\unskip\sep\affnum%
+			\edef\cormark{\@ifundefined{X@cor-\theauth}{}{%
+				\if@showcorr
+					{,\AIrefMark{cor-\theauth}}%
+				\else
+					{}%
+				\fi}}%
+			\unskip\sep\cormark\let\sep=,%
+			\ifx\cormark\@empty%
+			\else
+			\g@addto@macro\@CorrespondingAuthorName{#2}%
+			\fi
+			}%
       	}%
     \gdef\authorsep{\unskip,\space}%
     \global\let\sep\@empty%
-	\global\let\@corref\@empty}%
-	\ifx\@AuthorsNames\@empty
-		\g@addto@macro\@AuthorsNames{#2}%
+	}
+	\ifx\@AIauthorsNames\@empty
+		\g@addto@macro\@AIauthorsNames{#2}%
 	\else
-		\g@addto@macro\@AuthorsNames{\authorsep#2}%
+		\g@addto@macro\@AIauthorsNames{\authorsep#2}%
 	\fi
 }
 
@@ -342,28 +353,23 @@
 		\textsuperscript{\theaffn}#2\par}%
 	}
 
-% AIaffLabel used  in the first round to create a global variable for affiliation referencing
+% AIaffLabel is used in the first round to create a global variable for affiliation referencing
 \def\AIaffLabel#1{\@bsphack\protected@write\@auxout{}%
 	{\string\NewAIaffLabel{#1}{\@currentlabel}}\@esphack}
-	\def\NewAIaffLabel#1#2{\expandafter\xdef\csname X@#1\endcsname{#2}}
-% AIrefMark is used in the second round to xref the previous defined variables
-\def\AIrefMark#1{\@ifundefined{X@#1}{0}{\csname X@#1\endcsname}}
+\def\NewAIaffLabel#1#2{\expandafter\xdef\csname X@#1\endcsname{#2}}
 
-\let\@corref\@empty
-\def\corref{\edef\cnotenum{\AIrefMark{AIcorrAuthor}}%
- 	\edef\@corref{%
-		\ifcase\cnotenum\or%
-		$\ast$\or$\ast\ast$\fi\hskip-1pt}}
+% AIrefMark is used in the second round to xref the previous defined variables
+\def\AIrefMark#1{\@ifundefined{X@#1}{0}{\csname X@#1\endcsname}%
+}
+
+% here we create a first round of refmarks for the corresponding author
+\def\CorrespondingAuthorNumber#1{\NewAIaffLabel{cor-#1}{$\ast$}}
 
 \newcounter{cnote}
-\def\EmailCorrespondingAuthor#1{\refstepcounter{cnote}%
-	\AIaffLabel{AIcorrAuthor}%
-	\g@addto@macro\CorrespAut{%
-	\@AICorrespondingAuthor, e-mail: \url{#1}}}
-
-%----------------------------------------------------------------------
-%	LIST CONTROL
-%----------------------------------------------------------------------  
+\def\CorrespondingAuthorEmail#1{\refstepcounter{cnote}%
+	\AIaffLabel{#1}%
+	\g@addto@macro\CorrespondingAuthor{%
+	\@CorrespondingAuthorName, e-mail: \url{#1}}}
 
 %%%% URL
 \RequirePackage{url}
@@ -374,7 +380,6 @@
 \g@addto@macro{\UrlBreaks}{\UrlDigits}
 
 %\setlist{nolistsep} % Uncomment to remove spacing between items in lists (enumerate, itemize)
-
 % ---------------------------------------------------------------------
 \def\@Journal{Acta IMEKO}
 \def\@ISSN{ISSN: 221-870X}
@@ -382,11 +387,11 @@
 	the terms of the Creative Commons Attribution 3.0 License, %
 	which permits unrestricted use, distribution, and reproduction %
 	in any medium, provided the original author and source are credited.}
-\def\@Citation{\@AuthorsNames, \@PaperTitle, \@Journal}
+\def\@Citation{\@AIauthorsNames, \@PaperTitle, \@Journal}
 
 \renewcommand{\@maketitle}{%
 	\twocolumn[{%
-		%\thispagestyle{fancy}%
+		%\pagestyle{fancy}%
 		\vskip-24pt%
 		\begin{minipage}[b]{0.925\textwidth}
 			{\raggedright
@@ -453,7 +458,7 @@
 		{\footnotesize\sffamily\selectfont {\@Funding}}
 		\vskip4pt%
 		{\footnotesize\sffamily\bfseries\selectfont {Corresponding Author:}}
-		{\footnotesize\sffamily\selectfont {\CorrespAut}}
+		{\footnotesize\sffamily\selectfont {\CorrespondingAuthor}}
 		\vskip4pt%
 		\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
 		\vskip16pt%

@@ -110,9 +110,6 @@
 
 \ProcessOptions\relax
 
-
-\flushbottom % Makes all text pages the same height
-
 % Set page layout options (no geometry package)
 \setlength{\paperheight}{297mm}%
 \setlength{\paperwidth}{210mm}%
@@ -155,6 +152,7 @@
 %% Various definitions
 %Tweak first line indent width
 \parindent 1.0em
+\flushbottom % Makes all text pages the same height
 
 \definecolor{ActaBlue}{RGB}{19,33,94}
 \definecolor{color2}{RGB}{205,217,240} % Color of the boxes behind the abstract and headings
@@ -173,6 +171,10 @@
 \newcommand{\Received}[1]{\def\@Received{#1}}
 \newcommand{\FinalForm}[1]{\def\@FinalForm{#1}}
 \newcommand{\Published}[1]{\def\@Published{#1}}
+\newcommand{\VolumeNumber}[1]{\def\@VolumeNumber{#1}}
+\newcommand{\VolumeYear}[1]{\def\@VolumeYear{#1}}
+\newcommand{\VolumeMonth}[1]{\def\@VolumeMonth{#1}}
+\newcommand{\IssueNumber}[1]{\def\@IssueNumber{#1}}
 %\newcommand{\Journal}[1]{\def\@Journal{#1}}
 %\newcommand{\ISSN}[1]{\def\@ISSN{#1}}
 %\newcommand{\Section}[1]{\def\@Section{#1}}
@@ -255,7 +257,7 @@
 
 % normally zero, should be relative to font height.
 % put in a little rubber to help stop some bad breaks (underfull vboxes)
-\parskip 0ex plus 0.2ex minus 0.1ex
+\parskip 0ex plus 0.1ex minus 0.1ex
 \setlength{\mathindent}{0pt}
 
 % adjust caption properties
@@ -269,7 +271,10 @@
 % Set the page header
 \renewcommand{\headrulewidth}{0pt}% % No header rule
 \renewcommand{\footrulewidth}{0.75pt}% % No footer rule
-\newcommand{\PaperFooter}[3]{\def\@PaperFooter{#1 \textbar{} Volume #2 \textbar{} Number #3 \textbar{} }}
+%\newcommand{\PaperFooter}[1]{
+	\def\@PaperFooter{\@VolumeMonth\ \@VolumeYear\ \textbar{} % 
+	Volume\ \@VolumeNumber\ \textbar{} Number \@IssueNumber\ \textbar{} }
+	%}
 % Headers
 \fancyhead[L]{}%
 \fancyhead[C]{}%
@@ -282,8 +287,11 @@
 \fancypagestyle{plain}{}
 
 % Settings for titles of sections and subsections
-\titleformat{\section}{\sffamily\bfseries\normalsize}{}{0em}
-{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\sffamily{\arabic{section}.} \MakeUppercase{#1}}}}[]
+ \titleformat{\section}{\sffamily\bfseries\normalsize}{}{0em}
+ {{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\sffamily{\arabic{section}.} \MakeUppercase{#1}}}}[]
+
+% \def\section{\@startsection{section}{1}{\z@}{1ex plus 1.5ex minus 0.5ex}%
+% {6pt plus 0pt minus 6pt}{\sffamily\normalsize\bfseries\MakeUppercase}}%
 
 \titleformat{name=\section,numberless}{\sffamily\bfseries\normalsize}{}{0em}{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\MakeUppercase{#1}}}}[]
 

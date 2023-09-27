@@ -1,6 +1,16 @@
 %% ACTA IMEKO Latex class file
 %%
-%%Vers: 1.1
+%% Vers: 1.2
+%% By: Federico Tramarin (tramarin@unimore.it)
+%% Date: 27/09/2023
+%% Notes: This version finally have all the needed stuffs for a correct authors management 
+%%			Notably, we can reference to the corresponding author indicating the number 
+%%			of the author in the list, this will automatically keep the name
+%%			Added an option to show or not the corresp. author mark
+%%			Symplified the structure for authors
+%%			Solved a serious interference between hyperref and authors names
+%%
+%% Vers: 1.1
 %% By: Federico Tramarin (tramarin@unimore.it)
 %% Date: 25/09/2023
 %% Notes: This version adds support for all the needed PDF metadata

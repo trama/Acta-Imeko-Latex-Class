@@ -418,8 +418,8 @@
 \renewcommand{\@maketitle}{%
 	\twocolumn[{%
 		%\pagestyle{fancy}%
-		\vskip-61pt%
-		\begin{minipage}[t]{0.933\textwidth}
+		\vskip-26pt%
+		\begin{minipage}[b]{0.933\textwidth}
 			{\raggedright
 				{\large\sffamily\bfseries\selectfont {\MakeUppercase{\@Journal}}\par}\vskip2pt%
 				{\small\sffamily\bfseries\selectfont {\@ISSN}\par}\vskip1pt%

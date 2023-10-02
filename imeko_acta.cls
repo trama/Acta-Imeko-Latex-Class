@@ -125,15 +125,15 @@
 
 % Font tweaks (mostly on the baseline skip) to match Word template
 %\typeout{-- This is a 10 point document.}
-\def\normalsize{\@setfontsize{\normalsize}{10}{12.00pt}}%
+\def\normalsize{\@setfontsize{\normalsize}{10}{11.35pt}}%
 %\setlength{\@IEEEnormalsizefontbaselineskip}{12pt}%
 \normalsize
 \abovedisplayskip 1.5ex plus4pt minus2pt%
 \belowdisplayskip \abovedisplayskip%
 \abovedisplayshortskip 0pt plus4pt%
 \belowdisplayshortskip 1.5ex plus4pt minus2pt
-\def\small{\@setfontsize{\small}{9}{10pt}}
-\def\footnotesize{\@setfontsize{\footnotesize}{8}{8pt}}
+\def\small{\@setfontsize{\small}{9}{9.8pt}}
+\def\footnotesize{\@setfontsize{\footnotesize}{8}{9.8pt}}
 \def\scriptsize{\@setfontsize{\scriptsize}{7}{7pt}}
 \def\tiny{\@setfontsize{\tiny}{5}{6pt}}
 % sublargesize is a tad smaller than large - 11pt
@@ -151,7 +151,7 @@
 
 %% Various definitions
 %Tweak first line indent width
-\parindent 1.0em
+\parindent 4mm
 \flushbottom % Makes all text pages the same height
 
 \definecolor{ActaBlue}{RGB}{19,33,94}
@@ -162,11 +162,12 @@
 
 \newcommand{\PaperTitle}[1]{\def\@PaperTitle{#1}}
 \newcommand{\Archive}[1]{\def\@Archive{#1}}
-\newcommand{\JournalInfo}[1]{\def\@JournalInfo{#1}}
+%\newcommand{\JournalInfo}[1]{\def\@JournalInfo{#1}}
 \newcommand{\Abstract}[1]{\def\@Abstract{#1}}
 \newcommand{\Keywords}[1]{\def\@Keywords{#1}}
 \newcommand{\Citation}[1]{\def\@Citation{#1}}
 \newcommand{\Editor}[1]{\def\@Editor{#1}}
+\newcommand{\EditorAffiliation}[1]{\def\@EditorAffiliation{#1}}
 \newcommand{\Funding}[1]{\ifthenelse{\equal{#1}{}}{\def\@Funding{No funding specified.}}{\def\@Funding{#1}}}
 \newcommand{\Received}[1]{\def\@Received{#1}}
 \newcommand{\FinalForm}[1]{\def\@FinalForm{#1}}
@@ -175,6 +176,7 @@
 \newcommand{\VolumeYear}[1]{\def\@VolumeYear{#1}}
 \newcommand{\VolumeMonth}[1]{\def\@VolumeMonth{#1}}
 \newcommand{\IssueNumber}[1]{\def\@IssueNumber{#1}}
+\newcommand{\ArticleNumber}[1]{\def\@ArticleNumber{#1}}
 %\newcommand{\Journal}[1]{\def\@Journal{#1}}
 %\newcommand{\ISSN}[1]{\def\@ISSN{#1}}
 %\newcommand{\Section}[1]{\def\@Section{#1}}
@@ -205,15 +207,15 @@
 		%pdfproducer={FT},
 		pdfinfo={
 			Company={IMEKO - The International Measurement Confederation},
-			Acta IMEKO Issue Year={2023},
-			Acta IMEKO Issue Volume={12},
-			Acta IMEKO Issue Number={3},
-			Acta IMEKO Issue Month={September},
-			Acta IMEKO Article Number={54},
+			Acta IMEKO Issue Year={\@VolumeYear},
+			Acta IMEKO Issue Volume={\@VolumeNumber},
+			Acta IMEKO Issue Number={\@IssueNumber},
+			Acta IMEKO Issue Month={\@VolumeMonth},
+			Acta IMEKO Article Number={\@ArticleNumber},
 			Acta IMEKO Article Authors={\@AIauthorsNames},
-			Acta IMEKO Section Editor={Francesco Lamonaca, University of Calabria, Italy},
-			Acta IMEKO Received MonthDayYear={April 6, 2023},
-			Acta IMEKO InFinalForm MonthDayYear={June 14, 2023}
+			Acta IMEKO Section Editor={\@Editor, \@EditorAffiliation},
+			Acta IMEKO Received MonthDayYear={\@Received},
+			Acta IMEKO InFinalForm MonthDayYear={\@FinalForm}
 			}
 		}%
 		%\typeout{FT:1 \@AIauthorsNames}
@@ -249,15 +251,15 @@
 % IEEE does not use extra spacing after punctuation
 \frenchspacing
 %%%% Widows & orphans
-\clubpenalty=10000
-\widowpenalty=10000
-\displaywidowpenalty=10000
+\clubpenalty=5000
+\widowpenalty=2000
+\displaywidowpenalty=1000
 
 \setlength{\fboxrule}{0.75pt} % Width of the border around the abstract
 
 % normally zero, should be relative to font height.
 % put in a little rubber to help stop some bad breaks (underfull vboxes)
-\parskip 0ex plus 0.1ex minus 0.1ex
+\parskip 0ex plus 0ex minus 0.1ex
 \setlength{\mathindent}{0pt}
 
 % adjust caption properties
@@ -272,9 +274,13 @@
 \renewcommand{\headrulewidth}{0pt}% % No header rule
 \renewcommand{\footrulewidth}{0.75pt}% % No footer rule
 %\newcommand{\PaperFooter}[1]{
-	\def\@PaperFooter{\@VolumeMonth\ \@VolumeYear\ \textbar{} % 
+\def\@JournalInfoFooter{\@VolumeMonth\ \@VolumeYear\ \textbar{} % 
 	Volume\ \@VolumeNumber\ \textbar{} Number \@IssueNumber\ \textbar{} }
-	%}
+
+\def\@JournalInfoHeader{\@VolumeMonth\ \@VolumeYear, %
+	Volume\ \@VolumeNumber, Number \@IssueNumber, %
+	\@ArticleNumber}
+		
 % Headers
 \fancyhead[L]{}%
 \fancyhead[C]{}%
@@ -282,16 +288,18 @@
 % Footers
 \fancyfoot[L]{\footnotesize\sffamily\selectfont {ACTA IMEKO \textbar{}  www.imeko.org}}%
 \fancyfoot[C]{}%
-\fancyfoot[R]{\footnotesize\sffamily\selectfont \@PaperFooter \thepage}%
+\fancyfoot[R]{\footnotesize\sffamily\selectfont \@JournalInfoFooter \thepage}%
 \pagestyle{fancy}          % Enables the custom headers/footers
 \fancypagestyle{plain}{}
 
+\def\thesection{\arabic{section}.}
+\def\thesubsection{\thesection.\arabic{subsection}}
+\def\thesubsubsection{\thesubsection.\arabic{subsubsection}}
+\def\@seccntformat#1{\csname the#1\endcsname\space}
 % Settings for titles of sections and subsections
- \titleformat{\section}{\sffamily\bfseries\normalsize}{}{0em}
- {{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\sffamily{\arabic{section}.} \MakeUppercase{#1}}}}[]
+% \titleformat{\section}{\sffamily\bfseries\normalsize}{}{0em}{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\sffamily{\arabic{section}.} \MakeUppercase{#1}}}}[]
 
-% \def\section{\@startsection{section}{1}{\z@}{1ex plus 1.5ex minus 0.5ex}%
-% {6pt plus 0pt minus 6pt}{\sffamily\normalsize\bfseries\MakeUppercase}}%
+\def\section{\@startsection{section}{1}{\z@}{1ex plus 1ex minus 0.5ex}{1.5ex plus 0ex minus 0.1ex}{\sffamily\normalsize\bfseries\MakeUppercase}}%
 
 \titleformat{name=\section,numberless}{\sffamily\bfseries\normalsize}{}{0em}{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\MakeUppercase{#1}}}}[]
 
@@ -368,7 +376,7 @@
 		\refstepcounter{affn}%
 		\xdef\@currentlabel{\theaffn}%
 		\AIaffLabel{#1}%here we create a first round of refmarks for each affiliation
-		\textsuperscript{\theaffn}#2\par}%
+		\textsuperscript{\theaffn}#2\par\vspace{1pt}}% the vspace is necessary to keep the same interline spacing of word (due to superscripts)
 	}
 
 % AIaffLabel is used in the first round to create a global variable for affiliation referencing
@@ -405,33 +413,33 @@
 	the terms of the Creative Commons Attribution 3.0 License, %
 	which permits unrestricted use, distribution, and reproduction %
 	in any medium, provided the original author and source are credited.}
-\def\@Citation{\@AIauthorsNames, \@PaperTitle, \@Journal}
+\def\@Citation{\@AIauthorsNames, \@PaperTitle, \@Journal, vol. \@VolumeNumber, no. \@IssueNumber, article \@ArticleNumber, \@VolumeMonth, \@VolumeYear, Identifier:}
 
 \renewcommand{\@maketitle}{%
 	\twocolumn[{%
 		%\pagestyle{fancy}%
-		\vskip-24pt%
-		\begin{minipage}[b]{0.925\textwidth}
+		\vskip-61pt%
+		\begin{minipage}[t]{0.933\textwidth}
 			{\raggedright
-				{\sublargesize\sffamily\bfseries\selectfont {\MakeUppercase{\@Journal}}}\\
-				{\footnotesize\sffamily\bfseries\selectfont {\@ISSN}}\\
-				{\footnotesize\sffamily\itshape\selectfont {\@JournalInfo}}\\
+				{\large\sffamily\bfseries\selectfont {\MakeUppercase{\@Journal}}\par}\vskip2pt%
+				{\small\sffamily\bfseries\selectfont {\@ISSN}\par}\vskip1pt%
+				{\small\sffamily\itshape\selectfont {\@JournalInfoHeader}\par}\vskip1pt%
 				\noindent\textcolor{ActaBlue}{\rule{\textwidth-2pt}{1.5pt}}}%
 		\end{minipage}
 		\begin{minipage}[b]{0.05\textwidth}
-			\includegraphics[width=0.5in]{IMEKO.png}
+			\includegraphics[width=1.28cm]{IMEKO.png}
 		\end{minipage}
 		\vskip24pt%
-		{\raggedright{\fontsize{18}{18}\sffamily\bfseries\selectfont \@PaperTitle}\par}%
+		{\raggedright{\huge\sffamily\bfseries\selectfont \@PaperTitle}\par}%
+		\vskip15pt%
+		{\raggedright{\large\sffamily\bfseries\selectfont \@AIauthors}\par}%
 		\vskip14pt%
-		{\raggedright{\sublargesize\sffamily\bfseries\selectfont \@AIauthors}\par}%
-		\vskip12pt%
 		\begingroup%
 		\raggedright\sffamily\itshape%\small%
-		\footnotesize%
+		\small%
 		\@AIaffiliations\par%
 		\endgroup%%
-		\vskip18pt%
+		\vskip17pt%
 		\fcolorbox{color2}{color2}{%
 			\parbox{\textwidth-2\fboxsep-2\fboxrule}{\centering%
 				\colorbox{color2}{%
@@ -447,39 +455,39 @@
 			
 			}%
 		}%
-		\vskip12pt%
-		\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
 		\vskip10pt%
+		\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
+		\vskip12pt%
 		{\footnotesize\sffamily\bfseries\selectfont {{Section:}}}
-		{\footnotesize\sffamily\selectfont {\@arttype}}
-		\vskip4pt%pt%
+		{\footnotesize\sffamily\selectfont {\@arttype}\par}
+		\vskip6pt%pt%
 		{\footnotesize\sffamily\bfseries\selectfont {{Keywords:}}}
-		{\footnotesize\sffamily\selectfont {\@Keywords}}
-		\vskip4pt%pt%
+		{\footnotesize\sffamily\selectfont {\@Keywords}\par}
+		\vskip6pt%pt%
 		{\footnotesize\sffamily\bfseries\selectfont {{Citation:}}}
-		{\footnotesize\sffamily\selectfont {\@Citation}}
-		\vskip4pt%
+		{\footnotesize\sffamily\selectfont {\@Citation}\par}
+		\vskip6pt%
 		{\footnotesize\sffamily\bfseries\selectfont {{Section Editor:}}}
-		{\footnotesize\sffamily\selectfont {\@Editor}}
-		\vskip4pt%
+		{\footnotesize\sffamily\selectfont {\@Editor, \@EditorAffiliation}\par}
+		\vskip6pt%
 		{\footnotesize\sffamily\bfseries\selectfont {{Received:}}}
 		{\footnotesize\sffamily\selectfont {\@Received;}}
 		{\footnotesize\sffamily\bfseries\selectfont {{In Final Form:}}}
 		{\footnotesize\sffamily\selectfont {\@FinalForm;}}
 		{\footnotesize\sffamily\bfseries\selectfont {{Published:}}}
-		{\footnotesize\sffamily\selectfont {\@Published.}}
-		\vskip4pt%
+		{\footnotesize\sffamily\selectfont {\@Published.}\par}
+		\vskip6pt%
 		{\footnotesize\sffamily\bfseries\selectfont {Copyright:}}
-		{\footnotesize\sffamily\selectfont {\@CopyRight}}
-		\vskip4pt%
+		{\footnotesize\sffamily\selectfont {\@CopyRight}\par}
+		\vskip6pt%
 		{\footnotesize\sffamily\bfseries\selectfont {Funding:}}
-		{\footnotesize\sffamily\selectfont {\@Funding}}
-		\vskip4pt%
+		{\footnotesize\sffamily\selectfont {\@Funding}\par}
+		\vskip6pt%
 		{\footnotesize\sffamily\bfseries\selectfont {Corresponding Author:}}
-		{\footnotesize\sffamily\selectfont {\CorrespondingAuthor}}
-		\vskip4pt%
+		{\footnotesize\sffamily\selectfont {\CorrespondingAuthor}\par}
+		\vskip6pt%
 		\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
-		\vskip16pt%
+		\vskip18pt%
 	}]%
 }%
 

@@ -2,6 +2,11 @@
 \documentclass[10pt]{imeko_acta}
 %\usepackage{newtxtext}
 %\tracingmacros = 1
+
+\usepackage{tikz}
+\usepackage[firstpage=true]{background}
+\usepackage{transparent}
+
 %----------------------------------------------------------------------------------------
 % Completed by Authors - Everything below here
 %
@@ -31,8 +36,8 @@
 %----------------------------------------------------------------
 % Completed by Editors - You can fill in but Editor will finalize
 %----------------------------------------------------------------
-\Editor{Name, Surname}
-\JournalInfo{September 2018, Volume 1, Number 1, 5-10} % Journal information
+\Editor{Francesco Lamonaca}
+\EditorAffiliation{University of Calabria, Italy}
 \Received{January 1, 2021}
 \FinalForm{January 31, 2021}
 \Published{March 6, 2021}
@@ -40,11 +45,13 @@
 \VolumeMonth{October}
 \VolumeYear{2021}
 \IssueNumber{1}
-%\Citation{\AuthorsNames\ Template for an Acta IMEKO paper, Acta IMEKO, vol. A, no. B, article C, Month Year, identifier: IMEKO-ACTA-A (Year)-B-C}
+\ArticleNumber{5}
+%-----------------------------------------------------------------
+% Completed by Editors - You can fill in but Editor will finalize
+%----------------------------------------------------------------
 
-%----------------------------------------------------------------------------------------
-%	ABSTRACT - Fill in with abstract - length less than 200 words. 
-%----------------------------------------------------------------------------------------
+%	ABSTRACT - length less than 200 words. 
+%---------------------------------------------------------------
 \Abstract{The editorial team of Acta IMEKO strongly encourages authors to use this \LaTeXe template file to produce their manuscript. The abstract should be composed in a way suitable for publication in the abstract section of electronic journals, and should state concisely what it is written in the paper. Important items are the aim of the research, the basic method and the major achievement (also numerically, when applicable). The length should not exceed 200 words.
 }
 
@@ -53,6 +60,7 @@
 \begin{document}
 
 \maketitle % Print the title and abstract box
+\backgroundsetup{contents={\includegraphics[width=21cm]{tmp-1page.pdf}}, scale=1,angle=0,opacity=0.1}
 
 
 \section{Introduction}
@@ -79,15 +87,15 @@ indication of the use of numbering and heading format is
 outlined. In the next two sections the use of illustrations and 
 equations is described. In Section 5 methods for citing references 
 are given. Finally, in the concluding section the major rules are 
-summarized.
+summarized.\vfill\par
 
 \section{First Page}
 
 The first page should have the title of the paper, the authors names (do not use initials for the first and last name), and the author affiliations.
 
-Following should be an abstract and 3 to 5 keywords separated by a semicolon. The next 4 items (citation, editor, dates and copyright) are to be updated by the editor. The paper information section ends with reference to the funding (leave blank if necessary) and the name and email address of the corresponding author. The latex template indicates which areas need updated by author and which by the editor. 
+Following should be an abstract and 3 to 5 keywords separated by a semicolon. The next 4 items (citation, editor, dates and copyright) are to be updated by the editor. The paper information section ends with reference to the funding (leave blank if necessary) and the name and email address of the corresponding author. %The latex template indicates which areas need updated by author and which by the editor. 
 
-The header and footer have information about the publication that is to be updated by the editor. Page numbers appear in the bottom right corner and are updated automatically.
+The header and footer have information about the publication that is to be updated by the editor. Page numbers appear in the bottom right corner and are updated automatically. appear in the bottom right corner and are updated automatically.
 
 \section{About Sections}
 
@@ -337,7 +345,6 @@ Notice that conclusions are not the same as an abstract.
 \section*{acknowledgment} 
 
 Here persons or institutes may be acknowledged for their technical, scientific or financial support. List them in this section, and not as a footnote or otherwise. 
-
 
 \bibliographystyle{imeko_acta}
 \bibliography{imeko_acta}

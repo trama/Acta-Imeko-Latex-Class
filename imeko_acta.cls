@@ -1,5 +1,14 @@
 %% ACTA IMEKO Latex class file
 %%
+%% Vers: 1.3
+%% By: Federico Tramarin (tramarin@unimore.it)
+%% Date: 03/10/2023
+%% Notes: This version introduced all the needed tweaks to interline spaces, character expansions 
+%%			and other minor typographical dimensions to match the Word template.
+%%			Currently, the same paper, if typesetted with the Word and the LaTeX templates
+%%			renders almost identically...a part from the bibligraphy style, that needs some
+%%			more polishings
+%%
 %% Vers: 1.2
 %% By: Federico Tramarin (tramarin@unimore.it)
 %% Date: 27/09/2023
@@ -62,13 +71,11 @@
 % using Helvetica for sans-serif
 \renewcommand{\sfdefault}{phv}
 \usepackage{microtype} % without this, with ebgaramond many lines go out of the margin due to hyphenation issues
-
 \RequirePackage{ifthen}
 \RequirePackage{calc}
 \RequirePackage{ifpdf,ifxetex}      % Needed to pick between latex and pdflatex
 \RequirePackage[fleqn]{amsmath}
 \RequirePackage{graphicx,xcolor}
-%\RequirePackage[english]{babel}
 \RequirePackage{indentfirst}
 \RequirePackage{caption}
 \RequirePackage[explicit]{titlesec}
@@ -262,6 +269,17 @@
 \setlength\belowcaptionskip{0pt}% plus 3pt minus 2pt} % 
 \setlength\textfloatsep{12pt plus 2pt minus 2pt}
 \setlength\intextsep{4pt plus 2pt minus 2pt}
+
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.85}
+\renewcommand{\dbltopfraction}{0.85}
+\renewcommand{\dblfloatpagefraction}{.85}
+\setcounter{topnumber}{25}
+\setcounter{bottomnumber}{25}
+\setcounter{totalnumber}{25}
+\setcounter{dbltopnumber}{25}
 
 % set tabular/tables to use sans-serif small fonts
 \renewcommand{\tabular}{\let\@halignto\@empty\sffamily\footnotesize\@tabular}
@@ -499,4 +517,4 @@
 \renewcommand{\thebibliography}[1]{%
 	\addcontentsline{toc}{section}{\refname}%
 	\oldbibliography{#1}%
-	\setlength\itemsep{0pt}}%
+	\small\setlength\itemsep{0pt}}%

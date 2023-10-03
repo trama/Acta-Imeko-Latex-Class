@@ -156,6 +156,13 @@ Page wide figures and tables should be placed inside a frame. Column wide ones c
 
 To create a frame, we recommend that the author copies and pastes one of the frames in this template. Before doing that, however, it is important to understand how they are configured. 
 
+\begin{figure*}[!t]
+	\centering
+	\includegraphics[width=.9\linewidth]{wide_image}
+	\caption{Shakuhachi: old Japanese length standard: 1 shaku = 30.3 cm}
+	\label{fig:wideimage}
+\end{figure*}
+
 Figure 2 shows the window where the configuration is done. It can be accessed by: 
 \begin{enumerate}
 	\item clicking on the frame content to make the frame border visible;
@@ -167,19 +174,18 @@ That window has 4 sections organized from top to bottom ("text wrapping", "size"
 Text wrapping should always be set to none. The size should be exactly 18 cm for page wide illustrations and tables and 8.75 cm for column wide ones. The horizontal setting should be centred relative to the column or page for column wide or page wide content respectively. The vertical setting can be top relative to margin or bottom relative to margin depending where the frame is supposed to be located (top or bottom) of the page.
 The frames in this template have all the proper formatting and can be used as is. The only setting the author will need to manage when crating new frames by copy and pasting existing ones is the vertical setting that will have to be changed from top to bottom depending on the new frame location.
 
-\begin{figure}[!tb]
+\begin{figure}[!t]
 	\centering
 	\includegraphics[width=\columnwidth]{image4}
 	\caption{Microsoft Word cross reference window. It can be accessed by going to the menu "References" and choosing "Insert Cross Reference".}
 	\label{fig:image4}
 \end{figure}
 
-\begin{figure*}[!b]
-	\centering
-	\includegraphics[width=.9\linewidth]{wide_image}
-	\caption{Shakuhachi: old Japanese length standard: 1 shaku = 30.3 cm}
-	\label{fig:wideimage}
-\end{figure*}
+
+
+
+
+
 
 The copying and pasting of frames should be done with care because the new frame will have the same configuration as the original frame and may overlap with it making one of them invisible to the user. We suggest that the author selects the original frame, chose "copy" (CTRL+C), place the cursor in a page or column that has no frame in the same position as the original and chose "paste" (CTRL+V). It is up to the author to manage in which page or column each frame is to be located.
 
@@ -210,7 +216,8 @@ Table 1 summarizing the various styles used in this template, whereas Table 2 sh
 	\caption{Overview of styles and font sizes used in this template.}
 	\label{tab:tab1}
 	\centering
-	\begin{tabular}{lcccc}
+	\renewcommand{\arraystretch}{1.15}\footnotesize
+	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccc}
 		\toprule
 		Section & Font & Size (pt) & Format & Special \\
 		\midrule
@@ -238,7 +245,7 @@ Table 1 summarizing the various styles used in this template, whereas Table 2 sh
 		Captions of figures and tables & Calibri & 8 & normal & justified \\
 		References & Garamond & 9 & normal & numbered \\
 		\bottomrule
-	\end{tabular}
+	\end{tabular*}
 \end{table*}
 
 \begin{table}[!b]
@@ -346,9 +353,15 @@ Notice that conclusions are not the same as an abstract.
 
 \backgroundsetup{contents={\includegraphics[width=21cm]{originalwordtemplate/tmp-5page.pdf}}, scale=1,angle=0,opacity=0.1}
 \BgThispage
+
+\vfill\par
+
+\mbox{}\par
+
+
 \section*{acknowledgment} 
 
-Here persons or institutes may be acknowledged for their technical, scientific or financial support. List them in this section, and not as a footnote or otherwise. 
+Here persons or institutes may be acknowledged for their technical, scientific or financial support. List them in this section, and not as a footnote or otherwise. \vspace{12.1cm}
 
 \bibliographystyle{imeko_acta}
 \bibliography{imeko_acta}

@@ -124,9 +124,7 @@
 \addtolength{\evensidemargin}{-1in}% compensate for LaTeX's 1in offset
 
 % Font tweaks (mostly on the baseline skip) to match Word template
-%\typeout{-- This is a 10 point document.}
 \def\normalsize{\@setfontsize{\normalsize}{10}{11.35pt}}%
-%\setlength{\@IEEEnormalsizefontbaselineskip}{12pt}%
 \normalsize
 \abovedisplayskip 1.5ex plus4pt minus2pt%
 \belowdisplayskip \abovedisplayskip%
@@ -136,24 +134,20 @@
 \def\footnotesize{\@setfontsize{\footnotesize}{8}{9.8pt}}
 \def\scriptsize{\@setfontsize{\scriptsize}{7}{7pt}}
 \def\tiny{\@setfontsize{\tiny}{5}{6pt}}
-% sublargesize is a tad smaller than large - 11pt
 \def\sublargesize{\@setfontsize{\sublargesize}{11}{13.4pt}}
 \def\large{\@setfontsize{\large}{12}{14pt}}
 \def\nlarge{\@setfontsize{\nlarge}{13}{15pt}}
 \def\Large{\@setfontsize{\Large}{14}{17pt}}
 \def\LARGE{\@setfontsize{\LARGE}{17}{20pt}}
-%%%%
 \def\nLARGE{\@setfontsize{\nLARGE}{19}{21pt}}
-%%%%
 \def\huge{\@setfontsize{\huge}{20}{24pt}}
 \def\Huge{\@setfontsize{\Huge}{24}{28pt}}
-%\fi
+
 
 %% Various definitions
 %Tweak first line indent width
 \parindent 4mm
 \flushbottom % Makes all text pages the same height
-
 \definecolor{ActaBlue}{RGB}{19,33,94}
 \definecolor{color2}{RGB}{205,217,240} % Color of the boxes behind the abstract and headings
 
@@ -244,7 +238,7 @@
 
 % adapting some internal Latex parameters
 % TeX default is 50
-\hyphenpenalty=1000
+\hyphenpenalty=250
 % If we didn't adjust the interword spacing, 2200 might be better.
 % The TeX default is 1000
 \hbadness=2200
@@ -264,8 +258,10 @@
 
 % adjust caption properties
 \captionsetup{format=plain,indention=0in,singlelinecheck=false,font={sf,footnotesize},labelsep=period,justification=justified}
-\setlength{\abovecaptionskip}{6pt}
-\setlength{\belowcaptionskip}{0pt}
+\setlength\abovecaptionskip{6pt plus 3pt minus 2pt}
+\setlength\belowcaptionskip{0pt}% plus 3pt minus 2pt} % 
+\setlength\textfloatsep{12pt plus 2pt minus 2pt}
+\setlength\intextsep{4pt plus 2pt minus 2pt}
 
 % set tabular/tables to use sans-serif small fonts
 \renewcommand{\tabular}{\let\@halignto\@empty\sffamily\footnotesize\@tabular}

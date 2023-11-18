@@ -517,4 +517,5 @@
 \renewcommand{\thebibliography}[1]{%
 	\addcontentsline{toc}{section}{\refname}%
 	\oldbibliography{#1}%
-	\small\setlength\itemsep{0pt}\setlength\parskip{0pt}}%
+	\small\setlength\itemsep{0pt}\setlength\parskip{1pt}}%
+	

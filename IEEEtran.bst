@@ -148,9 +148,11 @@ FUNCTION {default.name.url.prefix}{ "Online. [Accessed:]" }
 FUNCTION {is.print.banners.to.terminal} { #1 }
 
  
+% The default ISBN prefix.
+FUNCTION {default.name.isbn.prefix}{ "" }
+
 % The default DOI prefix.
 FUNCTION {default.name.doi.prefix}{ "" }
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% FILE VERSION AND BANNER %%
@@ -271,6 +273,7 @@ ENTRY
     howpublished
     institution
     intype
+    isbn
     journal
     key
     language
@@ -351,6 +354,7 @@ STRINGS { bibinfo
           ALTinterwordstretchfactor
           name.format.string
           name.latex.cmd
+          name.isbn.prefix
           name.doi.prefix
           name.url.prefix}
 
@@ -373,6 +377,7 @@ FUNCTION {initialize.controls}
   default.ALTinterwordstretchfactor 'ALTinterwordstretchfactor :=
   default.name.format.string 'name.format.string :=
   default.name.latex.cmd 'name.latex.cmd :=
+  default.name.isbn.prefix 'name.isbn.prefix :=
   default.name.doi.prefix 'name.doi.prefix :=
   default.name.url.prefix 'name.url.prefix :=
 }
@@ -772,8 +777,8 @@ FUNCTION {either.or.check}
 
 FUNCTION {empty.entry.warn}
 { author empty$ title empty$ howpublished empty$
-  month empty$ year empty$ note empty$ doi empty$ url empty$
-  and and and and and and and
+  month empty$ year empty$ note empty$ isbn empty$ doi empty$ url empty$
+  and and and and and and and and
     { "all relevant fields are empty in " cite$ * warning$ }
     'skip$
   if$
@@ -1162,7 +1167,7 @@ FUNCTION {longest.label.pass}
 %%%%%%%%%%%%%%%%%%%%%
 
 %% Lower Level Formats (used by higher level formats)
-
+%% FEDE: the number of commas is wrong
 FUNCTION {format.address.org.or.pub.date}
 { 't :=
   ""
@@ -1176,34 +1181,39 @@ FUNCTION {format.address.org.or.pub.date}
     { this.to.prev.status
       this.status.std
       cap.status.std
-      address "address" bibinfo.check *
       t empty$
         { skip$ }
-        { punct.period 'prev.status.punct :=
-          space.large 'prev.status.space :=
+        { punct.comma 'prev.status.punct :=
+%          space.large 'prev.status.space :=
           address empty$
             { skip$ }
-            { ": " * }
+            { " " * }
           if$
           t *
         }
       if$
+      %address "address" bibinfo.check *
       year empty$ month empty$ and
         { skip$ }
         { t empty$ address empty$ and
             { skip$ }
-            { ", " * }
+            { "" * }
+          if$
+          address empty$
+            {skip$ }
+            {  punct.comma 'prev.status.punct :=
+              address "address" bibinfo.check * }
           if$
           month empty$
             { year empty$
                 { skip$ }
-                { year "year" bibinfo.check * }
+                { ", " * year "year" bibinfo.check * }
               if$
             }
-            { month "month" bibinfo.check *
+            { ", " * month "month" bibinfo.check *
               year empty$
                  { skip$ }
-                 { " " * year "year" bibinfo.check * }
+                 { ", " * year "year" bibinfo.check * }
               if$
             }
           if$
@@ -1917,6 +1927,21 @@ FUNCTION {format.phd.thesis.type}
 cap.status.std
 }
 
+%% ISBN
+
+FUNCTION {format.isbn}
+{ isbn empty$
+    { "" }
+    { this.to.prev.status
+      this.status.std
+      cap.yes 'status.cap :=
+      name.isbn.prefix " " *
+      "ISBN:" * isbn *
+      punct.period 'this.status.punct :=
+    }
+  if$
+}
+
 %% DOI
 
 FUNCTION {format.doi}
@@ -1984,6 +2009,7 @@ FUNCTION {article}
   format.pages output
   format.date "year" output.warn
   format.note output
+  format.isbn output
   format.url output
   format.doi output
   fin.entry
@@ -2009,6 +2035,7 @@ FUNCTION {book}
   format.volume output
   format.number output
   format.note output
+  format.isbn output
   format.url output
   format.doi output
   fin.entry
@@ -2090,6 +2117,7 @@ FUNCTION {incollection}
   format.chapter output
   format.pages output
   format.note output
+  format.isbn output
   format.url output
   fin.entry
   if.url.std.interword.spacing

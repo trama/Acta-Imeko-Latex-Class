@@ -98,12 +98,12 @@ FUNCTION {default.is.forced.et.al} { #0 }
 % Note: There are many instances of references in IEEE journals which have
 % a very large number of authors as well as instances in which "et al." is
 % used profusely.
-FUNCTION {default.max.num.names.before.forced.et.al} { #8 }
+FUNCTION {default.max.num.names.before.forced.et.al} { #10 }
 
 
 % The number of names that will be shown with a forced "et al.".
 % Must be less than or equal to max.num.names.before.forced.et.al
-FUNCTION {default.num.names.shown.with.forced.et.al} { #8 }
+FUNCTION {default.num.names.shown.with.forced.et.al} { #1 }
 
 
 % #0 turns off the alternate interword spacing for entries with URLs.
@@ -137,7 +137,7 @@ FUNCTION {default.name.latex.cmd}{ "" }
 
 
 % The default URL prefix.
-FUNCTION {default.name.url.prefix}{ "Online. [Accessed:]" }
+FUNCTION {default.name.url.prefix}{ "[Online]. Available:" }
 
 
 % Other controls that cannot be accessed via IEEEtranBSTCTL entry type.
@@ -147,19 +147,15 @@ FUNCTION {default.name.url.prefix}{ "Online. [Accessed:]" }
 % #1 enables
 FUNCTION {is.print.banners.to.terminal} { #1 }
 
- 
-% The default ISBN prefix.
-FUNCTION {default.name.isbn.prefix}{ "" }
 
-% The default DOI prefix.
-FUNCTION {default.name.doi.prefix}{ "" }
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% FILE VERSION AND BANNER %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-FUNCTION{bst.file.version} { "1" }
-FUNCTION{bst.file.date} { "2023/11/26" }
+FUNCTION{bst.file.version} { "1.14" }
+FUNCTION{bst.file.date} { "2015/08/26" }
 FUNCTION{bst.file.website} { "http://www.michaelshell.org/tex/ieeetran/bibtex/" }
 
 FUNCTION {banner.message}
@@ -194,16 +190,15 @@ FUNCTION {completed.message}
 %% STRING CONSTANTS %%
 %%%%%%%%%%%%%%%%%%%%%%
 
-FUNCTION {bbl.and}{ ",~" }
+FUNCTION {bbl.and}{ "and" }
 FUNCTION {bbl.etal}{ "et~al." }
-%FUNCTION {bbl.editors}{ "eds." }
-FUNCTION {bbl.editors}{ "(editors)" }
+FUNCTION {bbl.editors}{ "eds." }
 FUNCTION {bbl.editor}{ "ed." }
 FUNCTION {bbl.edition}{ "ed." }
 FUNCTION {bbl.volume}{ "vol." }
 FUNCTION {bbl.of}{ "of" }
 FUNCTION {bbl.number}{ "no." }
-FUNCTION {bbl.in}{ "" } % no in word before collections
+FUNCTION {bbl.in}{ "in" }
 FUNCTION {bbl.pages}{ "pp." }
 FUNCTION {bbl.page}{ "p." }
 FUNCTION {bbl.chapter}{ "ch." }
@@ -267,13 +262,11 @@ ENTRY
     chapter
     day
     dayfiled
-    doi
     edition
     editor
     howpublished
     institution
     intype
-    isbn
     journal
     key
     language
@@ -306,7 +299,6 @@ ENTRY
     CTLdash_repeated_names
     CTLname_format_string
     CTLname_latex_cmd
-    CTLname_doi_prefix
     CTLname_url_prefix
   }
   {}
@@ -354,8 +346,6 @@ STRINGS { bibinfo
           ALTinterwordstretchfactor
           name.format.string
           name.latex.cmd
-          name.isbn.prefix
-          name.doi.prefix
           name.url.prefix}
 
 
@@ -377,8 +367,6 @@ FUNCTION {initialize.controls}
   default.ALTinterwordstretchfactor 'ALTinterwordstretchfactor :=
   default.name.format.string 'name.format.string :=
   default.name.latex.cmd 'name.latex.cmd :=
-  default.name.isbn.prefix 'name.isbn.prefix :=
-  default.name.doi.prefix 'name.doi.prefix :=
   default.name.url.prefix 'name.url.prefix :=
 }
 
@@ -712,7 +700,7 @@ FUNCTION {capitalize}{ "u" change.case$ "t" change.case$ }
 FUNCTION {emphasize}
 { duplicate$ empty$
     { pop$ "" }
-    { "{" swap$ * "}" * }
+    { "\emph{" swap$ * "}" * }
   if$
 }
 
@@ -770,8 +758,8 @@ FUNCTION {either.or.check}
 
 FUNCTION {empty.entry.warn}
 { author empty$ title empty$ howpublished empty$
-  month empty$ year empty$ note empty$ isbn empty$ doi empty$ url empty$
-  and and and and and and and and
+  month empty$ year empty$ note empty$ url empty$
+  and and and and and and
     { "all relevant fields are empty in " cite$ * warning$ }
     'skip$
   if$
@@ -1056,8 +1044,6 @@ FUNCTION {begin.bib}
   if$
   "\begin{thebibliography}{"  longest.label  * "}" *
   write$ newline$
-  "\providecommand{\doi}[1]{DOI: #1}"
-  write$ newline$
   "\providecommand{\url}[1]{#1}"
   write$ newline$
   "\csname url@samestyle\endcsname"
@@ -1160,7 +1146,7 @@ FUNCTION {longest.label.pass}
 %%%%%%%%%%%%%%%%%%%%%
 
 %% Lower Level Formats (used by higher level formats)
-%% FEDE: the number of commas is wrong
+
 FUNCTION {format.address.org.or.pub.date}
 { 't :=
   ""
@@ -1174,39 +1160,34 @@ FUNCTION {format.address.org.or.pub.date}
     { this.to.prev.status
       this.status.std
       cap.status.std
+      address "address" bibinfo.check *
       t empty$
         { skip$ }
-        { punct.comma 'prev.status.punct :=
-%          space.large 'prev.status.space :=
+        { punct.period 'prev.status.punct :=
+          space.large 'prev.status.space :=
           address empty$
             { skip$ }
-            { " " * }
+            { ": " * }
           if$
           t *
         }
       if$
-      %address "address" bibinfo.check *
       year empty$ month empty$ and
         { skip$ }
         { t empty$ address empty$ and
             { skip$ }
             { ", " * }
           if$
-          address empty$
-            {skip$ }
-            {  punct.comma 'prev.status.punct :=
-              address "address" bibinfo.check * }
-          if$
           month empty$
             { year empty$
                 { skip$ }
-                { ", " * year "year" bibinfo.check * }
+                { year "year" bibinfo.check * }
               if$
             }
-            { ", " * month "month" bibinfo.check *
+            { month "month" bibinfo.check *
               year empty$
                  { skip$ }
-                 { ", " * year "year" bibinfo.check * }
+                 { " " * year "year" bibinfo.check * }
               if$
             }
           if$
@@ -1250,13 +1231,13 @@ FUNCTION {format.names}
               if$
               t "others" =
                 { " " * bbl.etal emphasize * }
-               { numnames #2 >
-                   { "" * }
-                   { skip$ }
-                 if$
-                 bbl.and
-                 * t do.name.latex.cmd *
-               }
+                { numnames #2 >
+                    { "," * }
+                    { skip$ }
+                  if$
+                  bbl.and
+                  space.word * t do.name.latex.cmd *
+                }
               if$
             }
           if$
@@ -1439,13 +1420,13 @@ FUNCTION {format.article.title}
   if$
   "title" bibinfo.check
   duplicate$ empty$ 'skip$
-    { quote.no 'this.status.quote :=
+    { quote.close 'this.status.quote :=
       is.last.char.not.punct
         { punct.std 'this.status.punct := }
         { punct.no 'this.status.punct := }
       if$
       select.language
-%      "``" swap$ *
+      "``" swap$ *
       cap.status.std
     }
   if$
@@ -1920,40 +1901,7 @@ FUNCTION {format.phd.thesis.type}
 cap.status.std
 }
 
-%% ISBN
 
-FUNCTION {format.isbn}
-{ isbn empty$
-    { "" }
-    { this.to.prev.status
-      this.status.std
-      cap.yes 'status.cap :=
-      name.isbn.prefix " " *
-      "ISBN:" * isbn *
-      punct.period 'this.status.punct :=
-    }
-  if$
-}
-
-%% DOI
-
-FUNCTION {format.doi}
-{ doi empty$
-    { "" }
-    { this.to.prev.status
-      this.status.std
-      cap.yes 'status.cap :=
-      name.doi.prefix " " *
-      "\leavevmode\\ \href{http://dx.doi.org/" * doi * "}{\doi{http://dx.doi.org/" * doi * "}}" *
-%%      name.doi.postfix ". " *
-      punct.no 'this.status.punct :=
-      punct.period 'prev.status.punct :=
-      space.normal 'this.status.space :=
-      space.normal 'prev.status.space :=
-      quote.no 'this.status.quote :=
-    }
-  if$
-}
 
 %% URL
 
@@ -1965,7 +1913,7 @@ FUNCTION {format.url}
         this.status.std
         cap.yes 'status.cap :=
         name.url.prefix " " *
-        "\leavevmode\\ \url{" * url * "}" *
+        "\url{" * url * "}" *
         punct.no 'this.status.punct :=
         punct.period 'prev.status.punct :=
         space.normal 'this.status.space :=
@@ -2002,9 +1950,7 @@ FUNCTION {article}
   format.pages output
   format.date "year" output.warn
   format.note output
-  format.isbn output
   format.url output
-  format.doi output
   fin.entry
   if.url.std.interword.spacing
 }
@@ -2028,9 +1974,7 @@ FUNCTION {book}
   format.volume output
   format.number output
   format.note output
-  format.isbn output
   format.url output
-  format.doi output
   fin.entry
   if.url.std.interword.spacing
 }
@@ -2065,7 +2009,6 @@ FUNCTION {electronic}
   format.address "address" bibinfo.check output
   format.note output
   format.url output
-  format.doi output
   fin.entry
   empty.entry.warn
   if.url.std.interword.spacing
@@ -2089,7 +2032,6 @@ FUNCTION {inbook}
   format.pages output
   format.note output
   format.url output
-  format.doi output
   fin.entry
   if.url.std.interword.spacing
 }
@@ -2110,7 +2052,6 @@ FUNCTION {incollection}
   format.chapter output
   format.pages output
   format.note output
-  format.isbn output
   format.url output
   fin.entry
   if.url.std.interword.spacing
@@ -2124,6 +2065,10 @@ FUNCTION {inproceedings}
   name.or.dash
   format.article.title "title" output.warn
   format.in.booktitle "booktitle" output.warn
+  format.series output
+  format.editors output
+  format.volume output
+  format.number output
   publisher empty$
     { format.address.organization.date output }
     { format.organization "organization" bibinfo.check output
@@ -2131,14 +2076,9 @@ FUNCTION {inproceedings}
     }
   if$
   format.paper output
-  format.series output
-  format.editors output
-  format.volume output
-  format.number output
   format.pages output
   format.note output
   format.url output
-  format.doi output
   fin.entry
   if.url.std.interword.spacing
 }
@@ -2414,13 +2354,6 @@ FUNCTION {IEEEtranBSTCTL}
     { skip$ }
     { CTLname_latex_cmd
       'name.latex.cmd :=
-    }
-  if$
-  CTLname_doi_prefix
-  missing$
-    { skip$ }
-    { CTLname_doi_prefix
-      'name.doi.prefix :=
     }
   if$
   CTLname_url_prefix

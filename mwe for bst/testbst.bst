@@ -1180,8 +1180,9 @@ FUNCTION {format.address.org.or.pub.date}
       cap.status.std
       t empty$
         { skip$ }
-        { punct.comma 'prev.status.punct :=
-          t *
+        { 
+          punct.comma 'prev.status.punct :=
+          t * ", " *
         }
       if$
       address "address" bibinfo.check *
@@ -1935,7 +1936,7 @@ FUNCTION {format.doi}
       this.status.std
       cap.yes 'status.cap :=
       name.doi.prefix " " *
-      "\leavevmode\\ \href{http://dx.doi.org/" * doi * "}{\doi{http://dx.doi.org/" * doi * "}}" *
+      "\leavevmode\\ \href{http://dx.doi.org/" * doi * "}{\doi{" * doi * "}}" *
 %%      name.doi.postfix ". " *
       punct.no 'this.status.punct :=
       punct.period 'prev.status.punct :=

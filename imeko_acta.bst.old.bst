@@ -154,7 +154,7 @@ FUNCTION {default.ALTinterwordstretchfactor} { "4" }
 % #0 turns off the "dashification" of repeated (i.e., identical to those
 % of the previous entry) names. The IEEE normally does this.
 % #1 enables
-FUNCTION {default.is.dash.repeated.names} { #1 }
+FUNCTION {default.is.dash.repeated.names} { #0 }
 
 
 % The default name format control string.
@@ -166,7 +166,7 @@ FUNCTION {default.name.latex.cmd}{ "" }
 
 
 % The default URL prefix.
-FUNCTION {default.name.url.prefix}{ "Online. [Accessed:]" }
+FUNCTION {default.name.url.prefix}{ "Online. [Accessed:" }
 
 
 % Other controls that cannot be accessed via IEEEtranBSTCTL entry type.
@@ -187,8 +187,8 @@ FUNCTION {default.name.doi.prefix}{ "" }
 %% FILE VERSION AND BANNER %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-FUNCTION{bst.file.version} { "1" }
-FUNCTION{bst.file.date} { "2023/11/26" }
+FUNCTION{bst.file.version} { "1.1" }
+FUNCTION{bst.file.date} { "2023/12/11" }
 FUNCTION{bst.file.website} { "http://www.michaelshell.org/tex/ieeetran/bibtex/" }
 
 FUNCTION {banner.message}
@@ -1209,29 +1209,28 @@ FUNCTION {format.address.org.or.pub.date}
           punct.comma 'prev.status.punct :=
           t * %", " *
           address empty$
-          { skip$ }
-          { ", " *}
-        if$
+            { skip$ }
+            { ",... " * address "address" bibinfo.check *}
+          if$
         }
       if$
-      address "address" bibinfo.check *
+      %address "address" bibinfo.check *
       year empty$ month empty$ and
         { skip$ }
-        { 
-        t empty$ address empty$ and
+        { t empty$ address empty$ and
           { skip$ }
           { ", " * }
         if$
           month empty$
             { year empty$
                 { skip$ }
-                { year "year" bibinfo.check * }
+                { ", " * year "year" bibinfo.check * }
               if$
             }
-            { month "month" bibinfo.check *
+            { ", " * month "month" bibinfo.check *
               year empty$
                  { skip$ }
-                 { " " * year "year" bibinfo.check * }
+                 { ", " * year "year" bibinfo.check * }
               if$
             }
           if$
@@ -1954,7 +1953,7 @@ FUNCTION {format.isbn}
       this.status.std
       cap.yes 'status.cap :=
       name.isbn.prefix " " *
-      "ISBN: " * isbn *
+      "ISBN:" * isbn *
       punct.comma 'this.status.punct :=
     }
   if$

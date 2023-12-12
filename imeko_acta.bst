@@ -166,8 +166,10 @@ FUNCTION {default.name.latex.cmd}{ "" }
 
 
 % The default URL prefix.
-FUNCTION {default.name.url.prefix}{ "Online. [Accessed:]" }
+FUNCTION {default.name.url.prefix}{ "" }
 
+% The default URL prefix.
+FUNCTION {default.name.urlaccessed.prefix}{ "Online. [Accessed: " }
 
 % Other controls that cannot be accessed via IEEEtranBSTCTL entry type.
 
@@ -321,6 +323,7 @@ ENTRY
     title
     type
     url
+    urlaccessed
     volume
     year
     yearfiled
@@ -385,7 +388,8 @@ STRINGS { bibinfo
           name.latex.cmd
           name.isbn.prefix
           name.doi.prefix
-          name.url.prefix}
+          name.url.prefix
+          name.urlaccessed.prefix}
 
 
 
@@ -409,6 +413,7 @@ FUNCTION {initialize.controls}
   default.name.isbn.prefix 'name.isbn.prefix :=
   default.name.doi.prefix 'name.doi.prefix :=
   default.name.url.prefix 'name.url.prefix :=
+  default.name.urlaccessed.prefix 'name.urlaccessed.prefix :=
 }
 
 
@@ -2003,6 +2008,28 @@ FUNCTION {format.url}
   if$
 }
 
+%% URL ACCESSED
+
+FUNCTION {format.urlaccessed}
+{ is.use.url
+	{ urlaccessed empty$
+		{ "" }
+		{ this.to.prev.status
+			this.status.std
+			cap.yes 'status.cap :=
+			name.urlaccessed.prefix " " *
+			urlaccessed * "]" *
+			punct.no 'this.status.punct :=
+			punct.period 'prev.status.punct :=
+			space.normal 'this.status.space :=
+			space.normal 'prev.status.space :=
+			quote.no 'this.status.quote :=
+			}
+		if$
+		}
+		{ "" }
+	if$
+}
 
 
 
@@ -2089,6 +2116,7 @@ FUNCTION {electronic}
   format.organization "organization" bibinfo.check output
   format.address "address" bibinfo.check output
   format.note output
+  format.urlaccessed output
   format.url output
   format.doi output
   fin.entry
@@ -2180,6 +2208,7 @@ FUNCTION {manual}
   format.address "address" bibinfo.check output
   format.date output
   format.note output
+  format.urlaccessed output
   format.url output
   fin.entry
   if.url.std.interword.spacing
@@ -2197,6 +2226,7 @@ FUNCTION {mastersthesis}
   format.address "address" bibinfo.check output
   format.date "year" output.warn
   format.note output
+  format.urlaccessed output
   format.url output
   fin.entry
   if.url.std.interword.spacing
@@ -2215,6 +2245,7 @@ FUNCTION {misc}
   format.pages output
   format.date output
   format.note output
+  format.urlaccessed output
   format.url output
   fin.entry
   empty.entry.warn
@@ -2231,6 +2262,7 @@ FUNCTION {patent}
   format.patent.nationality.type.number output
   format.patent.date output
   format.note output
+  format.urlaccessed output
   format.url output
   fin.entry
   empty.entry.warn
@@ -2250,6 +2282,7 @@ FUNCTION {periodical}
   format.organization "organization" bibinfo.check output
   format.date "year" output.warn
   format.note output
+  format.urlaccessed output
   format.url output
   fin.entry
   if.url.std.interword.spacing
@@ -2306,6 +2339,7 @@ FUNCTION {standard}
   format.revision output
   format.date output
   format.note output
+  format.urlaccessed output
   format.url output
   fin.entry
   if.url.std.interword.spacing

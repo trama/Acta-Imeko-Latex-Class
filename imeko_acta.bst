@@ -189,8 +189,8 @@ FUNCTION {default.name.doi.prefix}{ "" }
 %% FILE VERSION AND BANNER %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-FUNCTION{bst.file.version} { "1" }
-FUNCTION{bst.file.date} { "2023/11/26" }
+FUNCTION{bst.file.version} { "1.2" }
+FUNCTION{bst.file.date} { "2023/12/12" }
 FUNCTION{bst.file.website} { "http://www.michaelshell.org/tex/ieeetran/bibtex/" }
 
 FUNCTION {banner.message}

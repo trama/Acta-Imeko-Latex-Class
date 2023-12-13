@@ -1,5 +1,13 @@
 %% ACTA IMEKO Latex class file
 %%
+%% Vers: 1.4
+%% By: Federico Tramarin (tramarin@unimore.it)
+%% Date: 12/12/2023
+%% Notes: This version introduced some other tweaks to match the Word template.
+%%			Now the citations are typesetted as in the word template, as well as we introduced
+%%			the tabularx environment to have tables with 100% column width.
+%%			Now also the bibliography (BST) file is correct!
+%%
 %% Vers: 1.3
 %% By: Federico Tramarin (tramarin@unimore.it)
 %% Date: 03/10/2023
@@ -68,6 +76,7 @@
 \RequirePackage[british]{babel}
 % using EB-Garamond for serif text
 \RequirePackage[lining]{ebgaramond}
+%\usepackage[urw-garamond]{mathdesign}
 % using Helvetica for sans-serif
 \renewcommand{\sfdefault}{phv}
 \usepackage{microtype} % without this, with ebgaramond many lines go out of the margin due to hyphenation issues
@@ -82,14 +91,22 @@
 \RequirePackage{fancyhdr}  % Needed to define custom headers/footers
 \RequirePackage{lastpage}  % Number of pages in the document
 \RequirePackage{enumitem}
-\RequirePackage{array,booktabs}
-%only needed if we want to have a double column float * mandatory* at the bottom (because latex only put them at th etop by default)
-%\RequirePackage{stfloats} 
+\RequirePackage{array,booktabs,tabularx}
+%only needed if we want to have a double column float * mandatory* at the bottom (because latex only put them at the top by default)
+\RequirePackage{stfloats} 
 \usepackage{cite}
 
 \ifxetex
 	\RequirePackage{fontspec,unicode-math}
 	\setsansfont{Calibri}
+%\setromanfont[LetterSpace=-0.5]{Adobe Garamond Pro}
+	\setmathfont{Cambria Math}
+\fi
+
+\ifLuaTeX
+	\RequirePackage{fontspec,unicode-math}
+\setsansfont{Calibri}
+%\setromanfont[LetterSpace=-0.5]{Adobe Garamond Pro}
 	\setmathfont{Cambria Math}
 \fi
 
@@ -178,6 +195,7 @@
 \newcommand{\VolumeMonth}[1]{\def\@VolumeMonth{#1}}
 \newcommand{\IssueNumber}[1]{\def\@IssueNumber{#1}}
 \newcommand{\ArticleNumber}[1]{\def\@ArticleNumber{#1}}
+\newcommand{\Identifier}[1]{\def\@Identifier{#1}}
 %\newcommand{\Journal}[1]{\def\@Journal{#1}}
 %\newcommand{\ISSN}[1]{\def\@ISSN{#1}}
 %\newcommand{\Section}[1]{\def\@Section{#1}}
@@ -189,7 +207,8 @@
 	pdffitwindow=true, 
 	colorlinks=true, 
 	linkcolor=ActaBlue, 
-	citecolor=ActaBlue, 
+	%	citecolor=ActaBlue, 
+citecolor=black, 
 	urlcolor=ActaBlue, 
 	hyperfootnotes=true, 
 	pdfstartview={FitH},
@@ -245,7 +264,7 @@
 
 % adapting some internal Latex parameters
 % TeX default is 50
-\hyphenpenalty=250
+\hyphenpenalty=50
 % If we didn't adjust the interword spacing, 2200 might be better.
 % The TeX default is 1000
 \hbadness=2200
@@ -283,6 +302,11 @@
 
 % set tabular/tables to use sans-serif small fonts
 \renewcommand{\tabular}{\let\@halignto\@empty\sffamily\footnotesize\@tabular}
+\usepackage{etoolbox}
+\AtBeginEnvironment{tabularx}{%
+	\sffamily\footnotesize%
+}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
 
 % Set the page header
 \renewcommand{\headrulewidth}{0pt}% % No header rule
@@ -313,17 +337,24 @@
 % Settings for titles of sections and subsections
 % \titleformat{\section}{\sffamily\bfseries\normalsize}{}{0em}{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\sffamily{\arabic{section}.} \MakeUppercase{#1}}}}[]
 
-\def\section{\@startsection{section}{1}{\z@}{1ex plus 1ex minus 0.5ex}{1.5ex plus 0ex minus 0.1ex}{\sffamily\normalsize\bfseries\MakeUppercase}}%
+%\def\section{\@startsection{section}{1}{\z@}{1ex plus 1ex minus 0.5ex}{1.5ex plus 0ex minus 0.1ex}{\sffamily\normalsize\bfseries\MakeUppercase}}%
+
+\def\section{\@startsection{section}{1}{\z@}{12pt}{6pt}{\sffamily\normalsize\bfseries\MakeUppercase}}%
 
 \titleformat{name=\section,numberless}{\sffamily\bfseries\normalsize}{}{0em}{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\MakeUppercase{#1}}}}[]
 
 \titleformat{\subsection}{\sffamily\bfseries\small}{}{0em}{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{{\arabic{section}.\arabic{subsection}.} {#1}}}}[] 
 
 \titlespacing*{\section}{0pc}{3ex \@plus4pt \@minus3pt}{5pt}
-\titlespacing*{\subsection}{0pc}{2.5ex \@plus3pt \@minus2pt}{0pt}
+\titlespacing*{\subsection}{0pc}{9pt \@plus1pt \@minus1pt}{3pt}
 \titlespacing*{\subsubsection}{0pc}{2ex \@plus2.5pt \@minus1.5pt}{0pt}
 \titlespacing*{\paragraph}{0pc}{1.5ex \@plus2pt \@minus1pt}{10pt}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Authors Management
+% Adapted from Elsevier and largely simplified
+% for the Acta Imeko class
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Definitions to manage multiple authors
 % Definitions for management of multiple authors and affiliations
@@ -349,9 +380,11 @@
 \def\@@author[#1]#2{%
     \g@addto@macro\@AIauthors{%
     \def\baselinestretch{1}%
-	\refstepcounter{auth}%
+	\refstepcounter{auth}% increment by 1
     \authorsep#2\unskip\textsuperscript{%
+\typeout{Federico - @@author macro -> #1 - #2}
       	\@for\@@affmark:=#1\do{%
+\typeout{Federico - @@author macro -> auth:\theauth\ affmark:\@@affmark - author:#1}
        		\edef\affnum{\@ifundefined{X@\@@affmark}{affn?}{\AIrefMark{\@@affmark}}}%
      		\unskip\sep\affnum%
 			\edef\cormark{\@ifundefined{X@cor-\theauth}{}{%
@@ -360,7 +393,8 @@
 				\else
 					{}%
 				\fi}}%
-			\unskip\sep\cormark\let\sep=,%
+			%			\unskip\sep\cormark\let\sep=,% this line was wrong, since it will add a extra comma in case of multiple affiliations
+			\unskip\cormark\let\sep=,% now the issue is for the corresponding author with multiple affiliations
 			\ifx\cormark\@empty%
 			\else
 			\g@addto@macro\@CorrespondingAuthorName{#2}%
@@ -385,15 +419,20 @@
 \newcounter{affn}
 \renewcommand\theaffn{\arabic{affn}}
 \long\def\@@affiliation[#1]#2{%
+\typeout{Federico - @@affiliation macro}
 	\g@addto@macro\@AIaffiliations{%
 		\def\baselinestretch{1}%
 		\refstepcounter{affn}%
 		\xdef\@currentlabel{\theaffn}%
+\typeout{Federico - @@affiliation macro -> \@currentlabel}
 		\AIaffLabel{#1}%here we create a first round of refmarks for each affiliation
-		\textsuperscript{\theaffn}#2\par\vspace{1pt}}% the vspace is necessary to keep the same interline spacing of word (due to superscripts)
+		{\upshape\textsuperscript{\theaffn}}\space#2\par\vspace{1pt}}% the vspace is necessary to keep the same interline spacing of word (due to superscripts)
 	}
 
 % AIaffLabel is used in the first round to create a global variable for affiliation referencing
+% that is written to the aux file
+% in practice, each affiliation mark (it can be a number, a letter, etc) is
+% associated with a sequence number of the affiliation
 \def\AIaffLabel#1{\@bsphack\protected@write\@auxout{}%
 	{\string\NewAIaffLabel{#1}{\@currentlabel}}\@esphack}
 \def\NewAIaffLabel#1#2{\expandafter\xdef\csname X@#1\endcsname{#2}}
@@ -412,12 +451,50 @@
 	\@CorrespondingAuthorName, e-mail: \url{#1}}}
 
 %%%% URL
-\RequirePackage{url}
+\RequirePackage{xurl}
 \urlstyle{same}
 % Line breaks in URL
 \def\UrlDigits{\do\1\do\2\do\3\do\4\do\5\do\6\do\7\do\8\do\9\do\0}
 \g@addto@macro{\UrlBreaks}{\UrlOrds}
 \g@addto@macro{\UrlBreaks}{\UrlDigits}
+
+%% CITATION COMMANDS
+%% 
+%% F.Tramarin: The following llines are directly taken from IEEEtran.cls
+%% 				it was meaningful to reinvent the wheel...they are simply brilliant!
+%% From IIItran.cls
+%% V1.6 no longer supports the older, nonstandard \shortcite and \citename setup stuff
+% 
+% 
+% Modify Latex2e \@citex to separate citations with "], ["
+\def\@citex[#1]#2{%
+	\let\@citea\@empty
+	\@cite{\@for\@citeb:=#2\do
+		{\@citea\def\@citea{], [}%
+			\edef\@citeb{\expandafter\@firstofone\@citeb\@empty}%
+			\if@filesw\immediate\write\@auxout{\string\citation{\@citeb}}\fi
+			\@ifundefined{b@\@citeb}{\mbox{\reset@font\bfseries ?}%
+				\G@refundefinedtrue
+				\@latex@warning
+				{Citation `\@citeb' on page \thepage \space undefined}}%
+			{\hbox{\csname b@\@citeb\endcsname}}}}{#1}}
+
+% V1.6 we create hooks for the optional use of Donald Arseneau's
+% cite.sty package. cite.sty is "smart" and will notice that the
+% following format controls are already defined and will not
+% redefine them. The result will be the proper sorting of the
+% citation numbers and auto detection of 3 or more entry "ranges" -
+% all in IEEE style:  [1], [2], [5]--[7], [12]
+% This also allows for an optional note, i.e., \cite[mynote]{..}.
+% If the \cite with note has more than one reference, the note will
+% be applied to the last of the listed references. It is generally
+% desired that if a note is given, only one reference is listed in
+% that \cite.
+% Thanks to Mr. Arseneau for providing the required format arguments
+% to produce the IEEE style.
+\def\citepunct{], [}
+\def\citedash{]--[}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\setlist{nolistsep} % Uncomment to remove spacing between items in lists (enumerate, itemize)
 % ---------------------------------------------------------------------
@@ -427,7 +504,7 @@
 	the terms of the Creative Commons Attribution 3.0 License, %
 	which permits unrestricted use, distribution, and reproduction %
 	in any medium, provided the original author and source are credited.}
-\def\@Citation{\@AIauthorsNames, \@PaperTitle, \@Journal, vol. \@VolumeNumber, no. \@IssueNumber, article \@ArticleNumber, \@VolumeMonth, \@VolumeYear, Identifier:}
+\def\@Citation{\@AIauthorsNames, \@PaperTitle, \@Journal, vol. \@VolumeNumber, no. \@IssueNumber, article \@ArticleNumber, \@VolumeMonth, \@VolumeYear, Identifier: \@Identifier}
 
 \renewcommand{\@maketitle}{%
 	\twocolumn[{%

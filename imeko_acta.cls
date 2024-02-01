@@ -65,7 +65,7 @@
 %% The main reasons is that matching with the Word template requires quite a lot of font tunings, and obsolete commands (like \bf \it) do not support LaTeX2e's new font selection scheme, or NFSS{\bf foo}, for example, resets all font attributes which had been set earlier. also, we need new options to produce the camera ready and final version, etc.
 %%
 %% HISTORY:
-%% A first draft of the class has been produced by Corey Stambaugh (corey.stambaugh @ nist.gov)
+% A first draft of the class has been produced by Corey Stambaugh (corey.stambaugh @ nist.gov)
 %% Date: 09/12/2018
 %%
 %% This class file was originally downloaded as SelfArx.cls

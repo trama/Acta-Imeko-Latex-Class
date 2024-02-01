@@ -17,6 +17,8 @@ License: CC BY-NC-SA 3.0
 
 Then, in Sept. 2023 the journal EiC (prof. F. Lamonaca) asked to produce a stable and final Latex class for Acta IMEKO, able o reproduce the same format of the MS Word template.
 
+The main reasons for a rewrite are that matching the Word template requires quite a lot of font tunings, and obsolete commands (like \bf \it) do not support LaTeX2e's new font selection scheme, or NFSS{\bf foo}, for example, resets all font attributes which had been set earlier. also, we need new options to produce the camera ready and final version, etc.
+
 ## CHANGELOG
 
 ### Version 1.6
@@ -38,47 +40,54 @@ Vers: 1.5
 Vers: 1.4
 - Author: FT
 - Date: 12/12/2023
-- Notes This version introduced some other tweaks to match the Word template.
-			Now the citations are typesetted as in the word template, as well as we introduced
-			the tabularx environment to have tables with 100% column width.
-			Now also the bibliography (BST) file is correct!
+- Notes 
+  - This version introduced some other tweaks to match the Word template
+	- Now the citations are typesetted as in the word template
+  - We introduced the tabularx environment to have tables with 100% column width
+	- Now also the bibliography (BST) file is correct!
 
 Vers: 1.3
 - Author: FT
 - Date: 03/10/2023
-- Notes This version introduced all the needed tweaks to interline spaces, character expansions 
+- Notes 
+  - This version introduced all the needed tweaks to interline spaces, character expansions 
 			and other minor typographical dimensions to match the Word template.
-			Currently, the same paper, if typesetted with the Word and the LaTeX templates
-			renders almost identically...a part from the bibligraphy style, that needs some
-			more polishings
+	- Currently, the same paper, if typesetted with the Word and the LaTeX templates
+		renders almost identically...a part from the bibligraphy style, that needs some
+		more polishings
 
 Vers: 1.2
 - Author: FT
 - Date: 27/09/2023
-- Notes This version finally have all the needed stuffs for a correct authors management 
-			Notably, we can reference to the corresponding author indicating the number 
+- Notes 
+  - This version finally have all the needed stuffs for a correct authors management 
+	- Notably, we can reference to the corresponding author indicating the number 
 			of the author in the list, this will automatically keep the name
-			Added an option to show or not the corresp. author mark
-			Symplified the structure for authors
-			Solved a serious interference between hyperref and authors names
+	- Added an option to show or not the corresp. author mark
+	- Symplified the structure for authors
+	- Solved a serious interference between hyperref and authors names
 
 Vers: 1.1
 - Author: FT
 - Date: 25/09/2023
-- Notes This version adds support for all the needed PDF metadata
+- Notes 
+  - This version adds support for all the needed PDF metadata
 
 Vers: 1.1
 - Author: FT
 - Date: 25/09/2023
-- Notes This version builds over v1.0 (see below). Several futher bugs have been solved 
-   - added micro typography options to adress hyphenation and letters/words spacings
-   - removed dependence on some packages (e.g. geometry)
-   - added a new authors' management method
+- Notes 
+  - This version builds over v1.0 (see below). 
+  - Several futher bugs have been solved 
+  - Added micro typography options to adress hyphenation and letters/words spacings
+  - Removed dependence on some packages (e.g. geometry)
+  - Added a new authors' management method
 
 Vers: 1.0
 - Author: FT
 - Date: 12/09/2023
-- Notes This version builds over the first draft (see below). Several bugs have been solved 
-   - removed use of \bf \it etc.
-   - missing definitions
-   - removed unneded packges
+- Notes 
+  - This version builds over the first draft (see below). Several bugs have been solved 
+  - Removed use of \bf \it etc.
+  - Missing definitions
+  - Removed unneded packges

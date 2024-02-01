@@ -1,27 +1,5 @@
 %% ACTA IMEKO Latex class file
 %%
-%% Vers: 1.56
-%% By: Federico Tramarin (tramarin@unimore.it)
-%% Date: 01/02/2024
-%% Notes: Rewrote the code for producing the bibliography, now with bib labels hanged on the left
-%%		Added the \AIBreakAtRef command to equalize last column
-%%		Automatic aletrnate row coloring
-%%
-%% Vers: 1.5
-%% By: Federico Tramarin (tramarin@unimore.it)
-%% Date: 13/01/2024
-%% Notes: Several bug corrections after first article sent to production.
-%%		Solved issues with metadata (especially author names), added the
-%%		Subject and SubmissionNumber.
-%%
-%% Vers: 1.4
-%% By: Federico Tramarin (tramarin@unimore.it)
-%% Date: 12/12/2023
-%% Notes: This version introduced some other tweaks to match the Word template.
-%%			Now the citations are typesetted as in the word template, as well as we introduced
-%%			the tabularx environment to have tables with 100% column width.
-%%			Now also the bibliography (BST) file is correct!
-%%
 %% Vers: 1.3
 %% By: Federico Tramarin (tramarin@unimore.it)
 %% Date: 03/10/2023
@@ -80,7 +58,8 @@
 %% END HISTORY
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{imeko_acta}[2024/02/01 Acta Imeko paper class v1.5]
+\ProvidesClass{imeko_acta}[2023/09/12 Acta Imeko paper class v1.0]
+
 
 \LoadClass[10pt,a4paper]{article}
 
@@ -89,7 +68,8 @@
 \RequirePackage[british]{babel}
 % using EB-Garamond for serif text
 \RequirePackage[lining]{ebgaramond}
-%\usepackage{ebgaramond-maths}
+%\usepackage{newtxmath}
+\usepackage{ebgaramond-maths}
 %\usepackage[urw-garamond]{mathdesign}
 % using Helvetica for sans-serif
 \renewcommand{\sfdefault}{phv}
@@ -107,16 +87,14 @@
 \RequirePackage{enumitem}
 \RequirePackage{array,booktabs,tabularx}
 %only needed if we want to have a double column float * mandatory* at the bottom (because latex only put them at the top by default)
-\RequirePackage{stfloats}
-%\RequirePackage[nospread,noshrink]{flushend}
-%\raggedend
+\RequirePackage{stfloats} 
 \usepackage{cite}
-\usepackage{colortbl}
+\usepackage{color, colortbl}
 
 \ifxetex
 	\RequirePackage{fontspec,unicode-math}
 	\setsansfont{Calibri}
-%\setromanfont[LetterSpace=-0.5]{Adobe Garamond Pro}
+	%\setromanfont[LetterSpace=-0.5]{Adobe Garamond Pro}
 	\setmathfont{Cambria Math}
 \fi
 
@@ -124,7 +102,7 @@
 	\RequirePackage{fontspec,unicode-math}
 \setsansfont{Calibri}
 %\setromanfont[LetterSpace=-0.5]{Adobe Garamond Pro}
-	\setmathfont{Cambria Math}
+\setmathfont{Cambria Math}
 \fi
 
 
@@ -214,11 +192,10 @@
 \newcommand{\VolumeMonth}[1]{\def\@VolumeMonth{#1}}
 \newcommand{\IssueNumber}[1]{\def\@IssueNumber{#1}}
 \newcommand{\ArticleNumber}[1]{\def\@ArticleNumber{#1}}
-\newcommand{\SubmissionNumber}[1]{\def\@SubmissionNumber{#1}}
-%\newcommand{\Identifier}[1]{\def\@Identifier{#1}}
-%\newcommand{\Subject}[1]{\def\@Subject{#1}}
-%\newcommand{\PageNumbers}[1]{\def\@PageNumbers{#1}}
-%\newcommand{\Authors}[1]{\def\@Authors{#1}}
+\newcommand{\PageNumbers}[1]{\def\@PageNumbers{#1}}
+\newcommand{\Authors}[1]{\def\@Authors{#1}}
+\newcommand{\Identifier}[1]{\def\@Identifier{#1}}
+\newcommand{\Subject}[1]{\def\@Subject{#1}}
 %\newcommand{\Journal}[1]{\def\@Journal{#1}}
 %\newcommand{\ISSN}[1]{\def\@ISSN{#1}}
 %\newcommand{\Section}[1]{\def\@Section{#1}}
@@ -230,8 +207,8 @@
 	pdffitwindow=true, 
 	colorlinks=true, 
 	linkcolor=ActaBlue, 
-	%	citecolor=ActaBlue, 
-citecolor=black, 
+%	citecolor=ActaBlue,
+	citecolor=black, 
 	urlcolor=ActaBlue, 
 	hyperfootnotes=true, 
 	pdfstartview={FitH},
@@ -243,10 +220,9 @@ citecolor=black,
 \def\maketitle{%
 	\hypersetup{
 		pdftitle={\@PaperTitle},
-		pdfsubject={\@Journal\space\@VolumeNumber\space(\@VolumeYear)%
-					\space\@IssueNumber,\space 1-\@abspage@last},%\@Subject},
+		pdfsubject={\@Subject},
 		pdfkeywords={\@Keywords},
-		pdfauthor={\@AIauthorsNames},%verify if correct!
+		pdfauthor={\@Authors},
 		%pdfcreator={FT},
 		%pdfproducer={FT},
 		pdfinfo={
@@ -256,7 +232,7 @@ citecolor=black,
 			Acta IMEKO Issue Number={\@IssueNumber},
 			Acta IMEKO Issue Month={\@VolumeMonth},
 			Acta IMEKO Article Number={\@ArticleNumber},
-			Acta IMEKO Page Numbers={1-\@abspage@last},%\pageref{LastPage}},
+			Acta IMEKO Page Numbers={\@PageNumbers},
 			Acta IMEKO Article Authors={\@AIauthorsNames},
 			Acta IMEKO Section Editor={\@Editor, \@EditorAffiliation},
 			Acta IMEKO Received MonthDayYear={\@Received},
@@ -326,23 +302,10 @@ citecolor=black,
 \setcounter{dbltopnumber}{25}
 
 % set tabular/tables to use sans-serif small fonts
-\renewcommand{\tabular}{\let\@halignto\@empty\sffamily%
-	\footnotesize%
-	\rowcolors{1}{gray!19}{white}%
-	\@tabular}
-
+\renewcommand{\tabular}{\let\@halignto\@empty\sffamily\footnotesize\@tabular}
 \usepackage{etoolbox}
-
-\let\oldtabularx\tabularx
-\renewcommand{\tabularx}[1]{%
-	\global\rownum=\z@%
-	\rowcolors{2}{white}{gray!19}
-	\oldtabularx{#1}%
-}
-
 \AtBeginEnvironment{tabularx}{%
 	\sffamily\footnotesize%
-	%\rowcolors{2}{white}{gray!19}%
 }
 \newcolumntype{C}{>{\centering\arraybackslash}X}
 
@@ -355,7 +318,7 @@ citecolor=black,
 
 \def\@JournalInfoHeader{\@VolumeMonth\ \@VolumeYear, %
 	Volume\ \@VolumeNumber, Number \@IssueNumber, %
-	1\space--\space\@abspage@last}
+	\@PageNumbers}
 		
 % Headers
 \fancyhead[L]{}%
@@ -405,7 +368,6 @@ citecolor=black,
 
 %some temporary variables for internal use
 \let\authorsep\@empty
-\let\authorsep\@empty
 \let\sep\@empty
 \let\@cormark\@empty
 \def\CorrespondingAuthor{}
@@ -421,9 +383,9 @@ citecolor=black,
     \def\baselinestretch{1}%
 	\refstepcounter{auth}% increment by 1
     \authorsep#2\unskip\textsuperscript{%
-		%\typeout{Federico - @@author macro -> #1 - #2}
+    	\typeout{Federico - @@author macro -> #1 - #2}
       	\@for\@@affmark:=#1\do{%
-			\typeout{Federico - @@author macro -> auth:\theauth\ affmark:\@@affmark - author:#1}
+      		\typeout{Federico - @@author macro -> auth:\theauth\ affmark:\@@affmark - author:#1}
        		\edef\affnum{\@ifundefined{X@\@@affmark}{affn?}{\AIrefMark{\@@affmark}}}%
      		\unskip\sep\affnum%
 			\edef\cormark{\@ifundefined{X@cor-\theauth}{}{%
@@ -432,7 +394,7 @@ citecolor=black,
 				\else
 					{}%
 				\fi}}%
-			%			\unskip\sep\cormark\let\sep=,% this line was wrong, since it will add a extra comma in case of multiple affiliations
+%			\unskip\sep\cormark\let\sep=,% this line was wrong, since it will add a extra comma in case of multiple affiliations
 			\unskip\cormark\let\sep=,% now the issue is for the corresponding author with multiple affiliations
 			\ifx\cormark\@empty%
 			\else
@@ -446,10 +408,10 @@ citecolor=black,
 	\ifx\@AIauthorsNames\@empty
 		\g@addto@macro\@AIauthorsNames{#2}%
 	\else
-		\g@addto@macro\@AIauthorsNames{;\space#2}%
+		\g@addto@macro\@AIauthorsNames{\authorsep#2}%
 	\fi
-	%\typeout{Federico - @@author macro -> \@AIauthorsNames}
 }
+
 
 % we  process all the affiliations, creating an affLabel for each one
 % and then writing them down
@@ -459,12 +421,12 @@ citecolor=black,
 \newcounter{affn}
 \renewcommand\theaffn{\arabic{affn}}
 \long\def\@@affiliation[#1]#2{%
-\typeout{Federico - @@affiliation macro}
+	\typeout{Federico - @@affiliation macro}
 	\g@addto@macro\@AIaffiliations{%
 		\def\baselinestretch{1}%
 		\refstepcounter{affn}%
 		\xdef\@currentlabel{\theaffn}%
-\typeout{Federico - @@affiliation macro -> \@currentlabel}
+		\typeout{Federico - @@affiliation macro -> \@currentlabel}
 		\AIaffLabel{#1}%here we create a first round of refmarks for each affiliation
 		{\upshape\textsuperscript{\theaffn}}\space#2\par\vspace{1pt}}% the vspace is necessary to keep the same interline spacing of word (due to superscripts)
 	}
@@ -540,16 +502,11 @@ citecolor=black,
 % ---------------------------------------------------------------------
 \def\@Journal{Acta IMEKO}
 \def\@ISSN{ISSN: 2221-870X}
-%IMEKO-ACTA-12 (2023)-04-26
-\def\@Identifier{IMEKO-ACTA-\@VolumeNumber\space(\@VolumeYear)-\@IssueNumber-\@ArticleNumber}
 \def\@CopyRight{This is an open-access article distributed under%
 	the terms of the Creative Commons Attribution 3.0 License, %
 	which permits unrestricted use, distribution, and reproduction %
 	in any medium, provided the original author and source are credited.}
-\def\@Citation{\@AIauthorsNames,\space\@PaperTitle,\space\@Journal,\space%
-	vol.\space\@VolumeNumber,\space no.\space\@IssueNumber,\space%
-	article\space\@ArticleNumber,\space\@VolumeMonth,\space\@VolumeYear,\space%
-	Identifier:\space\@Identifier}
+\def\@Citation{\@AIauthorsNames, \@PaperTitle, \@Journal, vol. \@VolumeNumber, no. \@IssueNumber, article \@ArticleNumber, \@VolumeMonth, \@VolumeYear, Identifier: \@Identifier}
 
 \renewcommand{\@maketitle}{%
 	\twocolumn[{%
@@ -631,48 +588,13 @@ citecolor=black,
 %	REFERENCES
 %----------------------------------------------------------------------  
 
-% V1.6 provide a way for a user to execute a command just before 
-% a given reference number - used to insert a \newpage to balance
-% the columns on the last page
-\edef\@AItriggerrefnum{0}   % the default of zero means that
-                              % the command is not executed
-\def\@AItriggercmd{\newpage}
-% allow user a way to specify the reference number just before the
-% command is executed
-% count
-\newcount\@AItrantmpcountA
-\def\AIBreakAtRef#1{\@AItrantmpcountA=#1%
-\edef\@AItriggerrefnum{\the\@AItrantmpcountA}}%
-
-% trigger command at the given reference
-\def\@AIbibitemprefix{\@AItrantmpcountA=\@AItriggerrefnum\relax%
-\advance\@AItrantmpcountA by -1\relax%
-\ifnum\c@enumiv=\@AItrantmpcountA\relax\@AItriggercmd\relax\fi}
-
-% controls bib item spacing
-%\def\AIbibitemsep{0pt plus .5pt}
-\def\AIbibitemsep{0pt}
 % Remove brackets from numbering in List of References
-\renewcommand{\@biblabel}[1]{[#1]\hfill}
-
-\def\thebibliography#1{\section*{\refname}%
-    \addcontentsline{toc}{section}{\refname}%
-    % V1.6 add some rubber space here and provide a command trigger
-	%\vskip 0.3\baselineskip plus 0.1\baselineskip minus 0.1\baselineskip%
-    \small\list{\@biblabel{\@arabic\c@enumiv}}%
-    {\settowidth\labelwidth{\@biblabel{#1}}%
-    \leftmargin\labelwidth%
-	%\leftmargin 0pt%
-    \advance\leftmargin\labelsep\relax
-    \itemsep \AIbibitemsep\relax
-    \usecounter{enumiv}%
-    \let\p@enumiv\@empty
-    \renewcommand\theenumiv{\@arabic\c@enumiv}}%
-    \let\@AIlatexbibitem\bibitem%
-    \def\bibitem{\@AIbibitemprefix\@AIlatexbibitem}%
-\def\newblock{\hskip .11em plus .33em minus .07em}%
-\setlength\parskip{1pt plus 1pt minus .5pt}\relax%
-%\setlength\parskip{1pt}\relax%
-\sloppy\clubpenalty4000\widowpenalty4000\interlinepenalty500%
-\sfcode`\.=1000}
-\let\endthebibliography=\endlist
+\renewcommand{\@biblabel}[1]{[#1]}
+%\setlength{\bibitemsep}{0cm}
+\setlength{\labelsep}{3mm}%
+\let\oldbibliography\thebibliography
+\renewcommand{\thebibliography}[1]{%
+	\addcontentsline{toc}{section}{\refname}%
+	\oldbibliography{#1}%
+	\small\setlength\itemsep{0pt}\setlength\parskip{1pt}}%
+	

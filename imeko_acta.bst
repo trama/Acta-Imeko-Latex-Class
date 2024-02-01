@@ -183,7 +183,7 @@ FUNCTION {is.print.banners.to.terminal} { #1 }
 FUNCTION {default.name.isbn.prefix}{ "" }
 
 % The default DOI prefix.
-FUNCTION {default.name.doi.prefix}{ "" }
+FUNCTION {default.name.doi.prefix}{ "\newline DOI: " }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% FILE VERSION AND BANNER %%
@@ -1090,7 +1090,7 @@ FUNCTION {begin.bib}
   if$
   "\begin{thebibliography}{"  longest.label  * "}" *
   write$ newline$
-  "\providecommand{\doi}[1]{DOI: #1}"
+  "\providecommand{\doi}[1]{#1}"
   write$ newline$
   "\providecommand{\url}[1]{#1}"
   write$ newline$
@@ -1974,8 +1974,7 @@ FUNCTION {format.doi}
       this.status.std
       cap.yes 'status.cap :=
       name.doi.prefix " " *
-      "\leavevmode\\ \href{http://dx.doi.org/" * doi * "}{\doi{" * doi * "}}" *
-%%      name.doi.postfix ". " *
+      "\href{http://dx.doi.org/" * doi * "}{\doi{" * doi * "}}" *
       punct.no 'this.status.punct :=
       punct.period 'prev.status.punct :=
       space.normal 'this.status.space :=
@@ -1994,8 +1993,8 @@ FUNCTION {format.url}
       { this.to.prev.status
         this.status.std
         cap.yes 'status.cap :=
-        name.url.prefix " " *
-        "\leavevmode\\ \url{" * url * "}" *
+        name.url.prefix "\newline" *
+        "\url{" * url * "}" *
         punct.no 'this.status.punct :=
         punct.period 'prev.status.punct :=
         space.normal 'this.status.space :=

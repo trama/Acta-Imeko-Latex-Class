@@ -6,78 +6,7 @@
 %% Notes: Rewrote the code for producing the bibliography, now with bib labels hanged on the left
 %%		Added the \AIBreakAtRef command to equalize last column
 %%		Automatic aletrnate row coloring
-%%
-%% Vers: 1.5
-%% By: Federico Tramarin (tramarin@unimore.it)
-%% Date: 13/01/2024
-%% Notes: Several bug corrections after first article sent to production.
-%%		Solved issues with metadata (especially author names), added the
-%%		Subject and SubmissionNumber.
-%%
-%% Vers: 1.4
-%% By: Federico Tramarin (tramarin@unimore.it)
-%% Date: 12/12/2023
-%% Notes: This version introduced some other tweaks to match the Word template.
-%%			Now the citations are typesetted as in the word template, as well as we introduced
-%%			the tabularx environment to have tables with 100% column width.
-%%			Now also the bibliography (BST) file is correct!
-%%
-%% Vers: 1.3
-%% By: Federico Tramarin (tramarin@unimore.it)
-%% Date: 03/10/2023
-%% Notes: This version introduced all the needed tweaks to interline spaces, character expansions 
-%%			and other minor typographical dimensions to match the Word template.
-%%			Currently, the same paper, if typesetted with the Word and the LaTeX templates
-%%			renders almost identically...a part from the bibligraphy style, that needs some
-%%			more polishings
-%%
-%% Vers: 1.2
-%% By: Federico Tramarin (tramarin@unimore.it)
-%% Date: 27/09/2023
-%% Notes: This version finally have all the needed stuffs for a correct authors management 
-%%			Notably, we can reference to the corresponding author indicating the number 
-%%			of the author in the list, this will automatically keep the name
-%%			Added an option to show or not the corresp. author mark
-%%			Symplified the structure for authors
-%%			Solved a serious interference between hyperref and authors names
-%%
-%% Vers: 1.1
-%% By: Federico Tramarin (tramarin@unimore.it)
-%% Date: 25/09/2023
-%% Notes: This version adds support for all the needed PDF metadata
-%%
-%% Vers: 1.1
-%% By: Federico Tramarin (tramarin@unimore.it)
-%% Date: 25/09/2023
-%% Notes: This version builds over v1.0 (see below). Several futher bugs have been solved 
-%%    - added micro typography options to adress hyphenation and letters/words spacings
-%%    - removed dependence on some packages (e.g. geometry)
-%%    - added a new authors' management method
-%%
-%% Vers: 1.0
-%% By: Federico Tramarin (tramarin@unimore.it)
-%% Date: 12/09/2023
-%% Notes: This version builds over the first draft (see below). Several bugs have been solved 
-%%    - removed use of \bf \it etc.
-%%    - missing definitions
-%%    - removed unneded packges
-%%
-%% The main reasons is that matching with the Word template requires quite a lot of font tunings, and obsolete commands (like \bf \it) do not support LaTeX2e's new font selection scheme, or NFSS{\bf foo}, for example, resets all font attributes which had been set earlier. also, we need new options to produce the camera ready and final version, etc.
-%%
-%% HISTORY:
-% A first draft of the class has been produced by Corey Stambaugh (corey.stambaugh @ nist.gov)
-%% Date: 09/12/2018
-%%
-%% This class file was originally downloaded as SelfArx.cls
-%% Template Source: This template has been downloaded from:
-%% http://www.latextemplates.com/template/stylish-article
-%% License: CC BY-NC-SA 3.0
-%%
-%% The class has been written to mimic the template style of the ACTA IMEKO journal
-%% https://acta.imeko.org/    which is written as a .doc file by:
-%% Thomas Bruns, Dirk Röske, Paul P. L. Regtien, Francisco Alegria
-%%
-%% END HISTORY
+
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{imeko_acta}[2024/02/01 Acta Imeko paper class v1.5]
@@ -106,12 +35,13 @@
 \RequirePackage{lastpage}  % Number of pages in the document
 \RequirePackage{enumitem}
 \RequirePackage{array,booktabs,tabularx}
-%only needed if we want to have a double column float * mandatory* at the bottom (because latex only put them at the top by default)
+\RequirePackage{cite}
+\RequirePackage{colortbl}
+%only needed if we want to have a double column float *mandatory* at the bottom (because latex only put them at the top by default)
 \RequirePackage{stfloats}
+
 %\RequirePackage[nospread,noshrink]{flushend}
 %\raggedend
-\usepackage{cite}
-\usepackage{colortbl}
 
 \ifxetex
 	\RequirePackage{fontspec,unicode-math}
@@ -189,17 +119,14 @@
 %Tweak first line indent width
 \parindent 4mm
 \flushbottom % Makes all text pages the same height
-\definecolor{ActaBlue2}{RGB}{19,33,94}
 \definecolor{ActaBlue}{RGB}{14,99,189}
-\definecolor{color2}{RGB}{205,217,240} % Color of the boxes behind the abstract and headings
+\definecolor{AIAbstractBackground}{RGB}{199,217,240} % Color of the boxes behind the abstract and headings
 \definecolor{TableGray}{RGB}{230,231,231} % Alternating row background colour
 
 % Definitions for ABSTRACT+AUTHOR FRAME
-%----------------------------------------------------------------------  
-
+%----------------------------------------------------------------------
 \newcommand{\PaperTitle}[1]{\def\@PaperTitle{#1}}
 \newcommand{\Archive}[1]{\def\@Archive{#1}}
-%\newcommand{\JournalInfo}[1]{\def\@JournalInfo{#1}}
 \newcommand{\Abstract}[1]{\def\@Abstract{#1}}
 \newcommand{\Keywords}[1]{\def\@Keywords{#1}}
 \newcommand{\Citation}[1]{\def\@Citation{#1}}
@@ -230,8 +157,7 @@
 	pdffitwindow=true, 
 	colorlinks=true, 
 	linkcolor=ActaBlue, 
-	%	citecolor=ActaBlue, 
-citecolor=black, 
+	citecolor=black, 
 	urlcolor=ActaBlue, 
 	hyperfootnotes=true, 
 	pdfstartview={FitH},
@@ -293,9 +219,8 @@ citecolor=black,
 % If we didn't adjust the interword spacing, 2200 might be better.
 % The TeX default is 1000
 \hbadness=2200
-% IEEE does not use extra spacing after punctuation
+% Acta IMEKO does not use extra spacing after punctuation
 \frenchspacing
-%%%% Widows & orphans
 \clubpenalty=5000
 \widowpenalty=2000
 \displaywidowpenalty=1000
@@ -310,7 +235,7 @@ citecolor=black,
 % adjust caption properties
 \captionsetup{format=plain,indention=0in,singlelinecheck=false,font={sf,footnotesize},labelsep=period,justification=justified}
 \setlength\abovecaptionskip{6pt plus 3pt minus 2pt}
-\setlength\belowcaptionskip{0pt}% plus 3pt minus 2pt} % 
+\setlength\belowcaptionskip{0pt}% plus 3pt minus 2pt} %
 \setlength\textfloatsep{12pt plus 2pt minus 2pt}
 \setlength\intextsep{4pt plus 2pt minus 2pt}
 
@@ -362,10 +287,10 @@ citecolor=black,
 \fancyhead[C]{}%
 \fancyhead[R]{}
 % Footers
-\fancyfoot[L]{\footnotesize\sffamily\selectfont {ACTA IMEKO \textbar{}  www.imeko.org}}%
+\fancyfoot[L]{\footnotesize\sffamily\selectfont {ACTA IMEKO \textbar{} www.imeko.org}}%
 \fancyfoot[C]{}%
 \fancyfoot[R]{\footnotesize\sffamily\selectfont \@JournalInfoFooter \thepage}%
-\pagestyle{fancy}          % Enables the custom headers/footers
+\pagestyle{fancy} % Enables the custom headers/footers
 \fancypagestyle{plain}{}
 
 \def\thesection{\arabic{section}.}
@@ -421,7 +346,6 @@ citecolor=black,
     \def\baselinestretch{1}%
 	\refstepcounter{auth}% increment by 1
     \authorsep#2\unskip\textsuperscript{%
-		%\typeout{Federico - @@author macro -> #1 - #2}
       	\@for\@@affmark:=#1\do{%
 			\typeout{Federico - @@author macro -> auth:\theauth\ affmark:\@@affmark - author:#1}
        		\edef\affnum{\@ifundefined{X@\@@affmark}{affn?}{\AIrefMark{\@@affmark}}}%
@@ -448,7 +372,6 @@ citecolor=black,
 	\else
 		\g@addto@macro\@AIauthorsNames{;\space#2}%
 	\fi
-	%\typeout{Federico - @@author macro -> \@AIauthorsNames}
 }
 
 % we  process all the affiliations, creating an affLabel for each one
@@ -464,7 +387,7 @@ citecolor=black,
 		\def\baselinestretch{1}%
 		\refstepcounter{affn}%
 		\xdef\@currentlabel{\theaffn}%
-\typeout{Federico - @@affiliation macro -> \@currentlabel}
+		\typeout{Federico - @@affiliation macro -> \@currentlabel}
 		\AIaffLabel{#1}%here we create a first round of refmarks for each affiliation
 		{\upshape\textsuperscript{\theaffn}}\space#2\par\vspace{1pt}}% the vspace is necessary to keep the same interline spacing of word (due to superscripts)
 	}
@@ -502,10 +425,9 @@ citecolor=black,
 %% 
 %% F.Tramarin: The following lines are directly taken from IEEEtran.cls
 %% 				it was meaningful to reinvent the wheel...they are simply brilliant!
-%% From IIItran.cls
+%%
+%% From IEEEtran.cls
 %% V1.6 no longer supports the older, nonstandard \shortcite and \citename setup stuff
-% 
-% 
 % Modify Latex2e \@citex to separate citations with "], ["
 \def\@citex[#1]#2{%
 	\let\@citea\@empty
@@ -540,12 +462,12 @@ citecolor=black,
 % ---------------------------------------------------------------------
 \def\@Journal{Acta IMEKO}
 \def\@ISSN{ISSN: 2221-870X}
-%IMEKO-ACTA-12 (2023)-04-26
 \def\@Identifier{IMEKO-ACTA-\@VolumeNumber\space(\@VolumeYear)-\@IssueNumber-\@ArticleNumber}
 \def\@CopyRight{This is an open-access article distributed under%
 	the terms of the Creative Commons Attribution 3.0 License, %
 	which permits unrestricted use, distribution, and reproduction %
 	in any medium, provided the original author and source are credited.}
+
 \def\@Citation{\@AIauthorsNames,\space\@PaperTitle,\space\@Journal,\space%
 	vol.\space\@VolumeNumber,\space no.\space\@IssueNumber,\space%
 	article\space\@ArticleNumber,\space\@VolumeMonth,\space\@VolumeYear,\space%
@@ -560,7 +482,7 @@ citecolor=black,
 				{\large\sffamily\bfseries\selectfont {\MakeUppercase{\@Journal}}\par}\vskip2pt%
 				{\small\sffamily\bfseries\selectfont {\@ISSN}\par}\vskip1pt%
 				{\small\sffamily\itshape\selectfont {\@JournalInfoHeader}\par}\vskip1pt%
-				\noindent\textcolor{ActaBlue}{\rule{\textwidth-2pt}{1.5pt}}}%
+				\noindent\textcolor[RGB]{49,1,98}{\rule{\textwidth-2pt}{1.5pt}}}%
 		\end{minipage}
 		\begin{minipage}[b]{0.05\textwidth}
 			\includegraphics[width=1.28cm]{IMEKO.png}
@@ -576,9 +498,9 @@ citecolor=black,
 		\@AIaffiliations\par%
 		\endgroup%%
 		\vskip17pt%
-		\fcolorbox{color2}{color2}{%
+		\fcolorbox{AIAbstractBackground}{AIAbstractBackground}{%
 			\parbox{\textwidth-2\fboxsep-2\fboxrule}{\centering%
-				\colorbox{color2}{%
+				\colorbox{AIAbstractBackground}{%
 					\parbox{\textwidth-4\fboxsep-2\fboxrule}{%
 						\vskip6pt%
 						\ifx\@Keywords\@empty%
@@ -631,23 +553,18 @@ citecolor=black,
 %	REFERENCES
 %----------------------------------------------------------------------  
 
-% V1.6 provide a way for a user to execute a command just before 
-% a given reference number - used to insert a \newpage to balance
-% the columns on the last page
-\edef\@AItriggerrefnum{0}   % the default of zero means that
-                              % the command is not executed
+% In a similar way ti IEEEtran, we provide a command to break the last column
+% to try to equalize le bibliography on the last page
+\edef\@AItriggerrefnum{0}   % the default of zero means that the command is not executed
 \def\@AItriggercmd{\newpage}
-% allow user a way to specify the reference number just before the
-% command is executed
-% count
-\newcount\@AItrantmpcountA
-\def\AIBreakAtRef#1{\@AItrantmpcountA=#1%
-\edef\@AItriggerrefnum{\the\@AItrantmpcountA}}%
+\newcount\@AItmpcount
+\def\AIBreakAtRef#1{\@AItmpcount=#1%
+\edef\@AItriggerrefnum{\the\@AItmpcount}}%
 
 % trigger command at the given reference
-\def\@AIbibitemprefix{\@AItrantmpcountA=\@AItriggerrefnum\relax%
-\advance\@AItrantmpcountA by -1\relax%
-\ifnum\c@enumiv=\@AItrantmpcountA\relax\@AItriggercmd\relax\fi}
+\def\@AIbibitemprefix{\@AItmpcount=\@AItriggerrefnum\relax%
+\advance\@AItmpcount by -1\relax%
+\ifnum\c@enumiv=\@AItmpcount\relax\@AItriggercmd\relax\fi}
 
 % controls bib item spacing
 %\def\AIbibitemsep{0pt plus .5pt}
@@ -657,12 +574,9 @@ citecolor=black,
 
 \def\thebibliography#1{\section*{\refname}%
     \addcontentsline{toc}{section}{\refname}%
-    % V1.6 add some rubber space here and provide a command trigger
-	%\vskip 0.3\baselineskip plus 0.1\baselineskip minus 0.1\baselineskip%
     \small\list{\@biblabel{\@arabic\c@enumiv}}%
     {\settowidth\labelwidth{\@biblabel{#1}}%
     \leftmargin\labelwidth%
-	%\leftmargin 0pt%
     \advance\leftmargin\labelsep\relax
     \itemsep \AIbibitemsep\relax
     \usecounter{enumiv}%
@@ -672,7 +586,6 @@ citecolor=black,
     \def\bibitem{\@AIbibitemprefix\@AIlatexbibitem}%
 \def\newblock{\hskip .11em plus .33em minus .07em}%
 \setlength\parskip{1pt plus 1pt minus .5pt}\relax%
-%\setlength\parskip{1pt}\relax%
 \sloppy\clubpenalty4000\widowpenalty4000\interlinepenalty500%
 \sfcode`\.=1000}
 \let\endthebibliography=\endlist

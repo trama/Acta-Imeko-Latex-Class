@@ -28,6 +28,7 @@ The main reasons for a rewrite are that matching the Word template requires quit
   - Rewrote the code for producing the bibliography, now with bib labels hanged on the left.
   - Added the \AIBreakAtRef command to equalize last column. 
   - Automatic alternate row coloring
+  - author management robust to multiple affiliations
 
 Vers: 1.5
 - Author: FT

@@ -345,9 +345,11 @@
     \g@addto@macro\@AIauthors{%
     \def\baselinestretch{1}%
 	\refstepcounter{auth}% increment by 1
+	\newif\ifnotyetprocessed% this if is needed to check if this author has already been counted for corresponding
+	\notyetprocessedtrue
     \authorsep#2\unskip\textsuperscript{%
       	\@for\@@affmark:=#1\do{%
-			\typeout{Federico - @@author macro -> auth:\theauth\ affmark:\@@affmark - author:#1}
+			%\typeout{Federico - @@author macro -> auth:\theauth\ affmark:\@@affmark - author:#1}
        		\edef\affnum{\@ifundefined{X@\@@affmark}{affn?}{\AIrefMark{\@@affmark}}}%
      		\unskip\sep\affnum%
 			\edef\cormark{\@ifundefined{X@cor-\theauth}{}{%
@@ -360,7 +362,10 @@
 			\unskip\cormark\let\sep=,% now the issue is for the corresponding author with multiple affiliations
 			\ifx\cormark\@empty%
 			\else
-			\g@addto@macro\@CorrespondingAuthorName{#2}%
+				\ifnotyetprocessed% if the author is corresponding and is the first time we are here
+					\g@addto@macro\@CorrespondingAuthorName{#2}% add the author name to the output
+					\notyetprocessedfalse %if it is a subsequent round, do nothing
+				\fi
 			\fi
 			}%
       	}%
@@ -382,12 +387,11 @@
 \newcounter{affn}
 \renewcommand\theaffn{\arabic{affn}}
 \long\def\@@affiliation[#1]#2{%
-\typeout{Federico - @@affiliation macro}
 	\g@addto@macro\@AIaffiliations{%
 		\def\baselinestretch{1}%
 		\refstepcounter{affn}%
 		\xdef\@currentlabel{\theaffn}%
-		\typeout{Federico - @@affiliation macro -> \@currentlabel}
+		%\typeout{Federico - @@affiliation macro -> \@currentlabel}
 		\AIaffLabel{#1}%here we create a first round of refmarks for each affiliation
 		{\upshape\textsuperscript{\theaffn}}\space#2\par\vspace{1pt}}% the vspace is necessary to keep the same interline spacing of word (due to superscripts)
 	}

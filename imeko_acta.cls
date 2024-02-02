@@ -1,4 +1,4 @@
-%% ACTA IMEKO Latex class file
+%%% ACTA IMEKO Latex class file
 %%
 %% Vers: 1.6
 %% By: Federico Tramarin (tramarin@unimore.it)
@@ -6,7 +6,6 @@
 %% Notes: Rewrote the code for producing the bibliography, now with bib labels hanged on the left
 %%		Added the \AIBreakAtRef command to equalize last column
 %%		Automatic aletrnate row coloring
-
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{imeko_acta}[2024/02/01 Acta Imeko paper class v1.5]
@@ -18,16 +17,15 @@
 \RequirePackage[british]{babel}
 % using EB-Garamond for serif text
 \RequirePackage[lining]{ebgaramond}
-%\usepackage{ebgaramond-maths}
-%\usepackage[urw-garamond]{mathdesign}
 % using Helvetica for sans-serif
 \renewcommand{\sfdefault}{phv}
 \usepackage{microtype} % without this, with ebgaramond many lines go out of the margin due to hyphenation issues
 \RequirePackage{ifthen}
 \RequirePackage{calc}
 \RequirePackage{ifpdf,ifxetex}      % Needed to pick between latex and pdflatex
-\RequirePackage[fleqn]{amsmath}
 \RequirePackage{graphicx,xcolor}
+\RequirePackage[fleqn]{amsmath}
+\RequirePackage[garamondx]{newtxmath}
 \RequirePackage{indentfirst}
 \RequirePackage{caption}
 \RequirePackage[explicit]{titlesec}
@@ -52,9 +50,12 @@
 
 \ifLuaTeX
 	\RequirePackage{fontspec,unicode-math}
-\setsansfont{Calibri}
-%\setromanfont[LetterSpace=-0.5]{Adobe Garamond Pro}
+	\setsansfont{Calibri}
+	%\setromanfont[LetterSpace=-0.5]{Adobe Garamond Pro}
 	\setmathfont{Cambria Math}
+		
+	\microtypesetup{tracking=normalfont,expansion}%,letterspace=20}
+	\SetTracking[ spacing = {25*,350, } ]{ encoding = * }{ 10 }
 \fi
 
 
@@ -125,6 +126,20 @@
 
 % Definitions for ABSTRACT+AUTHOR FRAME
 %----------------------------------------------------------------------
+\def\@Keywords{Missing!}
+\def\@Editor{Missing!}
+\def\@EditorAffiliation{Missing!}
+\def\@Received{\today}
+\def\@FinalForm{\today}
+\def\@Published{\today}
+\def\@VolumeNumber{X!}
+\def\@VolumeYear{X!}
+\def\@VolumeMonth{X!}
+\def\@IssueNumber{X!}
+\def\@ArticleNumber{X!}
+\def\@SubmissionNumber{X!}
+
+
 \newcommand{\PaperTitle}[1]{\def\@PaperTitle{#1}}
 \newcommand{\Archive}[1]{\def\@Archive{#1}}
 \newcommand{\Abstract}[1]{\def\@Abstract{#1}}
@@ -142,15 +157,8 @@
 \newcommand{\IssueNumber}[1]{\def\@IssueNumber{#1}}
 \newcommand{\ArticleNumber}[1]{\def\@ArticleNumber{#1}}
 \newcommand{\SubmissionNumber}[1]{\def\@SubmissionNumber{#1}}
-%\newcommand{\Identifier}[1]{\def\@Identifier{#1}}
-%\newcommand{\Subject}[1]{\def\@Subject{#1}}
-%\newcommand{\PageNumbers}[1]{\def\@PageNumbers{#1}}
-%\newcommand{\Authors}[1]{\def\@Authors{#1}}
-%\newcommand{\Journal}[1]{\def\@Journal{#1}}
-%\newcommand{\ISSN}[1]{\def\@ISSN{#1}}
-%\newcommand{\Section}[1]{\def\@Section{#1}}
-%\newcommand{\CopyRight}[1]{\def\@CopyRight{#1}}
-%\newcommand{\AIauthorsNames}{\@AIauthorsNames}
+
+
 
 \RequirePackage[unicode=true,
 	bookmarksopen={true},

@@ -215,10 +215,10 @@
 
 % adapting some internal Latex parameters
 % TeX default is 50
-\hyphenpenalty=50
+\hyphenpenalty=20
 % If we didn't adjust the interword spacing, 2200 might be better.
 % The TeX default is 1000
-\hbadness=2200
+\hbadness=1000
 % Acta IMEKO does not use extra spacing after punctuation
 \frenchspacing
 \clubpenalty=5000
@@ -229,7 +229,7 @@
 
 % normally zero, should be relative to font height.
 % put in a little rubber to help stop some bad breaks (underfull vboxes)
-\parskip 0ex plus 0ex minus 0.1ex
+\parskip 0ex plus 0pt minus 1pt
 \setlength{\mathindent}{0pt}
 
 % adjust caption properties
@@ -573,6 +573,7 @@
 % controls bib item spacing
 %\def\AIbibitemsep{0pt plus .5pt}
 \def\AIbibitemsep{0pt}
+\setlength{\labelsep}{3mm}
 % Remove brackets from numbering in List of References
 \renewcommand{\@biblabel}[1]{[#1]\hfill}
 

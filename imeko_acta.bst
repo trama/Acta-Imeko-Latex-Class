@@ -154,7 +154,7 @@ FUNCTION {default.ALTinterwordstretchfactor} { "4" }
 % #0 turns off the "dashification" of repeated (i.e., identical to those
 % of the previous entry) names. The IEEE normally does this.
 % #1 enables
-FUNCTION {default.is.dash.repeated.names} { #1 }
+FUNCTION {default.is.dash.repeated.names} { #0 }
 
 
 % The default name format control string.
@@ -2054,6 +2054,7 @@ FUNCTION {article}
   format.pages output
   format.note output
   format.isbn output
+  format.urlaccessed output
   format.url output
   format.doi output
   fin.entry
@@ -2080,6 +2081,7 @@ FUNCTION {book}
   format.number output
   format.note output
   format.isbn output
+  format.urlaccessed output
   format.url output
   format.doi output
   fin.entry
@@ -2189,6 +2191,7 @@ FUNCTION {inproceedings}
   format.number output
   format.pages output
   format.note output
+  format.urlaccessed output
   format.url output
   format.doi output
   fin.entry

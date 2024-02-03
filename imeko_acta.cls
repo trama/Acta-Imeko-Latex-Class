@@ -10,7 +10,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{imeko_acta}[2024/02/01 Acta Imeko paper class v1.5]
 
-\LoadClass[10pt,a4paper]{article}
+\LoadClass[twocolumn,10pt,a4paper]{article}
 
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
@@ -60,9 +60,9 @@
 
 
 %% To choose the type of manuscript
-\DeclareOption{article}{\gdef\@arttype{Research Paper}}
-\DeclareOption{technicalnote}{\gdef\@arttype{Technical Note}}
-\DeclareOption{editorial}{\gdef\@arttype{Editorial}}
+\DeclareOption{article}{\gdef\@arttype{RESEARCH PAPER}}
+\DeclareOption{technicalnote}{\gdef\@arttype{TECHNICAL NOTE}}
+\DeclareOption{editorial}{\gdef\@arttype{EDITORIAL}}
 
 %% To choose the status of the manuscript
 \DeclareOption{submit}{\gdef\@status{submit}}
@@ -79,7 +79,6 @@
 
 %% Defaults
 \ExecuteOptions{10pt,a4paper,article,submit,noshowcorresponding}
-
 \ProcessOptions\relax
 
 % Set page layout options (no geometry package)
@@ -180,9 +179,7 @@
 		pdfsubject={\@Journal\space\@VolumeNumber\space(\@VolumeYear)%
 					\space\@IssueNumber,\space 1-\@abspage@last},%\@Subject},
 		pdfkeywords={\@Keywords},
-		pdfauthor={\@AIauthorsNames},%verify if correct!
-		%pdfcreator={FT},
-		%pdfproducer={FT},
+		pdfauthor={\@AIauthorsNames},
 		pdfinfo={
 			Company={IMEKO - The International Measurement Confederation},
 			Acta IMEKO Issue Year={\@VolumeYear},
@@ -486,9 +483,10 @@
 	Identifier:\space\@Identifier}
 
 \renewcommand{\@maketitle}{%
-	\twocolumn[{%
+	%\twocolumn[{%
 		%\pagestyle{fancy}%
 		\vskip-26pt%
+		\parindent0pt
 		\begin{minipage}[b]{0.933\textwidth}
 			{\raggedright
 				{\large\sffamily\bfseries\selectfont {\MakeUppercase{\@Journal}}\par}\vskip2pt%
@@ -558,7 +556,7 @@
 		\vskip6pt%
 		\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
 		\vskip18pt%
-	}]%
+	%}]%
 }%
 
 %----------------------------------------------------------------------

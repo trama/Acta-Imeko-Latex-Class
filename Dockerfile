@@ -1,20 +1,20 @@
 # Use an official base image with TeX Live full installed
 FROM texlive/texlive:latest
 # Install dependencies
-RUN apt-get update && \
-    apt-get install -y wget unzip && \
-    rm -rf /var/lib/apt/lists/*
+#RUN apt-get update && \
+#    apt-get install -y wget unzip && \
+#    rm -rf /var/lib/apt/lists/*
 
 # Download and install garamondx
-RUN wget http://mirrors.ctan.org/install/fonts/garamondx.tds.zip && \
-    unzip garamondx.tds.zip -d /usr/local/texlive/texmf-local/ && \
-    rm garamondx.tds.zip
+#RUN wget http://mirrors.ctan.org/install/fonts/garamondx.tds.zip && \
+#    unzip garamondx.tds.zip -d /usr/local/texlive/texmf-local/ && \
+#    rm garamondx.tds.zip
 
 # Update filename database and font maps
-RUN mktexlsr && \
-    updmap-sys
-RUN updmap-sys --enable Map=zgm.map       # Replace 'zgm.map' with the actual map file name for Garamond, if different
-RUN updmap-sys --enable Map=newtx.map     # If newtx is used, as it's often used alongside Garamond
+#RUN mktexlsr && \
+#    updmap-sys
+#RUN updmap-sys --enable Map=zgm.map       # Replace 'zgm.map' with the actual map file name for Garamond, if different
+#RUN updmap-sys --enable Map=newtx.map     # If newtx is used, as it's often used alongside Garamond
 # Set the working directory in the container
 WORKDIR /usr/src/app
 

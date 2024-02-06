@@ -21,14 +21,12 @@
 \renewcommand{\sfdefault}{phv}
 \usepackage{microtype} % without this, with ebgaramond many lines go out of the margin due to hyphenation issues
 \RequirePackage{ifthen}
-\RequirePackage{calc}
 \RequirePackage{ifpdf,ifxetex}      % Needed to pick between latex and pdflatex
 \RequirePackage{graphicx,xcolor}
 \RequirePackage[fleqn]{amsmath}
 \RequirePackage[garamondx]{newtxmath}
 \RequirePackage{indentfirst}
 \RequirePackage{caption}
-\RequirePackage[explicit]{titlesec}
 \RequirePackage{fancyhdr}  % Needed to define custom headers/footers
 \RequirePackage{lastpage}  % Number of pages in the document
 \RequirePackage{enumitem}
@@ -175,7 +173,7 @@
 \let\org@maketitle\maketitle
 \def\maketitle{%
 	\hypersetup{
-		pdftitle={\@PaperTitle},
+		pdftitle={\@title},
 		pdfsubject={\@Journal\space\@VolumeNumber\space(\@VolumeYear)%
 					\space\@IssueNumber,\space 1-\@abspage@last},%\@Subject},
 		pdfkeywords={\@Keywords},
@@ -234,7 +232,7 @@
 
 % normally zero, should be relative to font height.
 % put in a little rubber to help stop some bad breaks (underfull vboxes)
-\parskip 0ex plus 0pt minus 1pt
+\parskip 0ex plus 1pt minus 1pt
 \setlength{\mathindent}{0pt}
 
 % adjust caption properties
@@ -298,36 +296,41 @@
 \pagestyle{fancy} % Enables the custom headers/footers
 \fancypagestyle{plain}{}
 
-\def\thesection{\arabic{section}.}
-\def\thesubsection{\thesection.\arabic{subsection}}
-\def\thesubsubsection{\thesubsection.\arabic{subsubsection}}
 \def\@seccntformat#1{\csname the#1\endcsname\space}
+\def\thesection{\arabic{section}.}
+\def\thesubsection{\thesection\arabic{subsection}.}
+\def\thesubsubsection{\thesubsection\arabic{subsubsection}.}
 % Settings for titles of sections and subsections
 % \titleformat{\section}{\sffamily\bfseries\normalsize}{}{0em}{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\sffamily{\arabic{section}.} \MakeUppercase{#1}}}}[]
 
 %\def\section{\@startsection{section}{1}{\z@}{1ex plus 1ex minus 0.5ex}{1.5ex plus 0ex minus 0.1ex}{\sffamily\normalsize\bfseries\MakeUppercase}}%
 
-\def\section{\@startsection{section}{1}{\z@}{12pt}{6pt}{\sffamily\normalsize\bfseries\MakeUppercase}}%
+% arguments are: #1 - sectiontype name
+% (for \@sect)   #2 - section level
+%                #3 - section heading indent
+%                #4 - top separation (absolute value used, neg indicates not to indent main text)
+%                     If negative, make stretch parts negative too!
+%                #5 - (absolute value used) positive: bottom separation after heading,
+%                      negative: amount to indent main text after heading
+%                Both #4 and #5 negative means to indent main text and use negative top separation
+%                #6 - font control
+\def\section{\@startsection{section}{1}{\z@}{12pt plus 0,5ex minus 0.5ex}{6pt plus 0ex minus 0.1ex}{\sffamily\normalsize\bfseries\MakeUppercase}}%
 
-\titleformat{name=\section,numberless}{\sffamily\bfseries\normalsize}{}{0em}{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\MakeUppercase{#1}}}}[]
+%\titleformat{name=\section,numberless}{\sffamily\bfseries\normalsize}{}{0em}{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\MakeUppercase{#1}}}}[]
 
-\titleformat{\subsection}{\sffamily\bfseries\small}{}{0em}{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{{\arabic{section}.\arabic{subsection}.} {#1}}}}[] 
+\def\subsection{\@startsection{subsection}{2}{\z@}{9pt plus 1pt minus 1pt}{3pt plus 1pt minus 1pt}{\sffamily\small\bfseries}}%
 
-\titlespacing*{\section}{0pc}{3ex \@plus4pt \@minus3pt}{5pt}
-\titlespacing*{\subsection}{0pc}{9pt \@plus1pt \@minus1pt}{3pt}
-\titlespacing*{\subsubsection}{0pc}{2ex \@plus2.5pt \@minus1.5pt}{0pt}
-\titlespacing*{\paragraph}{0pc}{1.5ex \@plus2pt \@minus1pt}{10pt}
-
+\def\subsubsection{\@startsection{subsubsection}{3}{\z@}{9pt plus 1pt minus 1pt}{1pt plus 1pt minus 1pt}{\sffamily\small}}%
+%\titlespacing*{\paragraph}{0pc}{1.5ex \@plus2pt \@minus1pt}{10pt}
+\def\paragraph{\@startsection{paragraph}{4}{\parindent}{0ex plus 0.1ex minus 0.1ex}{-1ex}{\small\sffamily\itshape}}%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Authors Management
-% Adapted from Elsevier and largely simplified
+% Taken inspiration from Elsevier elsarticle and largely simplified
 % for the Acta Imeko class
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Definitions to manage multiple authors
 % Definitions for management of multiple authors and affiliations
-% adapted from the code of elsarticle
-
 \def\author{\@@author}
 \def\@AIaffiliations{}
 \def\@AIauthors{}
@@ -433,7 +436,7 @@
 %% CITATION COMMANDS
 %% 
 %% F.Tramarin: The following lines are directly taken from IEEEtran.cls
-%% 				it was meaningful to reinvent the wheel...they are simply brilliant!
+%% 				it was useless to reinvent the wheel...they are simply brilliant!
 %%
 %% From IEEEtran.cls
 %% V1.6 no longer supports the older, nonstandard \shortcite and \citename setup stuff
@@ -450,24 +453,15 @@
 				{Citation `\@citeb' on page \thepage \space undefined}}%
 			{\hbox{\csname b@\@citeb\endcsname}}}}{#1}}
 
-% V1.6 we create hooks for the optional use of Donald Arseneau's
-% cite.sty package. cite.sty is "smart" and will notice that the
+% Acta IMEKO needs citation "sorting" and also grouping of three or
+% more citations.
+% To this extent, we use Donald Arseneau's cite.sty package. 
+% As defined in IEEEtran (Thanks again) cite.sty will notice that the
 % following format controls are already defined and will not
-% redefine them. The result will be the proper sorting of the
-% citation numbers and auto detection of 3 or more entry "ranges" -
-% all in IEEE style:  [1], [2], [5]--[7], [12]
-% This also allows for an optional note, i.e., \cite[mynote]{..}.
-% If the \cite with note has more than one reference, the note will
-% be applied to the last of the listed references. It is generally
-% desired that if a note is given, only one reference is listed in
-% that \cite.
-% Thanks to Mr. Arseneau for providing the required format arguments
-% to produce the IEEE style.
+% redefine them.
 \def\citepunct{], [}
 \def\citedash{]--[}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\setlist{nolistsep} % Uncomment to remove spacing between items in lists (enumerate, itemize)
 % ---------------------------------------------------------------------
 \def\@Journal{Acta IMEKO}
 \def\@ISSN{ISSN: 2221-870X}
@@ -477,93 +471,85 @@
 	which permits unrestricted use, distribution, and reproduction %
 	in any medium, provided the original author and source are credited.}
 
-\def\@Citation{\@AIauthorsNames,\space\@PaperTitle,\space\@Journal,\space%
+\def\@Citation{\@AIauthorsNames,\space\@title,\space\@Journal,\space%
 	vol.\space\@VolumeNumber,\space no.\space\@IssueNumber,\space%
 	article\space\@ArticleNumber,\space\@VolumeMonth,\space\@VolumeYear,\space%
 	Identifier:\space\@Identifier}
+
+%% Reserva a savebox for the Abstract
+\newbox\absbox
+\renewenvironment{abstract}{%
+	\global\setbox\absbox=\vbox%
+	\bgroup%
+	\hsize=\textwidth%
+	\advance\hsize by -2\fboxsep\relax% let's compensate for the internal
+	\advance\hsize by -2\fboxrule\relax% margins of the colored frame
+	\advance\hsize by -8pt\relax% where the abstract will be typeset
+	\parindent 0pt%
+	\fontsize{9}{12}\sffamily\noindent\unskip{ABSTRACT}\par%
+	\fontsize{9}{12}\noindent\unskip\ignorespaces}
+	{\egroup}
 
 \renewcommand{\@maketitle}{%
 	%\twocolumn[{%
 		%\pagestyle{fancy}%
 		\vskip-26pt%
 		\parindent0pt
+		\footnotesize\sffamily
 		\begin{minipage}[b]{0.933\textwidth}
 			{\raggedright
-				{\large\sffamily\bfseries\selectfont {\MakeUppercase{\@Journal}}\par}\vskip2pt%
-				{\small\sffamily\bfseries\selectfont {\@ISSN}\par}\vskip1pt%
-				{\small\sffamily\itshape\selectfont {\@JournalInfoHeader}\par}\vskip1pt%
+				{\large\bfseries {\MakeUppercase{\@Journal}}\par}\vskip2pt%
+				{\small\bfseries {\@ISSN}\par}\vskip1pt%
+				{\small\itshape {\@JournalInfoHeader}\par}\vskip1pt%
 				\noindent\textcolor[RGB]{49,1,98}{\rule{\textwidth-2pt}{1.5pt}}}%
 		\end{minipage}
 		\begin{minipage}[b]{0.05\textwidth}
-			\includegraphics[width=1.28cm]{IMEKO.png}
+			\includegraphics[width=1.28cm]{./IMEKO.png}
 		\end{minipage}
 		\vskip24pt%
-		{\raggedright{\huge\sffamily\bfseries\selectfont \@PaperTitle}\par}%
+		\begingroup
+		\huge{\bfseries\@title}\par%
 		\vskip15pt%
-		{\raggedright{\large\sffamily\bfseries\selectfont \@AIauthors}\par}%
+		\large{\bfseries\@AIauthors}\par%
 		\vskip14pt%
-		\begingroup%
-		\raggedright\sffamily\itshape%\small%
-		\small%
-		\@AIaffiliations\par%
+		\itshape\small\@AIaffiliations\par%
 		\endgroup%%
 		\vskip17pt%
 		\fcolorbox{AIAbstractBackground}{AIAbstractBackground}{%
-			\parbox{\textwidth-2\fboxsep-2\fboxrule}{\centering%
-				\colorbox{AIAbstractBackground}{%
-					\parbox{\textwidth-4\fboxsep-2\fboxrule}{%
-						\vskip6pt%
-						\ifx\@Keywords\@empty%
-						\fontsize{9}{12}\sffamily{\expandafter\MakeUppercase\expandafter{\abstractname}}\\\@Abstract%
-						\else%
-						\fontsize{9}{12}\sffamily{\expandafter\MakeUppercase\expandafter{\abstractname}}\\\@Abstract%
-						\fi%
-					}%
-				}%
-			
-			}%
-		}%
+			\hskip4pt%
+			\parbox{\textwidth}{\vskip6pt%
+				\ifvoid\absbox\else\unvbox\absbox\par\vskip6pt\fi}%
+			\hskip4pt%
+		}
 		\vskip10pt%
 		\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
 		\vskip12pt%
-		{\footnotesize\sffamily\bfseries\selectfont {{Section:}}}
-		{\footnotesize\sffamily\selectfont {\@arttype}\par}
+		{\bfseries Section:}\space\@arttype\par
 		\vskip6pt%pt%
-		{\footnotesize\sffamily\bfseries\selectfont {{Keywords:}}}
-		{\footnotesize\sffamily\selectfont {\@Keywords}\par}
+		{\bfseries Keywords:}\space\@Keywords\par
 		\vskip6pt%pt%
-		{\footnotesize\sffamily\bfseries\selectfont {{Citation:}}}
-		{\footnotesize\sffamily\selectfont {\@Citation}\par}
+		{\bfseries Citation:}\space\@Citation\par
 		\vskip6pt%
-		{\footnotesize\sffamily\bfseries\selectfont {{Section Editor:}}}
-		{\footnotesize\sffamily\selectfont {\@Editor, \@EditorAffiliation}\par}
+		{\bfseries Section Editor:}\space\@Editor,\space\@EditorAffiliation\par
 		\vskip6pt%
-		{\footnotesize\sffamily\bfseries\selectfont {{Received:}}}
-		{\footnotesize\sffamily\selectfont {\@Received;}}
-		{\footnotesize\sffamily\bfseries\selectfont {{In Final Form:}}}
-		{\footnotesize\sffamily\selectfont {\@FinalForm;}}
-		{\footnotesize\sffamily\bfseries\selectfont {{Published:}}}
-		{\footnotesize\sffamily\selectfont {\@Published.}\par}
+		{\bfseries Received:}\space\@Received;\space{\bfseries In Final Form:}%
+		\space\@FinalForm;\space{\bfseries Published:}\space\@Published.\par
 		\vskip6pt%
-		{\footnotesize\sffamily\bfseries\selectfont {Copyright:}}
-		{\footnotesize\sffamily\selectfont {\@CopyRight}\par}
+		{\bfseries Copyright:}\space\@CopyRight\par
 		\vskip6pt%
-		{\footnotesize\sffamily\bfseries\selectfont {Funding:}}
-		{\footnotesize\sffamily\selectfont {\@Funding}\par}
+		{\bfseries Funding:}\space\@Funding\par
 		\vskip6pt%
-		{\footnotesize\sffamily\bfseries\selectfont {Corresponding Author:}}
-		{\footnotesize\sffamily\selectfont {\CorrespondingAuthor}\par}
+		{\bfseries Corresponding Author:}\space\CorrespondingAuthor\par
 		\vskip6pt%
 		\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
 		\vskip18pt%
-	%}]%
 }%
 
 %----------------------------------------------------------------------
 %	REFERENCES
 %----------------------------------------------------------------------  
 
-% In a similar way ti IEEEtran, we provide a command to break the last column
+% In a similar way to IEEEtran, we provide a command to break the last column
 % to try to equalize le bibliography on the last page
 \edef\@AItriggerrefnum{0}   % the default of zero means that the command is not executed
 \def\@AItriggercmd{\newpage}
@@ -600,3 +586,7 @@
 \sloppy\clubpenalty4000\widowpenalty4000\interlinepenalty500%
 \sfcode`\.=1000}
 \let\endthebibliography=\endlist
+
+\endinput
+%%
+%% End of file `imeko_acta.cls'.

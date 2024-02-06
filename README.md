@@ -21,6 +21,14 @@ The main reasons for a rewrite are that matching the Word template requires quit
 
 ## CHANGELOG
 
+### Version 1.7
+- Author: FT
+- Date: 06/02/2024
+- Notes
+  - Several enhancements on the code
+  - Removed code dependencies on "titlesec" and "calc", which are now not loaded
+  - Rewrote the code for the titlepage, so that standard latex commands can be used, like "title", "\begin{abstract}", etc.
+
 ### Version 1.6
 - Author: FT
 - Date: 01/02/2024

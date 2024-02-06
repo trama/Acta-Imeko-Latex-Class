@@ -14,3 +14,5 @@ jobs:
       run: (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
     - name: test working dir
       run: (ls $PWD)
+    - name: compile Guide
+      run: latexmk guide.tex

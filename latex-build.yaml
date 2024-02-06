@@ -12,14 +12,21 @@ jobs:
     - name: Build Docker Image
       run: docker build -t latex-project .
 
-  - name: Compile LaTeX Document
-    run: | docker exec latex-compile-container latexmk -pdf /usr/src/app/latex-project/Acta-Imeko-Latex-Class/example_paper/lamonaca.tex
+    - name: Run Container
+      run: docker run -d --name latex-compile-container latex-project tail -f /dev/null
+
+    - name: Create Output Directory in Container
+      run: docker exec latex-compile-container mkdir -p /usr/src/app/output
+
+    - name: Compile LaTeX Document
+      run: |
+        docker exec latex-compile-container latexmk -pdf -output-directory=/usr/src/app/output /usr/src/app/latex-project/Acta-Imeko-Latex-Class/example_paper/lamonaca.tex
 
     - name: Copy PDF from Container
-      run: docker cp latex-compile-container:/usr/src/app/latex-project/Acta-Imeko-Latex-Class/example_paper/lamonaca.pdf .
+      run: docker cp latex-compile-container:/usr/src/app/output/lamonaca.pdf .
 
     - name: Copy Log from Container
-      run: docker cp latex-compile-container:/usr/src/app/latex-project/Acta-Imeko-Latex-Class/example_paper/lamonaca.log .
+      run: docker cp latex-compile-container:/usr/src/app/output/lamonaca.log .
 
     - name: Upload PDF as Artifact
       uses: actions/upload-artifact@v3

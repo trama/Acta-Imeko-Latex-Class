@@ -20,7 +20,7 @@ jobs:
 
     - name: Compile LaTeX Document
       run: |
-        docker exec latex-compile-container latexmk -pdf -output-directory=/usr/src/app/output /usr/src/app/latex-project/Acta-Imeko-Latex-Class/example_paper/lamonaca.tex
+        docker exec latex-compile-container latexmk -pdf -output-directory=/usr/src/app/output /usr/src/app/latex-project/example_paper/lamonaca.tex
 
     - name: Copy PDF from Container
       run: docker cp latex-compile-container:/usr/src/app/output/lamonaca.pdf .

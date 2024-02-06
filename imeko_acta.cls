@@ -497,15 +497,18 @@
 		\parindent0pt
 		\footnotesize\sffamily
 		\begin{minipage}[b]{0.933\textwidth}
-			{\raggedright
+				\newdimen\upperrule%
+				\upperrule=\textwidth%
+				\advance\upperrule by -2pt%
+				\raggedright
 				{\large\bfseries {\MakeUppercase{\@Journal}}\par}\vskip2pt%
 				{\small\bfseries {\@ISSN}\par}\vskip1pt%
 				{\small\itshape {\@JournalInfoHeader}\par}\vskip1pt%
-				\noindent\textcolor[RGB]{49,1,98}{\rule{\textwidth-2pt}{1.5pt}}}%
-		\end{minipage}
-		\begin{minipage}[b]{0.05\textwidth}
+				\noindent\textcolor[RGB]{49,1,98}{\rule{\upperrule}{1.5pt}}%
+		\end{minipage}\hfill%
+		\begin{minipage}[b]{0.067\textwidth}
 			\includegraphics[width=1.28cm]{./IMEKO.png}
-		\end{minipage}
+		\end{minipage}%
 		\vskip24pt%
 		\begingroup
 		\huge{\bfseries\@title}\par%

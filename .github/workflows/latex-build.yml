@@ -1,0 +1,34 @@
+name: Build LaTeX Document with Docker
+
+on: [push]
+
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Build Docker Image
+      run: docker build -t latex-project .
+
+    - name: Run Container
+      run: docker run --name latex-compile-container latex-project
+
+    - name: Copy PDF from Container
+      run: docker cp latex-compile-container:/usr/src/app/latex-project/Acta-Imeko-Latex-Class/example_paper/lamonaca.pdf .
+
+    - name: Copy Log from Container
+      run: docker cp latex-compile-container:/usr/src/app/latex-project/Acta-Imeko-Latex-Class/example_paper/lamonaca.log .
+
+    - name: Upload PDF as Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: compiled-pdf
+        path: lamonaca.pdf
+
+    - name: Upload Log as Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: compile-log
+        path: lamonaca.log

@@ -24,7 +24,7 @@
 \RequirePackage{ifpdf,ifxetex}      % Needed to pick between latex and pdflatex
 \RequirePackage{graphicx,xcolor}
 \RequirePackage[fleqn]{amsmath}
-\RequirePackage[garamondx]{newtxmath}
+%\RequirePackage[garamondx]{newtxmath}
 \RequirePackage{indentfirst}
 \RequirePackage{caption}
 \RequirePackage{fancyhdr}  % Needed to define custom headers/footers

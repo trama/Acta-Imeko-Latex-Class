@@ -1,6 +1,6 @@
 %%% ACTA IMEKO Latex class file
 %%
-%% Vers: 1.6
+%% Vers: 1.7
 %% By: Federico Tramarin (tramarin@unimore.it)
 %% Date: 01/02/2024
 %% Notes: Rewrote the code for producing the bibliography, now with bib labels hanged on the left

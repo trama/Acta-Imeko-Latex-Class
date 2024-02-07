@@ -8,7 +8,7 @@
 %%		Automatic aletrnate row coloring
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{imeko_acta}[2024/02/01 Acta Imeko paper class v1.5]
+\ProvidesClass{imeko_acta}[2024/02/01 Acta Imeko paper class v1.7]
 
 \LoadClass[twocolumn,10pt,a4paper]{article}
 

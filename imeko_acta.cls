@@ -1,14 +1,14 @@
 %%% ACTA IMEKO Latex class file
 %%
-%% Vers: 1.7
+%% Vers: 1.8
 %% By: Federico Tramarin (tramarin@unimore.it)
-%% Date: 01/02/2024
+%% Date: 08/02/2024
 %% Notes: Rewrote the code for producing the bibliography, now with bib labels hanged on the left
 %%		Added the \AIBreakAtRef command to equalize last column
 %%		Automatic aletrnate row coloring
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{imeko_acta}[2024/02/01 Acta Imeko paper class v1.7]
+\ProvidesClass{imeko_acta}[2024/02/08 Acta Imeko paper class v1.8]
 
 \LoadClass[twocolumn,10pt,a4paper]{article}
 
@@ -24,7 +24,6 @@
 \RequirePackage{ifpdf,ifxetex}      % Needed to pick between latex and pdflatex
 \RequirePackage{graphicx,xcolor}
 \RequirePackage[fleqn]{amsmath}
-%\RequirePackage[garamondx]{newtxmath}
 \RequirePackage{indentfirst}
 \RequirePackage{caption}
 \RequirePackage{fancyhdr}  % Needed to define custom headers/footers
@@ -35,6 +34,8 @@
 \RequirePackage{colortbl}
 %only needed if we want to have a double column float *mandatory* at the bottom (because latex only put them at the top by default)
 \RequirePackage{stfloats}
+\RequirePackage[per-mode = symbol,
+inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 
 %\RequirePackage[nospread,noshrink]{flushend}
 %\raggedend
@@ -123,37 +124,37 @@
 
 % Definitions for ABSTRACT+AUTHOR FRAME
 %----------------------------------------------------------------------
-\def\@Keywords{Missing!}
-\def\@Editor{Missing!}
-\def\@EditorAffiliation{Missing!}
-\def\@Received{\today}
-\def\@FinalForm{\today}
-\def\@Published{\today}
-\def\@VolumeNumber{X!}
-\def\@VolumeYear{X!}
-\def\@VolumeMonth{X!}
-\def\@IssueNumber{X!}
-\def\@ArticleNumber{X!}
-\def\@SubmissionNumber{X!}
+\def\@Keywords{No Keywords.}
+\def\@Editor{Not specified.}
+\def\@EditorAffiliation{Not specified.}
+\edef\@Received{\today}
+\edef\@FinalForm{\today}
+\edef\@Published{\today}
+\def\@VolumeNumber{VN}
+\def\@VolumeYear{VY}
+\def\@VolumeMonth{VM}
+\def\@IssueNumber{IN}
+\def\@ArticleNumber{AN}
+\def\@SubmissionNumber{SN}
 
 
-\newcommand{\PaperTitle}[1]{\def\@PaperTitle{#1}}
-\newcommand{\Archive}[1]{\def\@Archive{#1}}
-\newcommand{\Abstract}[1]{\def\@Abstract{#1}}
+\newcommand{\PaperTitle}[1]{\edef\@PaperTitle{#1}}
+\newcommand{\Archive}[1]{\edef\@Archive{#1}}
+\newcommand{\Abstract}[1]{\edef\@Abstract{#1}}
 \newcommand{\Keywords}[1]{\def\@Keywords{#1}}
-\newcommand{\Citation}[1]{\def\@Citation{#1}}
-\newcommand{\Editor}[1]{\def\@Editor{#1}}
-\newcommand{\EditorAffiliation}[1]{\def\@EditorAffiliation{#1}}
-\newcommand{\Funding}[1]{\ifthenelse{\equal{#1}{}}{\def\@Funding{No funding specified.}}{\def\@Funding{#1}}}
-\newcommand{\Received}[1]{\def\@Received{#1}}
-\newcommand{\FinalForm}[1]{\def\@FinalForm{#1}}
-\newcommand{\Published}[1]{\def\@Published{#1}}
-\newcommand{\VolumeNumber}[1]{\def\@VolumeNumber{#1}}
-\newcommand{\VolumeYear}[1]{\def\@VolumeYear{#1}}
-\newcommand{\VolumeMonth}[1]{\def\@VolumeMonth{#1}}
-\newcommand{\IssueNumber}[1]{\def\@IssueNumber{#1}}
-\newcommand{\ArticleNumber}[1]{\def\@ArticleNumber{#1}}
-\newcommand{\SubmissionNumber}[1]{\def\@SubmissionNumber{#1}}
+\newcommand{\Citation}[1]{\edef\@Citation{#1}}
+\newcommand{\Editor}[1]{\edef\@Editor{#1}}
+\newcommand{\EditorAffiliation}[1]{\edef\@EditorAffiliation{#1}}
+\newcommand{\Funding}[1]{\ifthenelse{\equal{#1}{}}{\def\@Funding{No funding specified.}}{\edef\@Funding{#1}}}
+\newcommand{\Received}[1]{\edef\@Received{#1}}
+\newcommand{\FinalForm}[1]{\edef\@FinalForm{#1}}
+\newcommand{\Published}[1]{\edef\@Published{#1}}
+\newcommand{\VolumeNumber}[1]{\edef\@VolumeNumber{#1}}
+\newcommand{\VolumeYear}[1]{\edef\@VolumeYear{#1}}
+\newcommand{\VolumeMonth}[1]{\edef\@VolumeMonth{#1}}
+\newcommand{\IssueNumber}[1]{\edef\@IssueNumber{#1}}
+\newcommand{\ArticleNumber}[1]{\edef\@ArticleNumber{#1}}
+\newcommand{\SubmissionNumber}[1]{\edef\@SubmissionNumber{#1}}
 
 
 
@@ -507,7 +508,7 @@
 				\noindent\textcolor[RGB]{49,1,98}{\rule{\upperrule}{1.5pt}}%
 		\end{minipage}\hfill%
 		\begin{minipage}[b]{0.067\textwidth}
-			\includegraphics[width=1.28cm]{./IMEKO.png}
+			\includegraphics[width=1.28cm]{./imeko.png}
 		\end{minipage}%
 		\vskip24pt%
 		\begingroup
@@ -535,7 +536,7 @@
 		\vskip6pt%
 		{\bfseries Section Editor:}\space\@Editor,\space\@EditorAffiliation\par
 		\vskip6pt%
-		{\bfseries Received:}\space\@Received;\space{\bfseries In Final Form:}%
+		{\bfseries Received:}\space{\@Received};\space{\bfseries In Final Form:}%
 		\space\@FinalForm;\space{\bfseries Published:}\space\@Published.\par
 		\vskip6pt%
 		{\bfseries Copyright:}\space\@CopyRight\par
@@ -588,7 +589,12 @@
 \setlength\parskip{1pt plus 1pt minus .5pt}\relax%
 \sloppy\clubpenalty4000\widowpenalty4000\interlinepenalty500%
 \sfcode`\.=1000}
-\let\endthebibliography=\endlist
+
+\def\endthebibliography{%
+  \def\@noitemerr{\@latex@warning{Empty `thebibliography' environment}}%
+  \endlist
+}
+%\let\endthebibliography=\endlist
 
 \endinput
 %%

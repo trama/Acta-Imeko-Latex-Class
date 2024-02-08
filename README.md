@@ -21,6 +21,15 @@ The main reasons for a rewrite are that matching the Word template requires quit
 
 ## CHANGELOG
 
+### Version 1.8
+- Author: FT
+- Date: 08/02/2024
+- Notes
+  - Corrected some serious bugs in class
+    - fixed endbibliography code
+    - switched to \edef with dates in titlepage to correctly support for \today
+  - included _siunitx_ package by default (it's a measurement journal in the end :smile:)
+
 ### Version 1.7
 - Author: FT
 - Date: 06/02/2024

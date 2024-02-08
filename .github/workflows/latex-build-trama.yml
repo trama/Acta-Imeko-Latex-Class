@@ -1,6 +1,6 @@
 name: Build LaTeX Document with Docker - Trama
 
-on: [push]
+on: [workflow_dispatch]
 
 jobs:
   compile_in_latex_container_trama:

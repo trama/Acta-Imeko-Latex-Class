@@ -18,7 +18,6 @@
 % using EB-Garamond for serif text
 \RequirePackage[lining]{ebgaramond}
 % using Helvetica for sans-serif
-\renewcommand{\sfdefault}{phv}
 \usepackage{microtype} % without this, with ebgaramond many lines go out of the margin due to hyphenation issues
 \RequirePackage{ifthen}
 \RequirePackage{ifpdf,ifxetex}      % Needed to pick between latex and pdflatex
@@ -37,26 +36,22 @@
 \RequirePackage[per-mode = symbol,
 inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 
-%\RequirePackage[nospread,noshrink]{flushend}
-%\raggedend
-
 \ifxetex
 	\RequirePackage{fontspec,unicode-math}
 	\setsansfont{Calibri}
-%\setromanfont[LetterSpace=-0.5]{Adobe Garamond Pro}
 	\setmathfont{Cambria Math}
 \fi
 
+\ifpdf
+	\usepackage[scaled=0.87]{helvet}
+\fi
 \ifLuaTeX
 	\RequirePackage{fontspec,unicode-math}
 	\setsansfont{Calibri}
-	%\setromanfont[LetterSpace=-0.5]{Adobe Garamond Pro}
 	\setmathfont{Cambria Math}
-		
-	\microtypesetup{tracking=normalfont,expansion}%,letterspace=20}
+	\microtypesetup{tracking=normalfont,expansion}
 	\SetTracking[ spacing = {25*,350, } ]{ encoding = * }{ 10 }
 \fi
-
 
 %% To choose the type of manuscript
 \DeclareOption{article}{\gdef\@arttype{RESEARCH PAPER}}
@@ -110,7 +105,7 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 \def\Large{\@setfontsize{\Large}{14}{17pt}}
 \def\LARGE{\@setfontsize{\LARGE}{17}{20pt}}
 \def\nLARGE{\@setfontsize{\nLARGE}{19}{21pt}}
-\def\huge{\@setfontsize{\huge}{20}{24pt}}
+\def\huge{\@setfontsize{\huge}{20.74}{24pt}}
 \def\Huge{\@setfontsize{\Huge}{24}{28pt}}
 
 
@@ -504,13 +499,13 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 				\raggedright
 				{\large\bfseries {\MakeUppercase{\@Journal}}\par}\vskip2pt%
 				{\small\bfseries {\@ISSN}\par}\vskip1pt%
-				{\small\itshape {\@JournalInfoHeader}\par}\vskip1pt%
+				{\small\itshape {\@JournalInfoHeader}\par}\vskip2pt%
 				\noindent\textcolor[RGB]{49,1,98}{\rule{\upperrule}{1.5pt}}%
 		\end{minipage}\hfill%
-		\begin{minipage}[b]{0.067\textwidth}
+		\begin{minipage}[b]{0.062\textwidth}
 			\includegraphics[width=1.28cm]{./imeko.png}
 		\end{minipage}%
-		\vskip24pt%
+		\vskip15pt%
 		\begingroup
 		\huge{\bfseries\@title}\par%
 		\vskip15pt%
@@ -546,7 +541,7 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 		{\bfseries Corresponding Author:}\space\CorrespondingAuthor\par
 		\vskip6pt%
 		\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
-		\vskip18pt%
+		\vskip20pt%
 }%
 
 %----------------------------------------------------------------------

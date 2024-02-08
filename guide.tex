@@ -1,6 +1,15 @@
 % !TeX spellcheck = en_GB
 \documentclass[10pt]{imeko_acta}
-%\usepackage{siunitx}
+
+\usepackage{xspace}
+
+\makeatletter
+\def\file#1{\textsf{\fontsize{9.1}{9.5}\selectfont#1}\xspace}
+% This part fails...  [no it doesn't :-)]
+%\show\f@size
+\newcommand\thefontsize{{font size is: \f@size pt}}
+\makeatother
+
 
 %----------------------------------------------------------------
 % Completed by Editors - You can fill in but Editor will finalize
@@ -46,11 +55,43 @@
 
 \maketitle
 
+\section{Introduction}
+
+\file{imeko\_acta.cls} is a thoroughly re-written document class
+for formatting \LaTeX{} submissions to Elsevier journals.
+The class uses the environments and commands defined in \LaTeX{} kernel
+without any change in the signature so that clashes with other
+contributed \LaTeX{} packages such as \file{hyperref.sty},
+\file{preview-latex.sty}, etc., will be minimal.
+\file{elsarticle.cls} is primarily built upon the default
+\file{article.cls}.  
+
+This class depends on the following packages
+for its proper functioning:
+
+\begin{enumerate}
+	\item \file{geometry.sty} for margin settings;
+	\item \file{fleqn.clo} for left aligned equations;
+	\item \file{graphicx.sty} for graphics inclusion;
+	\item \file{helvet.sty} for typesetting Helvetica sans-serif parts;
+	\item \file{hyperref.sty} to support hyperlinking and metadata in the document;
+	\item \file{endfloat.sty} optional packages if floats to be placed at
+	end of the PDF.
+\end{enumerate}
+
+All the above packages (except some optional packages) are part of any
+standard \LaTeX{} installation. Therefore, the users need not be
+bothered about downloading any extra packages.  Furthermore, users are
+free to make use of \textsc{ams} math packages such as
+\file{amsmath.sty}, \file{amsthm.sty}, \file{amssymb.sty},
+\file{amsfonts.sty}, etc., if they want to.  All these packages work in
+tandem with \file{elsarticle.cls} without any problems.
+
+
 \section{The Title page}
 
-The title page is created with the standard \LaTeX\ command \verb|\maketitle|. Before this command is called, the author must declare all of the text objects which are to appear in the title area.
-
-Example unit \unit{\um.\kg\per\us}.
+The title page is created with the standard \LaTeX\ command \verb|\maketitle| and using the same schema of article.cls.
+Before this command is called, the author must declare all of the text objects which are to appear in the title area, as detailed below.
 
 \subsection{Paper Title} \label{sec:sub1}
 

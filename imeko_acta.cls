@@ -46,6 +46,37 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{imeko_acta}[2024/02/08 Acta Imeko paper class v1.8]
 
+%% To choose the type of manuscript
+\DeclareOption{article}{\gdef\@arttype{RESEARCH PAPER}}
+\DeclareOption{technicalnote}{\gdef\@arttype{TECHNICAL NOTE}}
+\DeclareOption{editorial}{\gdef\@arttype{EDITORIAL}}
+
+%% To choose the status of the manuscript
+\DeclareOption{submit}{\gdef\@status{submit}}
+\DeclareOption{final}{\gdef\@status{final}}
+
+%%
+\newif\if@showcorr \@showcorrtrue
+\DeclareOption{showcorresponding}{\@showcorrtrue}
+\DeclareOption{noshowcorresponding}{\@showcorrfalse}
+
+%% Article options
+% \DeclareOption{onecolumn}{
+%   \PassOptionsToClass{\CurrentOption}{article}
+% }
+
+%\AtEndOfClass{\RequirePackage{microtype}}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+
+% %% Fallback
+% \DeclareOption*{
+%   \ClassWarning{imeko_acta}{Unknown option '\CurrentOption'}
+% }
+
+%% Defaults
+\ExecuteOptions{a4paper,article,submit,noshowcorresponding}
+\ProcessOptions\relax
+
 \LoadClass[twocolumn,10pt,a4paper]{article}
 
 \RequirePackage[T1]{fontenc}
@@ -59,14 +90,13 @@
 \RequirePackage{ifpdf,ifxetex}      % Needed to pick between latex and pdflatex
 \RequirePackage{graphicx,xcolor}
 \RequirePackage[fleqn]{amsmath}
-\RequirePackage{indentfirst}
+%\RequirePackage{indentfirst}
 \RequirePackage{caption}
 \RequirePackage{fancyhdr}  % Needed to define custom headers/footers
-\RequirePackage{lastpage}  % Number of pages in the document
+%\RequirePackage{lastpage}  % Number of pages in the document
 \RequirePackage{enumitem}
-\RequirePackage{array,booktabs,tabularx}
+\RequirePackage{array,booktabs,tabularx,colortbl}
 \RequirePackage{cite}
-\RequirePackage{colortbl}
 %only needed if we want to have a double column float *mandatory* at the bottom (because latex only put them at the top by default)
 \RequirePackage{stfloats}
 \RequirePackage[per-mode = symbol,
@@ -89,27 +119,6 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 	\SetTracking[ spacing = {25*,350, } ]{ encoding = * }{ 10 }
 \fi
 
-%% To choose the type of manuscript
-\DeclareOption{article}{\gdef\@arttype{RESEARCH PAPER}}
-\DeclareOption{technicalnote}{\gdef\@arttype{TECHNICAL NOTE}}
-\DeclareOption{editorial}{\gdef\@arttype{EDITORIAL}}
-
-%% To choose the status of the manuscript
-\DeclareOption{submit}{\gdef\@status{submit}}
-\DeclareOption{final}{\gdef\@status{final}}
-
-%%
-\newif\if@showcorr \@showcorrtrue
-\DeclareOption{showcorresponding}{\@showcorrtrue}
-\DeclareOption{noshowcorresponding}{\@showcorrfalse}
-%\gdef\@showcorrtrue
-
-%\AtEndOfClass{\RequirePackage{microtype}}
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
-
-%% Defaults
-\ExecuteOptions{10pt,a4paper,article,submit,noshowcorresponding}
-\ProcessOptions\relax
 
 % Set page layout options (no geometry package)
 \setlength{\paperheight}{297mm}%
@@ -161,12 +170,12 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 \edef\@Received{\today}
 \edef\@FinalForm{\today}
 \edef\@Published{\today}
-\def\@VolumeNumber{VN}
-\def\@VolumeYear{VY}
-\def\@VolumeMonth{VM}
-\def\@IssueNumber{IN}
-\def\@ArticleNumber{AN}
-\def\@SubmissionNumber{SN}
+\edef\@VolumeNumber{VN}
+\edef\@VolumeYear{VY}
+\edef\@VolumeMonth{VM}
+\edef\@IssueNumber{IN}
+\edef\@ArticleNumber{AN}
+\edef\@SubmissionNumber{SN}
 
 
 \newcommand{\PaperTitle}[1]{\edef\@PaperTitle{#1}}

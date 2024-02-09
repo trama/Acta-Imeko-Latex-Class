@@ -41,38 +41,40 @@
 \documentclass[10pt]{imeko_acta}
 
 \usepackage{xspace}
+\usepackage{moreverb}
 
 \makeatletter
 \def\file#1{\textsf{\fontsize{9.1}{9.5}\selectfont#1}\xspace}
 % This part fails...  [no it doesn't :-)]
 %\show\f@size
 \newcommand\thefontsize{{font size is: \f@size pt}}
+
 \makeatother
 
 
 %----------------------------------------------------------------
 % Completed by Editors - You can fill in but Editor will finalize
 %----------------------------------------------------------------
-%\Editor{Francesco Lamonaca}
-%\EditorAffiliation{University of Calabria, Italy}
-%\Received{\today}
-%\FinalForm{January 31, 2021}
-%\Published{March 6, 2021}
-%\VolumeNumber{1}
-%\VolumeMonth{February}
-%\VolumeYear{2024}
-%\IssueNumber{1}
-%\ArticleNumber{1}
-%\SubmissionNumber{1}
+\Editor{Francesco Lamonaca}
+\EditorAffiliation{University of Calabria, Italy}
+\Received{\today}
+\FinalForm{\today}
+\Published{\today}
+\VolumeNumber{1}
+\VolumeMonth{February}
+\VolumeYear{2024}
+\IssueNumber{1}
+\ArticleNumber{0}
+%\SubmissionNumber{0}
 
 \begin{document}
 
 \title{How to Use the \texttt{imeko\_acta} \LaTeX\ class} % Article title \LaTeX\ class}
 
-\author[1]{Federico Tramarin}
+\author[1,2]{Federico Tramarin}
 
 \affiliation[1]{University of Modena and Reggio Emilia, Italy}
-% \affiliation[2]{National Research Council of Italy, CNR-IEIIT, Italy}
+\affiliation[2]{National Research Council of Italy, CNR-IEIIT, Italy}
 \CorrespondingAuthorNumber{1}
 \CorrespondingAuthorEmail{tramarin@unimore.it}
 
@@ -101,31 +103,59 @@ for formatting \LaTeX{} submissions to Elsevier journals.
 The class uses the environments and commands defined in \LaTeX{} kernel
 without any change in the signature so that clashes with other
 contributed \LaTeX{} packages such as \file{hyperref.sty},
-\file{preview-latex.sty}, etc., will be minimal.
-\file{elsarticle.cls} is primarily built upon the default
-\file{article.cls}.  
+\file{preview-latex.sty}, etc., should be minimal.
+
+\file{imeko\_acta.cls} is primarily built upon the default
+\file{article.cls} and as such several things that works there should work also here.  
 
 This class depends on the following packages
 for its proper functioning:
 
 \begin{enumerate}
-	\item \file{geometry.sty} for margin settings;
-	\item \file{fleqn.clo} for left aligned equations;
+	\item \file{babel.sty} for hyphenation in GB English;
+	\item \file{ebgaramond.sty} to add a (OSS) support to the Garamond typeface for the main text;
+	\item \file{amsmath} fot mathematical expressions;
+	\item \file{array,booktabs} for better tabular environments;
+	\item \file{tabularx} for automatic column-width tables;
 	\item \file{graphicx.sty} for graphics inclusion;
 	\item \file{helvet.sty} for typesetting Helvetica sans-serif parts;
 	\item \file{hyperref.sty} to support hyperlinking and metadata in the document;
-	\item \file{endfloat.sty} optional packages if floats to be placed at
-	end of the PDF.
+	\item \file{stfloat.sty} optional packages if floats need to be placed at
+	the bottom of the page.
+	\item \file{microtype} optional package for introducing microtypograhical features to the typesetting;
+	\item \file{enumitem} to match the itemized lists of the official Word template;
+	\item \file{caption} for typesetting captions of floats;
+	\item \file{colortbl} to highlight alternating rows of tabulars;
 \end{enumerate}
 
-All the above packages (except some optional packages) are part of any
+All the above packages are part of any
 standard \LaTeX{} installation. Therefore, the users need not be
-bothered about downloading any extra packages.  Furthermore, users are
-free to make use of \textsc{ams} math packages such as
-\file{amsmath.sty}, \file{amsthm.sty}, \file{amssymb.sty},
-\file{amsfonts.sty}, etc., if they want to.  All these packages work in
-tandem with \file{elsarticle.cls} without any problems.
+bothered about downloading any extra packages.
 
+\section{Usage}\label{sec:usage}
+The class should be loaded with the command:
+\medskip
+
+\begin{boxedverbatim}
+ \documentclass[<options>]{imeko_acta}
+\end{boxedverbatim}
+
+\medskip\noindent where the \verb+options+ can be the following:
+
+
+\begin{description}
+
+\item [{\tt submit}]  (default option) to be used by authors during submission phases.
+
+%\item [{\tt final}]  similar to the \verb+preprint+
+%option, but increases the baselineskip to facilitate easier review
+%process.
+
+\item [{\tt article, technicalnote, editorial}]  change the type of paper;
+
+\item [{\tt showcorresponding, noshowcorresponding}] indicates if the corresponding author should be explicitly marked with a $\ast$ after his/her name. Default is \verb|noshowcorresponding|.
+
+\end{description}
 
 \section{The Title page}
 

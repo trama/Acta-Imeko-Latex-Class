@@ -1,4 +1,5 @@
 %%% ACTA IMEKO Latex class file
+%% imeko_acta.cls
 %%
 %% Vers: 1.8
 %% By: Federico Tramarin (tramarin@unimore.it)
@@ -6,6 +7,41 @@
 %% Notes: Rewrote the code for producing the bibliography, now with bib labels hanged on the left
 %%		Added the \AIBreakAtRef command to equalize last column
 %%		Automatic aletrnate row coloring
+%%
+%% Copyright (c) 2024 Federico Tramarin
+%% 
+%%*************************************************************************
+%% Legal Notice:
+%% This code is offered as-is without any warranty either expressed or
+%% implied; without even the implied warranty of MERCHANTABILITY or
+%% FITNESS FOR A PARTICULAR PURPOSE! 
+%% User assumes all risk.
+%% In no event shall the Acta Imeko or any contributor to this code be liable for
+%% any damages or losses, including, but not limited to, incidental,
+%% consequential, or any other damages, resulting from the use or misuse
+%% of any information contained here.
+%% All comments are the opinions of their respective authors and are not
+%% necessarily endorsed by the Acta Imeko or Imeko.
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Federico Tramarin.
+%
+% This work consists of the files imeko_acta.cls, imeko_acta.bst
+% and the derived file imeko_acta_template.tex and guide.tex
+%
+%% Retain all contribution notices and credits.
+%% ** Modified files should be clearly indicated as such, including  **
+%% ** renaming them and changing author support contact information. **
+%%*************************************************************************
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{imeko_acta}[2024/02/08 Acta Imeko paper class v1.8]

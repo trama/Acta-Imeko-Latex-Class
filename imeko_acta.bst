@@ -1,9 +1,8 @@
-%%
 %% imeko_acta.bst
 %% BibTeX Bibliography Style file for Acta Imeko Journal
 %% Version 1.2 (2023/12/12)
 %%
-%% Copyright (c) 2023 Federico Tramarin
+%% Copyright (c) 2024 Federico Tramarin
 %% 
 %%*************************************************************************
 %% Legal Notice:
@@ -15,15 +14,24 @@
 %% any damages or losses, including, but not limited to, incidental,
 %% consequential, or any other damages, resulting from the use or misuse
 %% of any information contained here.
-%%
 %% All comments are the opinions of their respective authors and are not
 %% necessarily endorsed by the Acta Imeko or Imeko.
-%%
-%% This work is distributed under the LaTeX Project Public License (LPPL)
-%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
-%% distributed and modified. A copy of the LPPL, version 1.3, is included
-%% in the base LaTeX documentation of all distributions of LaTeX released
-%% 2003/12/01 or later.
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Federico Tramarin.
+%
+% This work consists of the files imeko_acta.cls, imeko_acta.bst
+% and the derived file imeko_acta_template.tex and guide.tex
+%
 %% Retain all contribution notices and credits.
 %% ** Modified files should be clearly indicated as such, including  **
 %% ** renaming them and changing author support contact information. **

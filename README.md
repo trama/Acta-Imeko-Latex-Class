@@ -25,6 +25,7 @@ The main reasons for a rewrite are that matching the Word template requires quit
 - Author: FT
 - Date: 08/02/2024
 - Notes
+  - Updated the LICENSE of this project, now under the LPPL license.
   - Corrected some serious bugs in class
     - fixed endbibliography code
     - switched to \edef with dates in titlepage to correctly support for \today

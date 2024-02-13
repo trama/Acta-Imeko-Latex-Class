@@ -302,4 +302,5 @@ TSWLatexianTemp*
 .DS_Store
 .gitignore
 imeko_acta_template.pdf
-mwe for bst/mwe.pdf
+example_paper/
+various_old_files/

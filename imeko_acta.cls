@@ -77,7 +77,7 @@
 \ExecuteOptions{a4paper,article,submit,noshowcorresponding}
 \ProcessOptions\relax
 
-\LoadClass[twocolumn,10pt,a4paper]{article}
+\LoadClass[10pt,twocolumn,a4paper]{article}
 
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}

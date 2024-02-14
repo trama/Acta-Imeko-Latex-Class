@@ -19,6 +19,14 @@ Then, in Sept. 2023 the journal EiC (prof. F. Lamonaca) asked to produce a stabl
 
 The main reasons for a rewrite are that matching the Word template requires quite a lot of font tunings, and obsolete commands (like \bf \it) do not support LaTeX2e's new font selection scheme, or NFSS{\bf foo}, for example, resets all font attributes which had been set earlier. also, we need new options to produce the camera ready and final version, etc.
 
+## INSTALLATION
+
+At the moment the package has not been yet published on CTAN, and hence cannot be installed through the usual channels (TeX Live package manager, MikTeX, etc.).
+
+Hence, at the moment the most simple ways to have the package working properly are:
+- copy the three files (imeko_acta.cls, imeko_acta.bst and imeko.png) in the same folder of your LaTeX files (the sources of your paper)
+- if you plan to use it several times, put it in your local TEXMF folder, usually under your home dir (please refer to online guides to locate the exact position of this folder).
+
 ## CHANGELOG
 
 ### Version 1.8

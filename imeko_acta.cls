@@ -176,13 +176,13 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 \edef\@IssueNumber{IN}
 \edef\@ArticleNumber{AN}
 \edef\@SubmissionNumber{SN}
-
+\edef\@ArticleDOI{10.21014/actaimeko.vXiY.NNNN}
 
 \newcommand{\PaperTitle}[1]{\edef\@PaperTitle{#1}}
 \newcommand{\Archive}[1]{\edef\@Archive{#1}}
 \newcommand{\Abstract}[1]{\edef\@Abstract{#1}}
 \newcommand{\Keywords}[1]{\def\@Keywords{#1}}
-\newcommand{\Citation}[1]{\edef\@Citation{#1}}
+%\newcommand{\Citation}[1]{\edef\@Citation{#1}}
 \newcommand{\Editor}[1]{\edef\@Editor{#1}}
 \newcommand{\EditorAffiliation}[1]{\edef\@EditorAffiliation{#1}}
 \newcommand{\Funding}[1]{\ifthenelse{\equal{#1}{}}{\def\@Funding{No funding specified.}}{\edef\@Funding{#1}}}
@@ -195,6 +195,7 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 \newcommand{\IssueNumber}[1]{\edef\@IssueNumber{#1}}
 \newcommand{\ArticleNumber}[1]{\edef\@ArticleNumber{#1}}
 \newcommand{\SubmissionNumber}[1]{\edef\@SubmissionNumber{#1}}
+\newcommand{\ArticleDOI}[1]{\edef\@ArticleDOI{#1}}
 
 
 
@@ -512,10 +513,16 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 	which permits unrestricted use, distribution, and reproduction %
 	in any medium, provided the original author and source are credited.}
 
+\def\urldoibase{https://doi.org/}
+\def\urldoi{\urldoibase\@ArticleDOI}
+
 \def\@Citation{\@AIauthorsNames,\space\@title,\space\@Journal,\space%
-	vol.\space\@VolumeNumber,\space no.\space\@IssueNumber,\space%
-	article\space\@ArticleNumber,\space\@VolumeMonth,\space\@VolumeYear,\space%
-	Identifier:\space\@Identifier}
+	vol.\space\@VolumeNumber\space(\@VolumeYear)\space% 
+	no.\space\@IssueNumber,\space%
+	pp.\space 1\space--\space\@abspage@last,\space DOI:\space\href{\urldoi}{\@ArticleDOI}%
+	}
+	%article\space\@ArticleNumber,\space\@VolumeMonth,\space\@VolumeYear,\space%
+	%Identifier:\space\@Identifier}
 
 %% Reserva a savebox for the Abstract
 \newbox\absbox

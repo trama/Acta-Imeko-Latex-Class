@@ -46,6 +46,8 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{imeko_acta}[2024/02/08 Acta Imeko paper class v1.8]
 
+\newif\ifweareinproduction	\weareinproductionfalse
+
 %% To choose the type of manuscript
 \DeclareOption{article}{\gdef\@arttype{RESEARCH PAPER}}
 \DeclareOption{technicalnote}{\gdef\@arttype{TECHNICAL NOTE}}
@@ -78,7 +80,7 @@
 \ProcessOptions\relax
 
 \LoadClass[10pt,twocolumn,a4paper]{article}
-
+\usepackage[scaled=0.87]{helvet}
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[british]{babel}
@@ -102,23 +104,9 @@
 \RequirePackage[per-mode = symbol,
 inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 
-\ifxetex
-	\RequirePackage{fontspec,unicode-math}
-	\setsansfont{Calibri}
-	\setmathfont{Cambria Math}
-\fi
-
-\ifpdf
-	\usepackage[scaled=0.87]{helvet}
-\fi
-\ifLuaTeX
-	\RequirePackage{fontspec,unicode-math}
-	\setsansfont{Calibri}
-	\setmathfont{Cambria Math}
-	\microtypesetup{tracking=normalfont,expansion}
-	\SetTracking[ spacing = {25*,350, } ]{ encoding = * }{ 10 }
-\fi
-
+\IfFileExists{imeko_acta_production.sty}{%
+  \global\weareinproductiontrue%
+  \RequirePackage{imeko_acta_production}}{}
 
 % Set page layout options (no geometry package)
 \setlength{\paperheight}{297mm}%
@@ -182,7 +170,6 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 \newcommand{\Archive}[1]{\edef\@Archive{#1}}
 \newcommand{\Abstract}[1]{\edef\@Abstract{#1}}
 \newcommand{\Keywords}[1]{\def\@Keywords{#1}}
-%\newcommand{\Citation}[1]{\edef\@Citation{#1}}
 \newcommand{\Editor}[1]{\edef\@Editor{#1}}
 \newcommand{\EditorAffiliation}[1]{\edef\@EditorAffiliation{#1}}
 \newcommand{\Funding}[1]{\ifthenelse{\equal{#1}{}}{\def\@Funding{No funding specified.}}{\edef\@Funding{#1}}}
@@ -196,8 +183,6 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 \newcommand{\ArticleNumber}[1]{\edef\@ArticleNumber{#1}}
 \newcommand{\SubmissionNumber}[1]{\edef\@SubmissionNumber{#1}}
 \newcommand{\ArticleDOI}[1]{\edef\@ArticleDOI{#1}}
-
-
 
 \RequirePackage[unicode=true,
 	bookmarksopen={true},
@@ -374,9 +359,12 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 % Definitions to manage multiple authors
 % Definitions for management of multiple authors and affiliations
 \def\author{\@@author}
+%\def\author{\@ifnextchar[{\@@author}{\@author}}
 \def\@AIaffiliations{}
 \def\@AIauthors{}
 \def\@AIauthorsNames{}
+\def\@AIauthorsNamesCitation{}
+\def\abbreviated{}
 
 %some temporary variables for internal use
 \let\authorsep\@empty
@@ -402,6 +390,9 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 			%\typeout{Federico - @@author macro -> auth:\theauth\ affmark:\@@affmark - author:#1}
        		\edef\affnum{\@ifundefined{X@\@@affmark}{affn?}{\AIrefMark{\@@affmark}}}%
      		\unskip\sep\affnum%
+			\ifnotyetprocessed%
+				\NewAIaffLabel{auth-\theauth}{+}%
+		 	\fi%
 			\edef\cormark{\@ifundefined{X@cor-\theauth}{}{%
 				\if@showcorr
 					{,\AIrefMark{cor-\theauth}}%
@@ -429,6 +420,15 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 	\fi
 }
 
+\def\abbreviated[#1]#2{%
+	\g@addto@macro\@AIauthorsNamesCitation{%
+	%\NewAIaffLabel{abbr-#1}{, }%
+	\@ifundefined{X@auth-#1}{}{%
+				{,\space#2}%
+				}
+	}
+}
+
 % we  process all the affiliations, creating an affLabel for each one
 % and then writing them down
 % in this phase, at the first round, we hence create the variables for cross referencing with 
@@ -440,7 +440,7 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 	\g@addto@macro\@AIaffiliations{%
 		\def\baselinestretch{1}%
 		\refstepcounter{affn}%
-		\xdef\@currentlabel{\theaffn}%
+		%\xdef\@currentlabel{\theaffn}%
 		%\typeout{Federico - @@affiliation macro -> \@currentlabel}
 		\AIaffLabel{#1}%here we create a first round of refmarks for each affiliation
 		{\upshape\textsuperscript{\theaffn}}\space#2\par\vspace{1pt}}% the vspace is necessary to keep the same interline spacing of word (due to superscripts)
@@ -516,7 +516,7 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 \def\urldoibase{https://doi.org/}
 \def\urldoi{\urldoibase\@ArticleDOI}
 
-\def\@Citation{\@AIauthorsNames,\space\@title,\space\@Journal,\space%
+\def\@Citation{\@AIauthorsNames,---\@AIauthorsNamesCitation\space\@title,\space\@Journal,\space%
 	vol.\space\@VolumeNumber\space(\@VolumeYear)\space% 
 	no.\space\@IssueNumber,\space%
 	pp.\space 1\space--\space\@abspage@last,\space DOI:\space\href{\urldoi}{\@ArticleDOI}%

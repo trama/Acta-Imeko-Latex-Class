@@ -48,9 +48,9 @@
 % This part fails...  [no it doesn't :-)]
 %\show\f@size
 \newcommand\thefontsize{{font size is: \f@size pt}}
-
+\def\firstinit#1{\justfirst#1 \relax\relax}
+\def\justfirst#1#2 #3\relax{#1\if\relax#3\else{} \justfirst#3\relax\fi}
 \makeatother
-
 
 %----------------------------------------------------------------
 % Completed by Editors - You can fill in but Editor will finalize
@@ -72,12 +72,25 @@
 
 \title{How to Use the \texttt{imeko\_acta} \LaTeX\ class} % Article title \LaTeX\ class}
 
-\author[1,2]{Federico Tramarin}
+\author[1,2]{Federico Tramarin}%{F. Tramarin}
+\abbreviated[1]{F. Tramarin}
+\author[1,3]{Agata Tramarin}%{F. Tramarin}
+\abbreviated[2]{A. Tramarin}
+\author[1,4]{Tommaso Tramarin}%{F. Tramarin}
+\abbreviated[3]{T. Tramarin}
 
 \affiliation[1]{University of Modena and Reggio Emilia, Italy}
 \affiliation[2]{National Research Council of Italy, CNR-IEIIT, Italy}
+\affiliation[3]{National Research Council of Italy, CNR-IEIIT, Italy}
+\affiliation[4]{National Research Council of Italy, CNR-IEIIT, Italy}
 \CorrespondingAuthorNumber{1}
 \CorrespondingAuthorEmail{tramarin@unimore.it}
+
+ \authortest{name={Federico},
+ 	surname={Tramarin},
+ 	abbreviation={F. Tramarin}
+ 	}
+
 
 % % Keywords - if you don't want any simply remove all the text between the curly brackets
 %\Keywords{Guide; Template; IMEKO; \LaTeX} 

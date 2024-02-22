@@ -1,9 +1,9 @@
 %%% ACTA IMEKO Latex class file
 %% imeko_acta.cls
 %%
-%% Vers: 1.8
+%% Vers: 1.9
 %% By: Federico Tramarin (tramarin@unimore.it)
-%% Date: 08/02/2024
+%% Date: 22/02/2024
 %% Notes: Rewrote the code for producing the bibliography, now with bib labels hanged on the left
 %%		Added the \AIBreakAtRef command to equalize last column
 %%		Automatic aletrnate row coloring
@@ -358,76 +358,98 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 
 % Definitions to manage multiple authors
 % Definitions for management of multiple authors and affiliations
-\def\author{\@@author}
+\def\author{\@@authori}
 %\def\author{\@ifnextchar[{\@@author}{\@author}}
 \def\@AIaffiliations{}
 \def\@AIauthors{}
 \def\@AIauthorsNames{}
 \def\@AIauthorsNamesCitation{}
-\def\abbreviated{}
 
 %some temporary variables for internal use
-\let\authorsep\@empty
 \let\authorsep\@empty
 \let\sep\@empty
 \let\@cormark\@empty
 \def\CorrespondingAuthor{}
 \def\@CorrespondingAuthorName{}
 
-% Create Authors string with superscripts indicating their affiliation (\@@affmark)
-% However, at the first round, there can not be a match between author and affiliation
-% So first round we write affn? and crate a reference for \@@affmark
-% then we process
-\newcounter{auth}
-\def\@@author[#1]#2{%
-    \g@addto@macro\@AIauthors{%
-    \def\baselinestretch{1}%
-	\refstepcounter{auth}% increment by 1
-	\newif\ifnotyetprocessed% this if is needed to check if this author has already been counted for corresponding
-	\notyetprocessedtrue
-    \authorsep#2\unskip\textsuperscript{%
-      	\@for\@@affmark:=#1\do{%
-			%\typeout{Federico - @@author macro -> auth:\theauth\ affmark:\@@affmark - author:#1}
-       		\edef\affnum{\@ifundefined{X@\@@affmark}{affn?}{\AIrefMark{\@@affmark}}}%
-     		\unskip\sep\affnum%
-			\ifnotyetprocessed%
-				\NewAIaffLabel{auth-\theauth}{+}%
-		 	\fi%
-			\edef\cormark{\@ifundefined{X@cor-\theauth}{}{%
-				\if@showcorr
-					{,\AIrefMark{cor-\theauth}}%
-				\else
-					{}%
-				\fi}}%
-			%			\unskip\sep\cormark\let\sep=,% this line was wrong, since it will add a extra comma in case of multiple affiliations
-			\unskip\cormark\let\sep=,% now the issue is for the corresponding author with multiple affiliations
-			\ifx\cormark\@empty%
-			\else
-				\ifnotyetprocessed% if the author is corresponding and is the first time we are here
-					\g@addto@macro\@CorrespondingAuthorName{#2}% add the author name to the output
-					\notyetprocessedfalse %if it is a subsequent round, do nothing
-				\fi
-			\fi
-			}%
-      	}%
-    \gdef\authorsep{\unskip,\space}%
-    \global\let\sep\@empty%
-	}
-	\ifx\@AIauthorsNames\@empty
-		\g@addto@macro\@AIauthorsNames{#2}%
-	\else
-		\g@addto@macro\@AIauthorsNames{;\space#2}%
-	\fi
-}
+\def\@author@name{}
+\def\@author@surname{}
+\def\@authorshortname{}
 
-\def\abbreviated[#1]#2{%
-	\g@addto@macro\@AIauthorsNamesCitation{%
-	%\NewAIaffLabel{abbr-#1}{, }%
-	\@ifundefined{X@auth-#1}{}{%
-				{,\space#2}%
-				}
-	}
-}
+\def\@tmpauthname{}
+
+\define@key{authornames}{name}{%
+	\def\@author@name{#1}}
+%	\g@addto@macro\@tmpauthname{#1}}
+\define@key{authornames}{surname}{%
+	\def\@author@surname{#1}}
+%	\g@addto@macro\@tmpauthname{\space#1}}
+  \define@key{authornames}{abbreviation}{%
+  	\def\@authorshortname{#1}}
+	
+\setkeys{authornames}{name=Pippo,surname=Pluto,abbreviation=P. Pluto}
+
+\newif\ifnotyetprocessed
+\def\@@authori[#1]#2{%
+  \setkeys{authornames}{#2}%
+  \begingroup
+  \toks@{\endgroup\processauthor{#1}}%
+  \protected@edef\tmpauthname{%
+    \the\toks@{\@author@name\space\@author@surname}{\@authorshortname}%
+  }%
+  \tmpauthname
+}%
+
+\newcounter{auth}
+\long\def\processauthor#1#2#3{%
+  \g@addto@macro\@AIauthors{%
+    \def\baselinestretch{1}%
+    \refstepcounter{auth}% increment by 1
+    \notyetprocessedtrue
+    \authorsep#2\unskip
+    \textsuperscript{%
+      \@for\@@affmark:=#1\do{%
+        \edef\affnum{%
+          \@ifundefined{X@\@@affmark}{affn?}{\AIrefMark{\@@affmark}}%
+        }%
+        \unskip\sep\affnum
+        \ifnotyetprocessed
+          \NewAIaffLabel{auth-\theauth}{+}%
+        \fi
+        \edef\cormark{%
+          \@ifundefined{X@cor-\theauth}{}{%
+            \if@showcorr
+              {,\AIrefMark{cor-\theauth}}%
+            \else
+              {}%
+            \fi
+          }%
+        }%
+        \unskip\cormark
+        \let\sep=,% now the issue is for the corresponding author with multiple affiliations
+        \ifx\cormark\@empty
+        \else
+          \ifnotyetprocessed % if the author is corresponding and is the first time we are here
+            \g@addto@macro\@CorrespondingAuthorName{#2}% add the author name to the output
+            \notyetprocessedfalse % if it is a subsequent round, do nothing
+          \fi
+        \fi
+      }%
+    }%
+    \gdef\authorsep{\unskip,\space}%
+    \global\let\sep\@empty
+  }%%
+  \ifx\@AIauthorsNames\@empty
+    \g@addto@macro\@AIauthorsNames{#2}%
+  \else
+    \g@addto@macro\@AIauthorsNames{;\space#2}%
+  \fi
+  \ifx\@AIauthorsNamesCitation\@empty
+	\g@addto@macro\@AIauthorsNamesCitation{#3}%
+  \else
+	\g@addto@macro\@AIauthorsNamesCitation{,\space#3}%
+  \fi
+}%
 
 % we  process all the affiliations, creating an affLabel for each one
 % and then writing them down
@@ -516,7 +538,7 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 \def\urldoibase{https://doi.org/}
 \def\urldoi{\urldoibase\@ArticleDOI}
 
-\def\@Citation{\@AIauthorsNames,---\@AIauthorsNamesCitation\space\@title,\space\@Journal,\space%
+\def\@Citation{\@AIauthorsNamesCitation,\space\@title,\space\@Journal,\space%
 	vol.\space\@VolumeNumber\space(\@VolumeYear)\space% 
 	no.\space\@IssueNumber,\space%
 	pp.\space 1\space--\space\@abspage@last,\space DOI:\space\href{\urldoi}{\@ArticleDOI}%

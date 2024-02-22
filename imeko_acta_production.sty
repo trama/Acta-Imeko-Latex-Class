@@ -1,9 +1,9 @@
-%%% ACTA IMEKO Latex class file
-%% imeko_acta.cls
+%%% ACTA IMEKO Latex class file - Extra functions
+%% imeko_acta_production.sty
 %%
-%% Vers: 1.8
+%% Vers: 1.9
 %% By: Federico Tramarin (tramarin@unimore.it)
-%% Date: 08/02/2024
+%% Date: 22/02/2024
 %% Notes: Rewrote the code for producing the bibliography, now with bib labels hanged on the left
 %%		Added the \AIBreakAtRef command to equalize last column
 %%		Automatic aletrnate row coloring
@@ -71,34 +71,6 @@
 \IfFileExists{etoolbox.sty}{\RequirePackage{etoolbox}}{}
 \fi
 
-\def\@author@name{}
-\def\@author@surname{}
-\def\@authorshortname{}
-\define@key{authornames}{name}{%
-	\def\@author@name{#1}}
-\define@key{authornames}{surname}{%
-	\def\@author@surname{#1}}
-  \define@key{authornames}{abbreviation}{%
-  	\def\@authorshortname{#1}}
-\setkeys{authornames}{name=Pippo,surname=Pluto,abbreviation=P. Pluto}
-
-\long\def\authortest#1{%
-      %\@resetaffiliation%
-      %\gdef\caaffiliationvalues{}%
-      %\elsLabel{#1}%
-      \setkeys{authornames}{#1}%
-    %   \g@addto@macro\elsaddress{%
-    %   \def\baselinestretch{1}%
-    %   \refstepcounter{affn}%
-    %   \xdef\@currentlabel{\theaffn}%
-    %   \elsLabel{#1}%
-    %   \textsuperscript{\theaffn}}
-      \gdef\authtest{\@author@name\space\@author@name\space\@authorshortname\par}%
-	}
-
-\def\printauth{\authtest}
-
-
 \ifuseexplthreefunctions\relax%
 \ExplSyntaxOn
 \keys_define:nn { ai / author }{ 
@@ -108,7 +80,7 @@
 	abbreviated .code:n= \csgappto { authorshortname } {#1}, 
 	}
 
-	\DeclareDocumentCommand\authori{ o m }{
+	\DeclareDocumentCommand\authorii{ o m }{
 		\csgdef { authorlongname3 } { }
 		\csgdef { authorshortname3 } { }
 		\IfNoValueTF { #2 }

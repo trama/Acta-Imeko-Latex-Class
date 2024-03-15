@@ -48,8 +48,6 @@
 % This part fails...  [no it doesn't :-)]
 %\show\f@size
 \newcommand\thefontsize{{font size is: \f@size pt}}
-\def\firstinit#1{\justfirst#1 \relax\relax}
-\def\justfirst#1#2 #3\relax{#1\if\relax#3\else{} \justfirst#3\relax\fi}
 \makeatother
 
 %----------------------------------------------------------------
@@ -73,13 +71,9 @@
 \title{How to Use the \texttt{imeko\_acta} \LaTeX\ class} % Article title \LaTeX\ class}
 
 \author[a1,a2]{name=Federico,surname=Tramarin,abbreviation=F. Tramarin}%
-\author[a1,a3]{name=Agata,surname=Tramarin,abbreviation=A. Tramarin}%
-\author[a1,a4]{name=Tommaso,surname=Tramarin,abbreviation=T. Tramarin}%
 
 \affiliation[a1]{University of Modena and Reggio Emilia, Italy}
 \affiliation[a2]{National Research Council of Italy, CNR-IEIIT, Italy}
-\affiliation[a3]{National Research Council of Italy, CNR-IEIIT, Italy}
-\affiliation[a4]{National Research Council of Italy, CNR-IEIIT, Italy}
 \CorrespondingAuthorNumber{1}
 \CorrespondingAuthorEmail{tramarin@unimore.it}
 
@@ -169,10 +163,12 @@ The class should be loaded with the command:
 
 \end{description}
 
-\section{The Title page}
+\section{The Title area}
 
-The title page is created with the standard \LaTeX\ command \verb|\maketitle| and using the same schema of article.cls.
-Before this command is called, the author must declare all of the text objects which are to appear in the title area, as detailed below.
+The title area of any manuscript published in Acta Imeko is typeset on a single column section, composed by the Title, the Author and Affiliations area, a light blue box containing the Abstract, and finally a box containing several manuscript data (keywords, fundings, corresponding author, etc.) and a ``Citation'' field, containing a string useful for citing directly the work.
+
+The title area is created with the standard \LaTeX\ command \verb|\maketitle| and using the same schema of article.cls.
+Before this command is called, the author must declare all of the text objects which have to appear in the title area, as detailed below.
 
 \subsection{Paper Title} \label{sec:sub1}
 
@@ -180,7 +176,29 @@ Use the classic \verb|title| command. It is safe to put it just after the \verb|
 
 \subsection{Authors}
 
-Description of authors' management.
+The inclusion of author names is performed with the usual \verb|\author{}| environment.
+
+However, the class will display both the full author names in the authors area, as well as the shorten form (with abbreviated authors names) for the \textbf{Citation} field.
+Therefore, it is required for authors to input these tokens ``name'', ``surname'' and ``abbreviation'' separately.
+
+To this aim the command has to be used in this form:
+\begin{verbatim}
+	\author{
+		name={Name},
+		surname={Family Name},
+		abbreviated={Abbreviated Name}
+	}
+\end{verbatim}
+
+For instance, an author whose name is ``Thomas Alva Edison'' will be introduced as:
+\begin{verbatim}
+	\author{
+		name={Thomas Alva},
+		surname={Edison},
+		abbreviated={T. A.}
+	}
+\end{verbatim}
+and produces both the full name for the author field, and the abbreviated form ``T. A. Edison''.
 
 \subsection{Sections}
 

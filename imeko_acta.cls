@@ -62,24 +62,28 @@
 \DeclareOption{showcorresponding}{\@showcorrtrue}
 \DeclareOption{noshowcorresponding}{\@showcorrfalse}
 
-%% Article options
-% \DeclareOption{onecolumn}{
-%   \PassOptionsToClass{\CurrentOption}{article}
-% }
+\newif\ifonecolumn \onecolumnfalse
+\DeclareOption{onecolumn}{\onecolumntrue}
+\DeclareOption{twocolumn}{\onecolumnfalse}
 
 %\AtEndOfClass{\RequirePackage{microtype}}
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
-
-% %% Fallback
-% \DeclareOption*{
-%   \ClassWarning{imeko_acta}{Unknown option '\CurrentOption'}
-% }
+\DeclareOption*{%
+\ClassWarning{imeko_acta}{Unknown option '\CurrentOption'}%
+	\PassOptionsToClass{\CurrentOption}{article}%
+}
 
 %% Defaults
-\ExecuteOptions{a4paper,article,submit,noshowcorresponding}
+\ExecuteOptions{a4paper,twocolumn,article,submit,noshowcorresponding}
 \ProcessOptions\relax
 
-\LoadClass[10pt,twocolumn,a4paper]{article}
+\ifonecolumn%
+    \PassOptionsToClass{onecolumn}{article}%
+\else
+    \PassOptionsToClass{twocolumn}{article}%
+\fi
+
+\LoadClass[10pt,notitlepage]{article}
+
 \usepackage[scaled=0.87]{helvet}
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
@@ -560,63 +564,66 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 	\fontsize{9}{12}\noindent\unskip\ignorespaces}
 	{\egroup}
 
-\renewcommand{\@maketitle}{%
-	%\twocolumn[{%
-		%\pagestyle{fancy}%
-		\vskip-26pt%
-		\parindent0pt
-		\footnotesize\sffamily
-		\begin{minipage}[b]{0.933\textwidth}
-				\newdimen\upperrule%
-				\upperrule=\textwidth%
-				\advance\upperrule by -2pt%
-				\raggedright
-				{\large\bfseries {\MakeUppercase{\@Journal}}\par}\vskip2pt%
-				{\small\bfseries {\@ISSN}\par}\vskip1pt%
-				{\small\itshape {\@JournalInfoHeader}\par}\vskip2pt%
-				\noindent\textcolor[RGB]{49,1,98}{\rule{\upperrule}{1.5pt}}%
-		\end{minipage}\hfill%
-		\begin{minipage}[b]{0.062\textwidth}
-			\includegraphics[width=1.28cm]{./imeko.png}
-		\end{minipage}%
-		\vskip15pt%
-		\begingroup
-		\huge{\bfseries\@title}\par%
-		\vskip15pt%
-		\large{\bfseries\@AIauthors}\par%
-		\vskip14pt%
-		\itshape\small\@AIaffiliations\par%
-		\endgroup%%
-		\vskip17pt%
-		\fcolorbox{AIAbstractBackground}{AIAbstractBackground}{%
-			\hskip4pt%
-			\parbox{\textwidth}{\vskip6pt%
-				\ifvoid\absbox\else\unvbox\absbox\par\vskip6pt\fi}%
-			\hskip4pt%
-		}
-		\vskip10pt%
-		\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
-		\vskip12pt%
-		{\bfseries Section:}\space\@arttype\par
-		\vskip6pt%pt%
-		{\bfseries Keywords:}\space\@Keywords\par
-		\vskip6pt%pt%
-		{\bfseries Citation:}\space\@Citation\par
-		\vskip6pt%
-		{\bfseries Section Editor:}\space\@Editor,\space\@EditorAffiliation\par
-		\vskip6pt%
-		{\bfseries Received:}\space{\@Received};\space{\bfseries In Final Form:}%
-		\space\@FinalForm;\space{\bfseries Published:}\space\@Published.\par
-		\vskip6pt%
-		{\bfseries Copyright:}\space\@CopyRight\par
-		\vskip6pt%
-		{\bfseries Funding:}\space\@Funding\par
-		\vskip6pt%
-		{\bfseries Corresponding Author:}\space\CorrespondingAuthor\par
-		\vskip6pt%
-		\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
-		\vskip20pt%
-}%
+\def\@maketitle{%
+\null
+	\ifonecolumn
+	\vskip-26pt%
+	\else
+	\vskip-26pt%
+	\fi
+	\parindent0pt
+	\footnotesize\sffamily
+	\begin{minipage}[b]{0.933\textwidth}
+			\newdimen\upperrule%
+			\upperrule=\textwidth%
+			\advance\upperrule by -2pt%
+			\raggedright
+			{\large\bfseries {\MakeUppercase{\@Journal}}\par}\vskip2pt%
+			{\small\bfseries {\@ISSN}\par}\vskip1pt%
+			{\small\itshape {\@JournalInfoHeader}\par}\vskip2pt%
+			\noindent\textcolor[RGB]{49,1,98}{\rule{\upperrule}{1.5pt}}%
+	\end{minipage}\hfill%
+	\begin{minipage}[b]{0.062\textwidth}
+		\includegraphics[width=1.28cm]{./imeko.png}
+	\end{minipage}%
+	\vskip15pt%
+	\begingroup
+	\huge{\bfseries\@title}\par%
+	\vskip15pt%
+	\large{\bfseries\@AIauthors}\par%
+	\vskip14pt%
+	\itshape\small\@AIaffiliations\par%
+	\endgroup%%
+	\vskip17pt%
+	\fcolorbox{AIAbstractBackground}{AIAbstractBackground}{%
+		\hskip4pt%
+		\parbox{\textwidth}{\vskip6pt%
+			\ifvoid\absbox\else\unvbox\absbox\par\vskip6pt\fi}%
+		\hskip4pt%
+	}
+	\vskip10pt%
+	\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
+	\vskip12pt%
+	{\bfseries Section:}\space\@arttype\par
+	\vskip6pt%pt%
+	{\bfseries Keywords:}\space\@Keywords\par
+	\vskip6pt%pt%
+	{\bfseries Citation:}\space\@Citation\par
+	\vskip6pt%
+	{\bfseries Section Editor:}\space\@Editor,\space\@EditorAffiliation\par
+	\vskip6pt%
+	{\bfseries Received:}\space{\@Received};\space{\bfseries In Final Form:}%
+	\space\@FinalForm;\space{\bfseries Published:}\space\@Published.\par
+	\vskip6pt%
+	{\bfseries Copyright:}\space\@CopyRight\par
+	\vskip6pt%
+	{\bfseries Funding:}\space\@Funding\par
+	\vskip6pt%
+	{\bfseries Corresponding Author:}\space\CorrespondingAuthor\par
+	\vskip6pt%
+	\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
+	\vskip20pt%
+}
 
 %----------------------------------------------------------------------
 %	REFERENCES

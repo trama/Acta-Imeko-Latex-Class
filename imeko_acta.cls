@@ -203,6 +203,7 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 \newcommand{\org@maketitle}{}% LATEX-Check
 \let\org@maketitle\maketitle
 \def\maketitle{%
+	\org@maketitle
 	\hypersetup{
 		pdftitle={\@title},
 		pdfsubject={\@Journal\space\@VolumeNumber\space(\@VolumeYear)%
@@ -224,7 +225,6 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 			}
 		}%
 		%\typeout{FT:1 \@AIauthorsNames}
-	\org@maketitle
 }
 
 % Acta IMEKO item lists: we uses 5) not 5.
@@ -565,11 +565,11 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 	{\egroup}
 
 \def\@maketitle{%
-\null
+	\null
 	\ifonecolumn
-	\vskip-26pt%
+		\vskip-36pt%
 	\else
-	\vskip-26pt%
+		\vskip-26pt%
 	\fi
 	\parindent0pt
 	\footnotesize\sffamily

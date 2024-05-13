@@ -42,9 +42,10 @@
 
 \usepackage{xspace}
 \usepackage{moreverb}
+\usepackage[dvipsnames]{xcolor}
 
 \makeatletter
-\def\file#1{\textsf{\fontsize{9.1}{9.5}\selectfont#1}\xspace}
+\def\file#1{\textsf{\fontsize{9.2}{9.5}\selectfont\color{MidnightBlue}#1}\xspace}
 % This part fails...  [no it doesn't :-)]
 %\show\f@size
 \newcommand\thefontsize{{font size is: \f@size pt}}
@@ -68,7 +69,7 @@
 
 \begin{document}
 
-\title{How to Use the \texttt{imeko\_acta} \LaTeX\ class} % Article title \LaTeX\ class}
+\title{How-To --- A Guide to the \texttt{imeko\_acta} \LaTeX\ class} % Article title \LaTeX\ class}
 
 \author[a1,a2]{name=Federico,surname=Tramarin,abbreviation=F. Tramarin}%
 
@@ -97,39 +98,29 @@
 
 \section{Introduction}
 
-\file{imeko\_acta.cls} is a thoroughly re-written document class
-for formatting \LaTeX{} submissions to Elsevier journals.
-The class uses the environments and commands defined in \LaTeX{} kernel
+The class {\tt imeko\_acta} is the official document class for formatting \LaTeX{} submissions to the Acta IMEKO journal.
+\medskip
+
+This class is composed by three files:
+\begin{description}
+
+	\item [\file{imeko\_acta.cls}]  the \LaTeX\ class \file{ciao} for typesetting the main article text;
+	
+	%\item [{\tt final}]  similar to the \verb+preprint+
+	%option, but increases the baselineskip to facilitate easier review
+	%process.
+	
+	\item [\file{imeko\_acta.bst}]  the style for formatting the bibliography;
+	
+	\item [\file{imeko.png}] the IMEKO logo, that appears in the upper right corner of the first page.
+	\end{description}
+
+\medskip
+
+The class has been tested in a broad range of cases, but some bugs could still be present. If you think you found a bug, or are experiencinuses the environments and commands defined in \LaTeX{} kernel
 without any change in the signature so that clashes with other
 contributed \LaTeX{} packages such as \file{hyperref.sty},
 \file{preview-latex.sty}, etc., should be minimal.
-
-\file{imeko\_acta.cls} is primarily built upon the default
-\file{article.cls} and as such several things that works there should work also here.  
-
-This class depends on the following packages
-for its proper functioning:
-
-\begin{enumerate}
-	\item \file{babel.sty} for hyphenation in GB English;
-	\item \file{ebgaramond.sty} to add a (OSS) support to the Garamond typeface for the main text;
-	\item \file{amsmath} fot mathematical expressions;
-	\item \file{array,booktabs} for better tabular environments;
-	\item \file{tabularx} for automatic column-width tables;
-	\item \file{graphicx.sty} for graphics inclusion;
-	\item \file{helvet.sty} for typesetting Helvetica sans-serif parts;
-	\item \file{hyperref.sty} to support hyperlinking and metadata in the document;
-	\item \file{stfloat.sty} optional packages if floats need to be placed at
-	the bottom of the page.
-	\item \file{microtype} optional package for introducing microtypograhical features to the typesetting;
-	\item \file{enumitem} to match the itemized lists of the official Word template;
-	\item \file{caption} for typesetting captions of floats;
-	\item \file{colortbl} to highlight alternating rows of tabulars;
-\end{enumerate}
-
-All the above packages are part of any
-standard \LaTeX{} installation. Therefore, the users need not be
-bothered about downloading any extra packages.
 
 \section{Usage}\label{sec:usage}
 The class should be loaded with the command:
@@ -213,6 +204,36 @@ If a section is long or deals with different topics, make a subdivision in subse
 \subsection{Numbering of subsections}
 
 Subsection numbering follows the outline numbering format which is configured in the template. Subsection headings use the Calibri font and are in bold.
+
+
+\section{Some extra explanations}
+\file{imeko\_acta.cls} is primarily built upon the default
+\file{article.cls} and as such several things that works there should work also here.  
+
+This class depends on the following packages
+for its proper functioning:
+
+\begin{enumerate}
+	\item \file{babel.sty} for hyphenation in GB English;
+	\item \file{ebgaramond.sty} to add a (OSS) support to the Garamond typeface for the main text;
+	\item \file{amsmath} fot mathematical expressions;
+	\item \file{array,booktabs} for better tabular environments;
+	\item \file{tabularx} for automatic column-width tables;
+	\item \file{graphicx.sty} for graphics inclusion;
+	\item \file{helvet.sty} for typesetting Helvetica sans-serif parts;
+	\item \file{hyperref.sty} to support hyperlinking and metadata in the document;
+	\item \file{stfloat.sty} optional packages if floats need to be placed at
+	the bottom of the page.
+	\item \file{microtype} optional package for introducing microtypograhical features to the typesetting;
+	\item \file{enumitem} to match the itemized lists of the official Word template;
+	\item \file{caption} for typesetting captions of floats;
+	\item \file{colortbl} to highlight alternating rows of tabulars;
+\end{enumerate}
+
+All the above packages are part of any
+standard \LaTeX{} installation. Therefore, the users need not be
+bothered about downloading any extra packages.
+
 
 
 % \begin{figure}[!b]

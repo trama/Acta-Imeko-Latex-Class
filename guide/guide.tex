@@ -38,8 +38,13 @@
 %% ** renaming them and changing author support contact information. **
 %%*************************************************************************
 
-\documentclass[10pt]{imeko_acta}
+\documentclass[11pt,onecolumn,notitlepage]{article}
 
+\usepackage{geometry}
+\geometry{a4paper,margin=25mm}
+\usepackage{newtx}
+\usepackage[english]{babel}
+\usepackage{graphicx}
 \usepackage{xspace}
 \usepackage{moreverb}
 \usepackage[dvipsnames]{xcolor}
@@ -54,16 +59,16 @@
 %----------------------------------------------------------------
 % Completed by Editors - You can fill in but Editor will finalize
 %----------------------------------------------------------------
-\Editor{Francesco Lamonaca}
-\EditorAffiliation{University of Calabria, Italy}
-\Received{\today}
-\FinalForm{\today}
-\Published{\today}
-\VolumeNumber{1}
-\VolumeMonth{February}
-\VolumeYear{2024}
-\IssueNumber{1}
-\ArticleNumber{0}
+%\Editor{Francesco Lamonaca}
+%\EditorAffiliation{University of Calabria, Italy}
+%\Received{\today}
+%\FinalForm{\today}
+%\Published{\today}
+%\VolumeNumber{1}
+%\VolumeMonth{February}
+%\VolumeYear{2024}
+%\IssueNumber{1}
+%\ArticleNumber{0}
 %\SubmissionNumber{0}
 %\ArticleDOI{}
 
@@ -71,20 +76,22 @@
 
 \title{How-To --- A Guide to the \texttt{imeko\_acta} \LaTeX\ class} % Article title \LaTeX\ class}
 
-\author[a1,a2]{name=Federico,surname=Tramarin,abbreviation=F. Tramarin}%
+\author{Federico Tramarin}%
 
-\affiliation[a1]{University of Modena and Reggio Emilia, Italy}
-\affiliation[a2]{National Research Council of Italy, CNR-IEIIT, Italy}
-\CorrespondingAuthorNumber{1}
-\CorrespondingAuthorEmail{tramarin@unimore.it}
+%\affiliation[a1]{University of Modena and Reggio Emilia, Italy}
+%\affiliation[a2]{National Research Council of Italy, CNR-IEIIT, Italy}
+%\CorrespondingAuthorNumber{1}
+%\CorrespondingAuthorEmail{tramarin@unimore.it}
 
 % % Keywords - if you don't want any simply remove all the text between the curly brackets
 %\Keywords{Guide; Template; IMEKO; \LaTeX} 
 
 % %Leave blank for no funding
-\Funding{}%[Optional, if applicable] This work was supported by IMEKO.}
+%\Funding{}%[Optional, if applicable] This work was supported by IMEKO.}
 %Leave blank for no funding, like this
 %\Funding{}
+
+\maketitle
 
 \begin{abstract}
 	This article describes how to use the imeko\_acta.cls class LATEX to produce high quality typeset papers that are suitable for submission to the Acta IMEKO journal.
@@ -94,9 +101,7 @@
 	Please refer to the author for any suggestion, bug filing and complaint.
 \end{abstract}
 
-\maketitle
-
-\section{Introduction}
+\section{Forewords}
 
 The class {\tt imeko\_acta} is the official document class for formatting \LaTeX{} submissions to the Acta IMEKO journal.
 \medskip
@@ -113,52 +118,74 @@ This class is composed by three files:
 	\item [\file{imeko\_acta.bst}]  the style for formatting the bibliography;
 	
 	\item [\file{imeko.png}] the IMEKO logo, that appears in the upper right corner of the first page.
-	\end{description}
+\end{description}
 
 \medskip
 
-The class has been tested in a broad range of cases, but some bugs could still be present. If you think you found a bug, or are experiencinuses the environments and commands defined in \LaTeX{} kernel
-without any change in the signature so that clashes with other
-contributed \LaTeX{} packages such as \file{hyperref.sty},
-\file{preview-latex.sty}, etc., should be minimal.
+All you have to do is to download these three file from the journal website, place them in a folder, and start writing a new \LaTeX\ file as usual. 
+You will also found a bare article file, that is a template you can use and modify according to your needs, to start typesetting your article in the least possible amount of time.
+
+In the rest of this guide I will try to provide the most important guidelines for using the class in an effective way.
+Please note that the class has been tested in a broad range of cases, but some bugs could still be present. 
+If you think you found a bug, or are experiencing strange/faulty behaviour, please file a bug to the author.
+
+\bigskip
+
+\noindent\fbox{\parbox{.98\textwidth}{\textbf{IMPORTANT:} the Acta IMEKO official template makes use of two different fonts for typesetting papers: Garamond for the main text areas and Calibri\textregistered\ for titling.
+
+This \LaTeX\ class will replace Calibri\textregistered\ with Helvetica, for compatibility and performance reasons. 
+
+Fonts will be then substituted during the production phase with the official ones.}}
+
+
 
 \section{Usage}\label{sec:usage}
-The class should be loaded with the command:
+
+The class has been prepared to use the least possible number of options, and hence can be loaded in the vast majority of cases with the command:
+\medskip
+
+\begin{boxedverbatim}
+ \documentclass{imeko_acta}
+\end{boxedverbatim}
+\medskip
+
+Besides, options for the class are supported, so that the classic loading will be:
 \medskip
 
 \begin{boxedverbatim}
  \documentclass[<options>]{imeko_acta}
 \end{boxedverbatim}
 
+
 \medskip\noindent where the \verb+options+ can be the following:
 
 \begin{description}
-
-\item [{\tt submit}]  (default option) to be used by authors during submission phases.
+\item [{\tt submit, final}]  to set if the typesetting has to be done for the reviewing phase or the final submission. Deafult is \verb|submit|.
 
 %\item [{\tt final}]  similar to the \verb+preprint+
 %option, but increases the baselineskip to facilitate easier review
 %process.
 
-\item [{\tt article, technicalnote, editorial}]  change the type of paper;
+\item [{\tt article, technicalnote, editorial}]  change the type of paper. Default is \verb|article|.
 
-\item [{\tt showcorresponding, noshowcorresponding}] indicates if the corresponding author should be explicitly marked with a $\ast$ after his/her name. Default is \verb|noshowcorresponding|.
-
-
-
-\item[] All options of \file{article.cls} can be used with this
-  document class.
-
-\item[] The default options loaded are \verb+a4paper+, \verb+10pt+,
-  \verb+twocolumn+, \verb+article+.
+\item [{\tt showcorresponding, noshowcorresponding}] indicates if the corresponding author should be explicitly marked with a mark after his/her name. Default is \verb|noshowcorresponding|.
 
 \end{description}
 
+Since the class is built upon the base \file{article.cls} \LaTeX\ class, all of its options can be specified. In some cases, however, we have disabled their effects if such options clashes with the requirements of the Acta IMEKO journal.
+
+\begin{figure*}
+\centering
+\includegraphics[width=.85\textwidth]{titlearea.png}
+\label{fig:titlearea}
+\caption{The title area}
+\end{figure*}
+
 \section{The Title area}
 
-The title area of any manuscript published in Acta Imeko is typeset on a single column section, composed by the Title, the Author and Affiliations area, a light blue box containing the Abstract, and finally a box containing several manuscript data (keywords, fundings, corresponding author, etc.) and a ``Citation'' field, containing a string useful for citing directly the work.
+The title area of any manuscript published in Acta IMEKO is typeset on a single column section, composed by the Title, the Author and Affiliations area, a light blue box containing the Abstract, and finally a box containing several manuscript data (keywords, fundings, corresponding author, etc.) and a ``Citation'' field, containing a string useful for citing directly the work. An example of the final aspect of the title area is represented in Fig. \ref{fig:titlearea}.
 
-The title area is created with the standard \LaTeX\ command \verb|\maketitle| and using the same schema of article.cls.
+The title area is created with the standard \LaTeX\ command \verb|\maketitle| and using the same schema of {\tt article.cls}.
 Before this command is called, the author must declare all of the text objects which have to appear in the title area, as detailed below.
 
 \subsection{Paper Title} \label{sec:sub1}
@@ -169,21 +196,39 @@ Use the classic \verb|title| command. It is safe to put it just after the \verb|
 
 The inclusion of author names is performed with the usual \verb|\author{}| environment.
 
-However, the class will display both the full author names in the authors area, as well as the shorten form (with abbreviated authors names) for the \textbf{Citation} field.
-Therefore, it is required for authors to input these tokens ``name'', ``surname'' and ``abbreviation'' separately.
+However, this class uses a special way for entering the author names, because for each author we need to know also the exact abbreviated form of the name.
 
-To this aim the command has to be used in this form:
+Therefore, it is required that authors input the tokens ``name'', ``surname'' and ``abbreviated'' form separately.
+
+Therefore, the general command that has to be used for inserting authors has the form:
 \begin{verbatim}
-	\author{
+	\author[a1]{
 		name={Name},
 		surname={Family Name},
 		abbreviated={Abbreviated Name}
 	}
 \end{verbatim}
 
-For instance, an author whose name is ``Thomas Alva Edison'' will be introduced as:
+There is no need for new lines between the fields (everything can also go into one single line), but the syntax has to be respected.
+
+The reason behind this requirement is that, in the titlepage area, the authors string under the title contains the fully expanded author names, while in the \textbf{Citation} field we will use the shortened form, to provide the authors and readers with a ready-to-use string for citing the article in their bibliography.
+
+The optional argument \verb|a1| is used to link each author to their respective affiliation. 
+Moreover, inside the argument, one can introduce a sequence of multiple labels separated by a comma, depending on the number of affiliations with which an author is linked. For instance we can have:
 \begin{verbatim}
-	\author{
+	\author[label1,label2,label3, ...]{
+		name={Name},
+		surname={Family Name},
+		abbreviated={Abbreviated Name}
+	}
+\end{verbatim}
+
+The label can be a random text (one, two, three, \dots, a1, a2, a3, \dots, aff1, aff2, aff3, \dots, are all valid labels), with the disclaimer that the labels cannot be pure numbers.
+\medskip
+
+Therefore, to make a practical example, an author whose name is ``Thomas Alva Edison'' that has two different affiliations, will be introduced as:
+\begin{verbatim}
+	\author[a1,a2]{
 		name={Thomas Alva},
 		surname={Edison},
 		abbreviated={T. A.}
@@ -191,22 +236,53 @@ For instance, an author whose name is ``Thomas Alva Edison'' will be introduced 
 \end{verbatim}
 and produces both the full name for the author field, and the abbreviated form ``T. A. Edison''.
 
-\subsection{Sections}
 
-If a section is long or deals with different topics, make a subdivision in subsections. Avoid further subdivision of a subsection. 
+\subsection{Affiliations}
 
-When subsections are used, there must be at least two. Use the style named ``Level2Title'' for the header of a subsection.
+The labels defined before when inserting the authors of the papers are then needed in the definition of all the affiliations.
 
-\subsubsection{Test}
-If a section is long or deals with different topics, make a subdivision in subsections. Avoid further subdivision of a subsection. When subsections are used, there must be at least two. Use the style named ``Level2Title'' for the header of a subsection.
+The command to insert the required affiliations is:
+\begin{verbatim}
+	\affiliation[label1]{University of...}
+	\affiliation[label2]{MIT, Boston, USA}
+	\affiliation[label3]{University of Oxford, UK}
+	...
+\end{verbatim}
+
+Therefore, to continue with the previous example, let's suppose that the author ``Thomas Alva Edison'' is affiliated with both the MIT and the Columbia University, and that the author string is the one provided before, we will insert the affiliations like:
+\begin{verbatim}
+	\affiliation[a1]{MIT, Boston, USA}
+	\affiliation[a2]{Columbia University, USA}
+\end{verbatim}
+
+\subsection{Corresponding author}
+
+This journal support for a single Corresponding author.
+To indicate the author who is acting in that role for the current article, we will use the commands:
+\begin{verbatim}
+  \CorrespondingAuthorNumber{n}
+  \CorrespondingAuthorEmail{email}
+\end{verbatim}
+
+In these commands, the parameter \verb|n| refers to the position of the corresponding author in the list of authors of the paper. Therefore, $n=1$ for the first author in the list, $n=2$ for the second and so forth.
+
+The email of the Corresponding Author has to be specified, since it is needed to build one of the field of the title area.
 
 
-\subsection{Numbering of subsections}
+\section{Sectioning and others}
 
-Subsection numbering follows the outline numbering format which is configured in the template. Subsection headings use the Calibri font and are in bold.
-
+The class behaves like the normal \LaTeX{} article class, so you can use the plain \verb|section|, \verb|subsection|, etc. 
+to style your text.
 
 \section{Some extra explanations}
+
+
+The class uses the environments and commands defined in \LaTeX{} kernel
+without any change in the signature so that clashes with other
+contributed \LaTeX{} packages such as \file{hyperref.sty},
+\file{preview-latex.sty}, etc., should be minimal.
+
+
 \file{imeko\_acta.cls} is primarily built upon the default
 \file{article.cls} and as such several things that works there should work also here.  
 

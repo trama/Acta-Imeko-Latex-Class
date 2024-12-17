@@ -94,14 +94,15 @@
 \usepackage{microtype} % without this, with ebgaramond many lines go out of the margin due to hyphenation issues
 \RequirePackage{ifthen}
 \RequirePackage{ifpdf,ifxetex}      % Needed to pick between latex and pdflatex
-\RequirePackage{graphicx,xcolor}
+\RequirePackage{graphicx}
+\RequirePackage[table]{xcolor}
 \RequirePackage[fleqn]{amsmath}
 %\RequirePackage{indentfirst}
 \RequirePackage{caption}
 \RequirePackage{fancyhdr}  % Needed to define custom headers/footers
 %\RequirePackage{lastpage}  % Number of pages in the document
 \RequirePackage{enumitem}
-\RequirePackage{array,booktabs,tabularx,colortbl}
+\RequirePackage{array,booktabs,tabularx}
 \RequirePackage{cite}
 %only needed if we want to have a double column float *mandatory* at the bottom (because latex only put them at the top by default)
 \RequirePackage{stfloats}

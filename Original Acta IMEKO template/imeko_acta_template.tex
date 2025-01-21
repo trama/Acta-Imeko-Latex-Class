@@ -37,11 +37,7 @@
 %% ** renaming them and changing author support contact information. **
 %%*************************************************************************
 
-\documentclass[10pt]{imeko_acta}
-
-%\usepackage{tikz}
-%\usepackage[firstpage=true]{background}
-%\usepackage{transparent}
+\documentclass{imeko_acta}
 
 %----------------------------------------------------------------
 % Completed by Editors - You can fill in but Editor will finalize
@@ -64,11 +60,11 @@
 
 \title{Template for an Acta IMEKO paper} % Article title
 
-\author[1]{Thomas Bruns}
-\author[2]{Dirk Röske}
-\author[2]{Paul P. L. Regtien}
-\author[3]{Francisco Alegria}
-\author[1]{Corey Stambaugh}
+\author[1]{name=Thomas,surname=Bruns,abbreviation=T. Bruns}
+\author[2]{name=Dirk,surname=Röske, abbreviation=D. Röske}
+\author[2]{name=Paul,surname=P. L. Regtien, abbreviation=P. P. L. Regtien}
+\author[3]{name=Francisco,surname=Alegria, abbreviation=F. Alegria}
+\author[1]{name=Corey,surname=Stambaugh, abbreviation=C. Stambaugh}
 
 \affiliation[1]{Physikalisch-Technische Bundesanstalt, Bundesallee 100, 38116 Braunschweig, Germany}
 \affiliation[2]{Measurement Science Consultancy, Julia Culpstraat 66, 7558JB Hengelo, The Netherlands}
@@ -358,7 +354,8 @@ References are limited to published works or papers that have been accepted for 
 
 References are cited in the text by a number between square brackets. Ensure that every reference cited in the text is also present in the reference list and vice versa.
 
-Citation of multiple or consecutive references must follow the notation [1], [2], [4] or [1]-[3], respectively.
+Citation of multiple or consecutive references must follow the notation \cite{Fazio1995}, \cite{Middelhoek1989}, 
+\cite{Lighthill1950}, or \cite{Fazio1995,Middelhoek1989,Grattan1994}, respectively.
 
 Unpublished results and personal communications may be included in the reference section following the standard reference style and should include a substitution of the publication date with either "Unpublished results" or "Personal communication". 
 
@@ -370,15 +367,14 @@ The format of references is as follows:
 	\item Book references: Author(s) as above, Title of book (main words capitalized), publisher, city of publication, year, ISBN. 
 	\item For a chapter in an edited book: Author(s) as above, Title of article (first word only capitalized), in: Title of book (main words capitalized). Editor(s). Publisher, city of publication, year, ISBN, pages.
 	\item Conference proceedings: Initials and last names of each author, Title of article (first word only capitalized), name of the conference, place, country, date, pages.
-	\item Links to web content, for example freely downloadable papers, can be included as shown in [5].
-	\item Where available, DOIs of references must be added as shown in [1].
-	\item References that are not in English, must be followed by the language, for example, in the form [In Italian] as shown in [7].
+	\item Links to web content, for example freely downloadable papers, can be included as shown in \cite{cruz2008}.
+	\item Where available, DOIs of references must be added as shown in \cite{Fazio1995}.
 \end{enumerate-a}
 
 There is a section break at the end of the paper (after the references) so that the content of the last page is equally divided between the two columns.
 
 \section{conclusions}
-The concluding section contains the major achievements of the research presented in the manuscript. It should be concise but informative\cite{cruz2008}. When numerical results are an essential part of the research, for instance a wider measurement range, higher uncertainty \cite{Pop2006}, they should be included in the conclusions.
+The concluding section contains the major achievements of the research presented in the manuscript. It should be concise but informative. When numerical results are an essential part of the research, for instance a wider measurement range, higher uncertainty \cite{Pop2006}, they should be included in the conclusions.
 Notice that conclusions are not the same as an abstract.
 
 \section{AUTHORS' CONTRIBUTION}

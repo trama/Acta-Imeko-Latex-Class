@@ -287,17 +287,17 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 % set tabular/tables to use sans-serif small fonts
 \renewcommand{\tabular}{\let\@halignto\@empty\sffamily%
 	\footnotesize%
-	\rowcolors{1}{gray!19}{white}%
+	%\rowcolors{1}{gray!19}{white}%
 	\@tabular}
 
 \usepackage{etoolbox}
 
-\let\oldtabularx\tabularx
-\renewcommand{\tabularx}[1]{%
-	\global\rownum=\z@%
-	\rowcolors{2}{white}{gray!19}
-	\oldtabularx{#1}%
-}
+% \let\oldtabularx\tabularx
+% \renewcommand{\tabularx}[1]{%
+% 	\global\rownum=\z@%
+% 	%\rowcolors{2}{white}{gray!19}
+% 	\oldtabularx{#1}%
+% }
 
 \AtBeginEnvironment{tabularx}{%
 	\sffamily\footnotesize%

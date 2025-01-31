@@ -92,6 +92,7 @@
 \RequirePackage[lining]{ebgaramond}
 % using Helvetica for sans-serif
 \usepackage{microtype} % without this, with ebgaramond many lines go out of the margin due to hyphenation issues
+
 \RequirePackage{ifthen}
 \RequirePackage{ifpdf,ifxetex}      % Needed to pick between latex and pdflatex
 \RequirePackage{graphicx}
@@ -127,7 +128,8 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 \addtolength{\evensidemargin}{-1in}% compensate for LaTeX's 1in offset
 
 % Font tweaks (mostly on the baseline skip) to match Word template
-\def\normalsize{\@setfontsize{\normalsize}{10}{11.35pt}}%
+% Set the baseline skip to 11.25pt to match the desired line spacing for the document
+\def\normalsize{\@setfontsize{\normalsize}{10}{11.3pt}}%
 \normalsize
 \abovedisplayskip 1.5ex plus4pt minus2pt%
 \belowdisplayskip \abovedisplayskip%
@@ -150,7 +152,8 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 %% Various definitions
 %Tweak first line indent width
 \parindent 4mm
-\flushbottom % Makes all text pages the same height
+%\flushbottom % Makes all text pages the same height
+\raggedbottom
 \definecolor{ActaBlue}{RGB}{14,99,189}
 \definecolor{AIAbstractBackground}{RGB}{199,217,240} % Color of the boxes behind the abstract and headings
 \definecolor{TableGray}{RGB}{230,231,231} % Alternating row background colour
@@ -346,7 +349,7 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 %                      negative: amount to indent main text after heading
 %                Both #4 and #5 negative means to indent main text and use negative top separation
 %                #6 - font control
-\def\section{\@startsection{section}{1}{\z@}{12pt plus 0,5ex minus 0.5ex}{6pt plus 0ex minus 0.1ex}{\sffamily\normalsize\bfseries\MakeUppercase}}%
+\def\section{\@startsection{section}{1}{\z@}{13pt plus 1ex minus 0.5ex}{6pt plus 0ex minus 0.1ex}{\sffamily\normalsize\bfseries\MakeUppercase}}%
 
 %\titleformat{name=\section,numberless}{\sffamily\bfseries\normalsize}{}{0em}{{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\MakeUppercase{#1}}}}[]
 
@@ -565,12 +568,17 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 	\fontsize{9}{12}\noindent\unskip\ignorespaces}
 	{\egroup}
 
+%% a perfect alignment between the start of the title headings between the Word template and this LaTeX template
+%% is to use a \vskip-27.5pt in the \@maketitle command
+%% To avoid decimal point values, we will use a -27pt for the two column version and -36pt for the one column version
+%----------------------------------------------------------------------
+
 \def\@maketitle{%
 	\null
 	\ifonecolumn
 		\vskip-36pt%
 	\else
-		\vskip-26pt%
+		\vskip-27pt%
 	\fi
 	\parindent0pt
 	\footnotesize\sffamily
@@ -604,7 +612,7 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 	}
 	\vskip10pt%
 	\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
-	\vskip12pt%
+	\vskip11pt%
 	{\bfseries Section:}\space\@arttype\par
 	\vskip6pt%pt%
 	{\bfseries Keywords:}\space\@Keywords\par
@@ -621,9 +629,9 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 	{\bfseries Funding:}\space\@Funding\par
 	\vskip6pt%
 	{\bfseries Corresponding Author:}\space\CorrespondingAuthor\par
-	\vskip6pt%
+	\vskip8pt%
 	\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
-	\vskip20pt%
+	\vskip18pt%
 }
 
 %----------------------------------------------------------------------

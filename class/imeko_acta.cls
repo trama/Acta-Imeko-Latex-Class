@@ -55,8 +55,9 @@
 \DeclareOption{editorial}{\gdef\@arttype{EDITORIAL}}
 
 %% To choose the status of the manuscript
-\DeclareOption{submit}{\gdef\@status{submit}}
-\DeclareOption{final}{\gdef\@status{final}}
+\newif\if@final \@finaltrue
+\DeclareOption{submit}{\@finalfalse}
+\DeclareOption{final}{\@finaltrue}
 
 %%
 \newif\if@showcorr \@showcorrtrue
@@ -118,14 +119,16 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 \microtypesetup{tracking=true,activate=true}
 \DeclareMicrotypeSet[tracking]{myset}{encoding = {*}, family = {rm*,sf*}, series={md*,bf*}, size={small-}}
 \UseMicrotypeSet[tracking]{myset}
-%\SetTracking[ spacing = {100*,350,350 } ]{ encoding = *, family = {rm*} }{ 10 }
 \SetTracking[ spacing = {10*,100,100 }]{ encoding = *, family = {rm*} }{ 15 }
 \SetTracking[ spacing = {10*,100, 100} ]{ encoding = *, family = {sf*} }{ 5 }
 
-
-\IfFileExists{imeko_acta_production.sty}{%
-  \global\weareinproductiontrue%
-  \RequirePackage{imeko_acta_production}}{}
+\if@final%
+	\IfFileExists{imeko_acta_production.sty}{%
+		\global\weareinproductiontrue%
+		\RequirePackage{imeko_acta_production}}{}
+\else
+	\global\weareinproductionfalse%
+\fi
 
 % Set page layout options (no geometry package)
 \setlength{\paperheight}{297mm}%
@@ -563,7 +566,12 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 \def\@Citation{\@AIauthorsNamesCitation,\space\@title,\space\@Journal,\space%
 	vol.\space\@VolumeNumber\space(\@VolumeYear)\space% 
 	no.\space\@IssueNumber,\space%
-	pp.\space 1\space--\space\@abspage@last,\space DOI:\space\href{\urldoi}{\@ArticleDOI}%
+	pp.\space 1\space--\space\@abspage@last,\space DOI:%
+	\ifweareinproduction
+	 	\space\href{\urldoi}{\@ArticleDOI}%
+	\else
+		\space\emph{ND}%
+	\fi
 	}
 	%article\space\@ArticleNumber,\space\@VolumeMonth,\space\@VolumeYear,\space%
 	%Identifier:\space\@Identifier}
@@ -639,7 +647,7 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 	\vskip6pt%pt%
 	{\bfseries Keywords:}\space\@Keywords\par
 	\vskip6pt%pt%
-	{\bfseries Citation:}\space\par%\@Citation\par
+	{\bfseries Citation:}\space\@Citation\par
 	\vskip6pt%
 	{\bfseries Section Editor:}\space\@Editor,\space\@EditorAffiliation\par
 	\vskip6pt%

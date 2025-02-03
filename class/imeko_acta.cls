@@ -259,8 +259,9 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 
 \setlist{nosep}
 \newlist{enumerate-a}{enumerate}{1}
-\setlist[enumerate-a,1,2]{label=\alph*.}
-\setlist[itemize,1]{label=-}
+\setlist[enumerate,1,2]{left= \parindent, labelsep=0.5em}
+\setlist[enumerate-a,1,2]{label=\alph*., left= \parindent, labelsep=0.5em}
+\setlist[itemize,1]{label=-, left= \parindent, labelsep=0.5em}
 
 
 % adapting some internal Latex parameters
@@ -302,22 +303,22 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 
 % set tabular/tables to use sans-serif small fonts
 \renewcommand{\tabular}{\let\@halignto\@empty\sffamily%
+	%\arraystretch=1.15%
 	\footnotesize%
-	%\rowcolors{1}{gray!19}{white}%
+	\rowcolors{1}{gray!19}{white}%
 	\@tabular}
 
-\usepackage{etoolbox}
-
+% Old piece of code, no more needed
 % \let\oldtabularx\tabularx
 % \renewcommand{\tabularx}[1]{%
 % 	\global\rownum=\z@%
-% 	%\rowcolors{2}{white}{gray!19}
+% 	\rowcolors{2}{white}{gray!19}
 % 	\oldtabularx{#1}%
 % }
 
 \AtBeginEnvironment{tabularx}{%
 	\sffamily\footnotesize%
-	%\rowcolors{2}{white}{gray!19}%
+	\rowcolors{2}{white}{gray!19}%
 }
 \newcolumntype{C}{>{\centering\arraybackslash}X}
 

@@ -24,7 +24,7 @@ jobs:
           rm -f imeko_acta_production.sty
           cd ..
           cp -r class/. "bare article template/"
-
+          cp -r class/. "Original Acta IMEKO template/"
 
       - name: Compile imeko-bare-article.tex
         run: |
@@ -35,7 +35,11 @@ jobs:
         run: |
           docker run --rm -v ${{ github.workspace }}:/workdir latex-builder \
           -c "cd 'bare article template' && latexmk -c && rm -f *.bbl *.nav *.run.xml *.snm *-blx.bib *.synctex.gz *.auxlock *.md5 ./external/*"
-
+      
+      - name: Compile imeko-acta_template.tex
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/workdir latex-builder \
+          -c "cd 'Original Acta IMEKO template' && pdflatex imeko-acta_template.tex && bibtex imeko-acta_template && pdflatex imeko-acta_template.tex && pdflatex imeko-acta_template.tex"
 
       - name: Compile guide.tex
         run: |
@@ -45,15 +49,20 @@ jobs:
       - name: Prepare release directory
         run: |
           mkdir release
-          cp -r class release/
+          cp class/imeko_acta.cls release/
+          cp class/imeko_acta.bst release/
           cp -r "bare article template" release/
-          cp -r "Original Acta IMEKO template" release/
+          cp "Original Acta IMEKO template"/imeko_acta_template.pdf release/
           cp guide/guide.pdf release/
           cp bare\ article\ template/imeko-bare-article.pdf release/bare\ article\ template/
 
       - name: Create ZIP archive
         run: zip -r imeko_acta_release.zip release
 
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v4
+        - name: Display structure of downloaded files
+          run: ls -R
       # - name: Upload Log as Artifact
       #   uses: actions/upload-artifact@v3
       #   with:

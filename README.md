@@ -1,10 +1,18 @@
 # ACTA IMEKO Latex class file
 
+This repository contains the source code of the LaTeX class for typesetting manuscripts for the international journal Acta IMEKO (https://acta.imeko.org/).
+The online journal of IMEKO - the [International Measurement Confederation](https://www.imeko.org/).
+
+You can download the current Release through the side link, in the **Releases** section.
+
 ## Author
 
-Federico Tramarin
-Univ. Modena and Reggio Emilia, Italy
+**Federico Tramarin**
+
+University Modena and Reggio Emilia, Italy
+
 tramarin@unimore.it
+
 
 ## HISTORY
 A first draft of the class was produced by Corey Stambaugh (corey.stambaugh @ nist.gov) more or less 09/12/2018.

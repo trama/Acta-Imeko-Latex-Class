@@ -36,10 +36,10 @@ jobs:
           docker run --rm -v ${{ github.workspace }}:/workdir latex-builder \
           -c "cd 'bare article template' && latexmk -c && rm -f *.bbl *.nav *.run.xml *.snm *-blx.bib *.synctex.gz *.auxlock *.md5 ./external/*"
       
-      - name: Compile imeko-acta_template.tex
+      - name: Compile imeko_acta_template.tex
         run: |
           docker run --rm -v ${{ github.workspace }}:/workdir latex-builder \
-          -c "cd 'Original Acta IMEKO template' && pdflatex imeko-acta_template.tex && bibtex imeko-acta_template && pdflatex imeko-acta_template.tex && pdflatex imeko-acta_template.tex"
+          -c "cd 'Original Acta IMEKO template' && pdflatex imeko_acta_template.tex && bibtex imeko_acta_template && pdflatex imeko_acta_template.tex && pdflatex imeko_acta_template.tex"
 
       - name: Compile guide.tex
         run: |

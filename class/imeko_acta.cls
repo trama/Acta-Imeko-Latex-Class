@@ -84,21 +84,24 @@
 
 \LoadClass[10pt,notitlepage]{article}
 
-\usepackage[scaled=0.87]{helvet}
+
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[british]{babel}
 % using EB-Garamond for serif text
 \RequirePackage[lining]{ebgaramond}
 % using Helvetica for sans-serif
-\usepackage{microtype} % without this, with ebgaramond many lines go out of the margin due to hyphenation issues
+\usepackage[scaled=0.87]{helvet}
+% Enabling microtypography features, 
+% both for enhanced reading and to adjust ebgaramond 
+% otherwise many lines go out of the margin due to hyphenation issues
+\RequirePackage{microtype} 
 
 \RequirePackage{ifthen}
 \RequirePackage{ifpdf,ifxetex}      % Needed to pick between latex and pdflatex
 \RequirePackage{graphicx}
 \RequirePackage[table]{xcolor}
 \RequirePackage[fleqn]{amsmath}
-%\RequirePackage{indentfirst}
 \RequirePackage{caption}
 \RequirePackage{fancyhdr}  % Needed to define custom headers/footers
 %\RequirePackage{lastpage}  % Number of pages in the document
@@ -109,6 +112,15 @@
 \RequirePackage{stfloats}
 \RequirePackage[per-mode = symbol,
 inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
+
+% activation of microtype features for roman and sans-serif fonts
+\microtypesetup{tracking=true,activate=true}
+\DeclareMicrotypeSet[tracking]{myset}{encoding = {*}, family = {rm*,sf*}, series={md*,bf*}, size={small-}}
+\UseMicrotypeSet[tracking]{myset}
+%\SetTracking[ spacing = {100*,350,350 } ]{ encoding = *, family = {rm*} }{ 10 }
+\SetTracking[ spacing = {10*,100,100 }]{ encoding = *, family = {rm*} }{ 15 }
+\SetTracking[ spacing = {10*,100, 100} ]{ encoding = *, family = {sf*} }{ 5 }
+
 
 \IfFileExists{imeko_acta_production.sty}{%
   \global\weareinproductiontrue%
@@ -564,8 +576,8 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 	\advance\hsize by -2\fboxrule\relax% margins of the colored frame
 	\advance\hsize by -8pt\relax% where the abstract will be typeset
 	\parindent 0pt%
-	\fontsize{9}{12}\sffamily\noindent\unskip{ABSTRACT}\par%
-	\fontsize{9}{12}\noindent\unskip\ignorespaces}
+	\fontsize{9}{11}\sffamily\noindent\unskip{ABSTRACT}\par%
+	\fontsize{9}{11}\noindent\unskip\ignorespaces}
 	{\egroup}
 
 %% a perfect alignment between the start of the title headings between the Word template and this LaTeX template
@@ -604,20 +616,21 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 	\itshape\small\@AIaffiliations\par%
 	\endgroup%%
 	\vskip17pt%
-	\fcolorbox{AIAbstractBackground}{AIAbstractBackground}{%
-		\hskip4pt%
-		\parbox{\textwidth}{\vskip6pt%
+	%\fcolorbox{AIAbstractBackground}{AIAbstractBackground}{%
+	\fbox{%
+		\hskip6pt%
+		\parbox{\textwidth}{\vskip8pt%
 			\ifvoid\absbox\else\unvbox\absbox\par\vskip6pt\fi}%
 		\hskip4pt%
 	}
 	\vskip10pt%
 	\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
-	\vskip11pt%
+	\vskip14pt%
 	{\bfseries Section:}\space\@arttype\par
 	\vskip6pt%pt%
 	{\bfseries Keywords:}\space\@Keywords\par
 	\vskip6pt%pt%
-	{\bfseries Citation:}\space\@Citation\par
+	{\bfseries Citation:}\space\par%\@Citation\par
 	\vskip6pt%
 	{\bfseries Section Editor:}\space\@Editor,\space\@EditorAffiliation\par
 	\vskip6pt%
@@ -631,7 +644,7 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 	{\bfseries Corresponding Author:}\space\CorrespondingAuthor\par
 	\vskip8pt%
 	\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
-	\vskip18pt%
+	\vskip12pt%
 }
 
 %----------------------------------------------------------------------

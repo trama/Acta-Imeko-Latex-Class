@@ -47,16 +47,15 @@
 \Received{January 1, 2021}
 \FinalForm{January 31, 2021}
 \Published{March 6, 2021}
-\VolumeNumber{4}
-\VolumeMonth{October}
-\VolumeYear{2021}
+\VolumeNumber{13}
+\VolumeMonth{March}
+\VolumeYear{2024}
 \IssueNumber{1}
 \ArticleNumber{5}
 \SubmissionNumber{1676}
-\usepackage{background}
-\begin{document}
+\usepackage[pages=some]{background}
 
-\backgroundsetup{contents={\includegraphics[width=21cm]{../originalwordtemplate/faded-p1-2021.pdf}}, scale=1,angle=0,opacity=0.3}
+\begin{document}
 
 \title{Template for an Acta IMEKO paper} % Article title
 
@@ -64,14 +63,14 @@
 \author[2]{name=Dirk,surname=Röske, abbreviation=D. Röske}
 \author[2]{name=Paul,surname=P. L. Regtien, abbreviation=P. P. L. Regtien}
 \author[3]{name=Francisco,surname=Alegria, abbreviation=F. Alegria}
-\author[1]{name=Corey,surname=Stambaugh, abbreviation=C. Stambaugh}
+%\author[1]{name=Corey,surname=Stambaugh, abbreviation=C. Stambaugh}
 
 \affiliation[1]{Physikalisch-Technische Bundesanstalt, Bundesallee 100, 38116 Braunschweig, Germany}
 \affiliation[2]{Measurement Science Consultancy, Julia Culpstraat 66, 7558JB Hengelo, The Netherlands}
 \affiliation[3]{Instituto de Telecomunicações and Instituto Superior Técnico, Universidade Técnica de Lisboa, Av. Rovisco Pais 1, 1049-001 Lisbon, Portugal}
 
 \CorrespondingAuthorNumber{3}
-\CorrespondingAuthorEmail{corey.stambaugh@nist.gov}
+\CorrespondingAuthorEmail{paul@regtien.net}
 
 % Keywords - if you don't want any simply remove all the text between the curly brackets
 \Keywords{Journal; template; IMEKO; Microsoft Word} 
@@ -85,16 +84,25 @@
 %	ABSTRACT - length less than 200 words. 
 %---------------------------------------------------------------
 \begin{abstract}
-The editorial team of Acta IMEKO strongly encourages 
-authors to use this \LaTeXe template file to produce their manuscript. 
-The abstract should be composed in a way suitable for publication 
-in the abstract section of electronic journals, 
-and should state concisely what it is written in the paper. 
-Important items are the aim of the research, the basic method and the major achievement 
-(also numerically, when applicable). The length should not exceed 200 words.
+	The editorial team of Acta IMEKO encourages authors to follow the instructions as described in this template file to produce their
+manuscript. The paper must be written in clear British English, and figures should be of high quality, readable without the need to zoom
+in on details or legends. The abstract should contain the essentials of the paper. Important items are the aim of the research, the basic
+method and the major achievement (also numerically, when applicable). The length of the abstract should not exceed 200 words.
+% The editorial team of Acta IMEKO strongly encourages 
+% authors to use this \LaTeXe template file to produce their manuscript. 
+% The abstract should be composed in a way suitable for publication 
+% in the abstract section of electronic journals, 
+% and should state concisely what it is written in the paper. 
+% Important items are the aim of the research, the basic method and the major achievement 
+% (also numerically, when applicable). The length should not exceed 200 words.
 \end{abstract}
 
 \maketitle % Print the title and abstract box
+
+\backgroundsetup{
+	contents={\includegraphics[width=21cm]{../originalwordtemplate/faded-p1.pdf}}, 
+	scale=1,angle=0,opacity=0.3}
+\BgThispage
 %\VolumeNumber{4}
 \section{Introduction}
 
@@ -120,7 +128,12 @@ indication of the use of numbering and heading format is
 outlined. In the next two sections the use of illustrations and 
 equations is described. In Section 5 methods for citing references 
 are given. Finally, in the concluding section the major rules are 
-summarized.\vfill\par
+summarized.
+
+Please do NOT change the template. The metadata (citation,
+section editor and article dates) will be updated during the
+production phase.
+%\vfill\par
 
 \section{First Page}
 
@@ -143,7 +156,6 @@ Pages should be laid out using two columns, as done in most journals, to increas
 	\label{fig:image1}
 \end{figure}
 
-	
 
 \subsection{Subsections} \label{sec:sub1}
 

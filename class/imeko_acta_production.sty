@@ -58,81 +58,83 @@
 	\RequirePackage{fontspec,unicode-math}
 	\setsansfont{Calibri}
 	\setmathfont{Cambria Math}
-	\microtypesetup{tracking=normalfont,expansion}
-	\SetTracking[ spacing = {25*,350, } ]{ encoding = * }{ 20 }
-	% \DeclareMicrotypeSet*[tracking]{myset}{encoding = *, family = sf*}
-	% \SetTracking[ spacing = {25*,350, } ]{ encoding = *, family = sf* }{ 100 }
+	\SetTracking[ spacing = {50*,350, } ]{ encoding = *, family = {sf*}, series = bf*, size={Large-} }{ -15 }
+	\SetTracking[ spacing = {10*, 50, 100} ]{ encoding = *, family = {sf*}, series = bf*, size={large-Large} }{ 5 }
+	\SetTracking[ spacing = {10*,10, 10} ]{ encoding = *, family = {sf*} , series = bf*}{ 15 }
+	\SetTracking[ spacing = {5*, 100, 100}, outer spacing = {150,100,100},]{ encoding = *, family = {sf*} ,size={-large}}{ 0 }
+	
+
 \fi
 
-\newif\ifuseexplthreefunctions \useexplthreefunctionsfalse
-\IfFileExists{expl3.sty}{%
-  \global\useexplthreefunctionstrue%
-  \RequirePackage{expl3}}{}
-\ifuseexplthreefunctions\relax%
-\IfFileExists{xparse.sty}{\RequirePackage{xparse}}{}
-\IfFileExists{etoolbox.sty}{\RequirePackage{etoolbox}}{}
-\fi
+% \newif\ifuseexplthreefunctions \useexplthreefunctionsfalse
+% \IfFileExists{expl3.sty}{%
+%   \global\useexplthreefunctionstrue%
+%   \RequirePackage{expl3}}{}
+% \ifuseexplthreefunctions\relax%
+% \IfFileExists{xparse.sty}{\RequirePackage{xparse}}{}
+% \IfFileExists{etoolbox.sty}{\RequirePackage{etoolbox}}{}
+% \fi
 
-\ifuseexplthreefunctions\relax%
-\ExplSyntaxOn
-\keys_define:nn { ai / author }{ 
-	name .code:n = \csgappto { authorlongname } {#1\mbox{~}%
-											\unskip\ignorespaces}, 
-	surname .code:n = \csgappto { authorlongname } {#1} , 
-	abbreviated .code:n= \csgappto { authorshortname } {#1}, 
-	}
+% \ifuseexplthreefunctions\relax%
+% \ExplSyntaxOn
+% \keys_define:nn { ai / author }{ 
+% 	name .code:n = \csgappto { authorlongname } {#1\mbox{~}%
+% 											\unskip\ignorespaces}, 
+% 	surname .code:n = \csgappto { authorlongname } {#1} , 
+% 	abbreviated .code:n= \csgappto { authorshortname } {#1}, 
+% 	}
 
-	\DeclareDocumentCommand\authorii{ o m }{
-		\csgdef { authorlongname3 } { }
-		\csgdef { authorshortname3 } { }
-		\IfNoValueTF { #2 }
-		  { }
-		  {
-		   \keys_set:nn { ai / author } { #2 }
-		  }
+% 	\DeclareDocumentCommand\authorii{ o m }{
+% 		\csgdef { authorlongname3 } { }
+% 		\csgdef { authorshortname3 } { }
+% 		\IfNoValueTF { #2 }
+% 		  { }
+% 		  {
+% 		   \keys_set:nn { ai / author } { #2 }
+% 		  }
 
-		  \csgappto{AIauthorString}{%
-		  \def\baselinestretch{1}%
-		  \refstepcounter{auth}% increment by 1
-		  \newif\ifnotyetprocessed% this if is needed to check if this author has already been counted for corresponding
-		  \notyetprocessedtrue
-		  \authorsep#2\unskip\textsuperscript{%
-				\@for\@@affmark:=#1\do{%
-				  %\typeout{Federico - @@author macro -> auth:\theauth\ affmark:\@@affmark - author:#1}
-					 \edef\affnum{\@ifundefined{X@\@@affmark}{affn?}{\AIrefMark{\@@affmark}}}%
-				   \unskip\sep\affnum%
-				  \ifnotyetprocessed%
-					  \NewAIaffLabel{auth-\theauth}{+}%
-				   \fi%.
-				  \edef\cormark{\@ifundefined{X@cor-\theauth}{}{%
-					  \if@showcorr
-						  {,\AIrefMark{cor-\theauth}}%
-					  \else
-						  {}%
-					  \fi}}%
-				  %			\unskip\sep\cormark\let\sep=,% this line was wrong, since it will add a extra comma in case of multiple affiliations
-				  \unskip\cormark\let\sep=,% now the issue is for the corresponding author with multiple affiliations
-				  \ifx\cormark\@empty%
-				  \else
-					  \ifnotyetprocessed% if the author is corresponding and is the first time we are here
-						  \g@addto@macro\@CorrespondingAuthorName{#2}% add the author name to the output
-						  \notyetprocessedfalse %if it is a subsequent round, do nothing
-					  \fi
-				  \fi
-				  }%
-				}%
-		  \gdef\authorsep{\unskip,\space}%
-		  \global\let\sep\@empty%
-		  }
-		  \csxappto{authtesti}{
-			\csuse { authorlongname3 },\space\csuse { authorshortname3 }
-			\par
-		  }
-	  }
-	\DeclareDocumentCommand\printauthi{}{\authtesti}
+% 		  \csgappto{AIauthorString}{%
+% 		  \def\baselinestretch{1}%
+% 		  \refstepcounter{auth}% increment by 1
+% 		  \newif\ifnotyetprocessed% this if is needed to check if this author has already been counted for corresponding
+% 		  \notyetprocessedtrue
+% 		  \authorsep#2\unskip\textsuperscript{%
+% 				\@for\@@affmark:=#1\do{%
+% 				  %\typeout{Federico - @@author macro -> auth:\theauth\ affmark:\@@affmark - author:#1}
+% 					 \edef\affnum{\@ifundefined{X@\@@affmark}{affn?}{\AIrefMark{\@@affmark}}}%
+% 				   \unskip\sep\affnum%
+% 				  \ifnotyetprocessed%
+% 					  \NewAIaffLabel{auth-\theauth}{+}%
+% 				   \fi%.
+% 				  \edef\cormark{\@ifundefined{X@cor-\theauth}{}{%
+% 					  \if@showcorr
+% 						  {,\AIrefMark{cor-\theauth}}%
+% 					  \else
+% 						  {}%
+% 					  \fi}}%
+% 				  %			\unskip\sep\cormark\let\sep=,% this line was wrong, since it will add a extra comma in case of multiple affiliations
+% 				  \unskip\cormark\let\sep=,% now the issue is for the corresponding author with multiple affiliations
+% 				  \ifx\cormark\@empty%
+% 				  \else
+% 					  \ifnotyetprocessed% if the author is corresponding and is the first time we are here
+% 						  \g@addto@macro\@CorrespondingAuthorName{#2}% add the author name to the output
+% 						  \notyetprocessedfalse %if it is a subsequent round, do nothing
+% 					  \fi
+% 				  \fi
+% 				  }%
+% 				}%
+% 		  \gdef\authorsep{\unskip,\space}%
+% 		  \global\let\sep\@empty%
+% 		  }
+% 		  \csxappto{authtesti}{
+% 			\csuse { authorlongname3 },\space\csuse { authorshortname3 }
+% 			\par
+% 		  }
+% 	  }
+% 	\DeclareDocumentCommand\printauthi{}{\authtesti}
 
-\ExplSyntaxOff
-\fi
+% \ExplSyntaxOff
+% \fi
 
 \endinput
 

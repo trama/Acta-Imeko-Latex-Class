@@ -593,7 +593,7 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 	\ifonecolumn
 		\vskip-37pt%
 	\else
-		\vskip-27pt%
+		\vskip-19pt%
 	\fi
 	\parindent0pt
 	% \textwidth         518pt% 43pc   % 2 x 21pc + 1pc = 43pc
@@ -603,20 +603,20 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 	% \evensidemargin   \@ActaMarginE
 	% \addtolength{\evensidemargin}{-1in}% compensate for LaTeX's 1in offset
 	\footnotesize\sffamily
-	\begin{minipage}[b]{0.925\textwidth}
+	\begin{minipage}[b]{0.935\textwidth}
 			\newdimen\upperrule%
 			\upperrule=\textwidth%
-			\advance\upperrule by -0pt%
+			\advance\upperrule by -2pt%
 			\raggedright
 			{\large\bfseries {\MakeUppercase{\@Journal}}\par}\vskip2pt%
 			{\small\bfseries {\@ISSN}\par}\vskip1pt%
 			{\small\itshape {\@JournalInfoHeader}\par}\vskip2pt%
 			\noindent\textcolor[RGB]{49,1,98}{\rule{\upperrule}{1.5pt}}%
-	\end{minipage}%\hfill%
-	\hskip2pt%
-	\begin{minipage}[b]{0.071\textwidth}
-		\includegraphics[width=1.28cm]{./imeko.png}
-	\end{minipage}%
+	\end{minipage}\hfill%
+	% \hskip2pt%
+	% \begin{minipage}[b]{0.071\textwidth}
+	% 	\includegraphics[width=1.28cm]{./imeko.png}
+	% \end{minipage}%
 	\vskip15pt%
 	\begingroup
 	\huge{\bfseries\@title}\par%
@@ -654,6 +654,12 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 	\vskip8pt%
 	\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}
 	\vskip12pt%
+}
+
+\AddToHookNext{shipout/background}{%
+    \put(184mm,-29mm){%
+        \includegraphics[width=1.28cm]{imeko.png}%
+    }%
 }
 
 %----------------------------------------------------------------------

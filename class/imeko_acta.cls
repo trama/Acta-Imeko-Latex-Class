@@ -1,14 +1,15 @@
 %%% ACTA IMEKO Latex class file
 %% imeko_acta.cls
 %%
-%% Vers: 1.9
+%% Vers: 2.0
 %% By: Federico Tramarin (tramarin@unimore.it)
-%% Date: 22/02/2024
-%% Notes: Rewrote the code for producing the bibliography, now with bib labels hanged on the left
-%%		Added the \AIBreakAtRef command to equalize last column
-%%		Automatic aletrnate row coloring
+%% Date: 13/02/2025
+%% Notes: Adjustments to microtypography features, spacings.
+%%        Updated the template to reflect the last version of the Word template.
+%%        Added the possibility to choose between one and two column layout.
+%%        Added the language support in bibliography
 %%
-%% Copyright (c) 2024 Federico Tramarin
+%% Copyright (c) 2025 Federico Tramarin
 %% 
 %%*************************************************************************
 %% Legal Notice:
@@ -91,7 +92,7 @@
 % using EB-Garamond for serif text
 \RequirePackage[lining]{ebgaramond}
 % using Helvetica for sans-serif
-\usepackage[scaled=0.87]{helvet}
+\RequirePackage[scaled=0.87]{helvet}
 % Enabling microtypography features, 
 % both for enhanced reading and to adjust ebgaramond 
 % otherwise many lines go out of the margin due to hyphenation issues
@@ -587,25 +588,33 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 %----------------------------------------------------------------------
 
 \def\@maketitle{%
+\overfullrule=10pt
 	\null
 	\ifonecolumn
-		\vskip-36pt%
+		\vskip-37pt%
 	\else
 		\vskip-27pt%
 	\fi
 	\parindent0pt
+	% \textwidth         518pt% 43pc   % 2 x 21pc + 1pc = 43pc
+	% \def\@ActaMarginE{15mm}%
+	% \oddsidemargin    \@ActaMarginE
+	% \addtolength{\oddsidemargin}{-1in}% compensate for LaTeX's 1in offset
+	% \evensidemargin   \@ActaMarginE
+	% \addtolength{\evensidemargin}{-1in}% compensate for LaTeX's 1in offset
 	\footnotesize\sffamily
-	\begin{minipage}[b]{0.933\textwidth}
+	\begin{minipage}[b]{0.925\textwidth}
 			\newdimen\upperrule%
 			\upperrule=\textwidth%
-			\advance\upperrule by -2pt%
+			\advance\upperrule by -0pt%
 			\raggedright
 			{\large\bfseries {\MakeUppercase{\@Journal}}\par}\vskip2pt%
 			{\small\bfseries {\@ISSN}\par}\vskip1pt%
 			{\small\itshape {\@JournalInfoHeader}\par}\vskip2pt%
 			\noindent\textcolor[RGB]{49,1,98}{\rule{\upperrule}{1.5pt}}%
-	\end{minipage}\hfill%
-	\begin{minipage}[b]{0.062\textwidth}
+	\end{minipage}%\hfill%
+	\hskip2pt%
+	\begin{minipage}[b]{0.071\textwidth}
 		\includegraphics[width=1.28cm]{./imeko.png}
 	\end{minipage}%
 	\vskip15pt%
@@ -617,12 +626,11 @@ inter-unit-product = \ensuremath{{}\cdot{}}]{siunitx}
 	\itshape\small\@AIaffiliations\par%
 	\endgroup%%
 	\vskip17pt%
-	%\fcolorbox{AIAbstractBackground}{AIAbstractBackground}{%
-	\fbox{%
+	\fcolorbox{AIAbstractBackground}{AIAbstractBackground}{%
 		\hskip6pt%
 		\parbox{\textwidth}{\vskip8pt%
 			\ifvoid\absbox\else\unvbox\absbox\par\vskip6pt\fi}%
-		\hskip4pt%
+		\hskip2pt%
 	}
 	\vskip10pt%
 	\hbox to \textwidth{\leaders\hbox to 2pt{\scriptsize . \hss}\hfil}

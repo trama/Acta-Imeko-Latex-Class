@@ -37,7 +37,7 @@
 %% ** renaming them and changing author support contact information. **
 %%*************************************************************************
 
-\documentclass{imeko_acta}
+\documentclass[twocolumn]{imeko_acta}
 
 %----------------------------------------------------------------
 % Completed by Editors - You can fill in but Editor will finalize
@@ -99,10 +99,10 @@
 
 \maketitle % Print the title and abstract box
 
-\backgroundsetup{
-contents={\includegraphics[width=21cm]{../originalwordtemplate/faded-p1.pdf}}, 
-scale=1,angle=0,opacity=0.3}
-\BgThispage
+% \backgroundsetup{
+% contents={\includegraphics[width=21cm]{../originalwordtemplate/faded-p1.pdf}}, 
+% scale=1,angle=0,opacity=0.3}
+% \BgThispage
 %\VolumeNumber{4}
 \section{Introduction}
 
@@ -273,7 +273,7 @@ Tables span a full page in width, for example, Table \ref{tab:tab1}, or a full c
 Table captions are placed ABOVE the table. 
 Table \ref{tab:tab1} summarizing the various styles used in this template, whereas Table \ref{tab:tab2} shows a subset of the data given in Table \ref{tab:tab1}.
 
-\begin{table*}[!h]
+\begin{table*}[t]
 	\caption{Overview of styles and font sizes used in this template.}
 	\label{tab:tab1}
 	\centering

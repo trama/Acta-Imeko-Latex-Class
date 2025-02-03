@@ -1,8 +1,8 @@
 %% imeko_acta.bst
 %% BibTeX Bibliography Style file for Acta Imeko Journal
-%% Version 1.2 (2023/12/12)
+%% Version 1.3 (2025/02/03)
 %%
-%% Copyright (c) 2024 Federico Tramarin
+%% Copyright (c) 2025 Federico Tramarin
 %% 
 %%*************************************************************************
 %% Legal Notice:
@@ -168,10 +168,8 @@ FUNCTION {default.is.dash.repeated.names} { #0 }
 % The default name format control string.
 FUNCTION {default.name.format.string}{ "{f.~}{vv~}{ll}{, jj}" }
 
-
 % The default LaTeX font command for the names.
 FUNCTION {default.name.latex.cmd}{ "" }
-
 
 % The default URL prefix.
 FUNCTION {default.name.url.prefix}{ "" }
@@ -185,7 +183,6 @@ FUNCTION {default.name.urlaccessed.prefix}{ "Online. [Accessed: " }
 % operate more quietly.
 % #1 enables
 FUNCTION {is.print.banners.to.terminal} { #1 }
-
  
 % The default ISBN prefix.
 FUNCTION {default.name.isbn.prefix}{ "" }
@@ -193,13 +190,16 @@ FUNCTION {default.name.isbn.prefix}{ "" }
 % The default DOI prefix.
 FUNCTION {default.name.doi.prefix}{ "\newline DOI: " }
 
+% The default Language prefix.
+FUNCTION {default.name.language.prefix}{ "[In " }
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% FILE VERSION AND BANNER %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-FUNCTION{bst.file.version} { "1.2" }
-FUNCTION{bst.file.date} { "2023/12/12" }
-FUNCTION{bst.file.website} { "http://www.michaelshell.org/tex/ieeetran/bibtex/" }
+FUNCTION{bst.file.version} { "1.3" }
+FUNCTION{bst.file.date} { "2025/02/03" }
+FUNCTION{bst.file.website} { "To be published" }
 
 FUNCTION {banner.message}
 { is.print.banners.to.terminal
@@ -225,9 +225,6 @@ FUNCTION {completed.message}
      { skip$ }
    if$
 }
-
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%
 %% STRING CONSTANTS %%
@@ -397,7 +394,8 @@ STRINGS { bibinfo
           name.isbn.prefix
           name.doi.prefix
           name.url.prefix
-          name.urlaccessed.prefix}
+          name.urlaccessed.prefix
+          name.language.prefix}
 
 
 
@@ -422,6 +420,7 @@ FUNCTION {initialize.controls}
   default.name.doi.prefix 'name.doi.prefix :=
   default.name.url.prefix 'name.url.prefix :=
   default.name.urlaccessed.prefix 'name.urlaccessed.prefix :=
+  default.name.language.prefix 'name.language.prefix :=
 }
 
 
@@ -2038,6 +2037,23 @@ FUNCTION {format.urlaccessed}
 	if$
 }
 
+%% LANGUAGE
+FUNCTION {format.language}
+{ language empty$
+    { "" }
+    { this.to.prev.status
+      this.status.std
+      cap.yes 'status.cap :=
+      name.language.prefix " " *
+      language * "]" *
+      punct.no 'this.status.punct :=
+      punct.period 'prev.status.punct :=
+      space.normal 'this.status.space :=
+      space.normal 'prev.status.space :=
+      quote.no 'this.status.quote :=
+    }
+  if$
+}
 
 
 %%%%%%%%%%%%%%%%%%%%
@@ -2065,6 +2081,7 @@ FUNCTION {article}
   format.urlaccessed output
   format.url output
   format.doi output
+  format.language output
   fin.entry
   if.url.std.interword.spacing
 }
@@ -2092,6 +2109,7 @@ FUNCTION {book}
   format.urlaccessed output
   format.url output
   format.doi output
+  format.language output
   fin.entry
   if.url.std.interword.spacing
 }

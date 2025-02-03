@@ -59,11 +59,11 @@ jobs:
       - name: Create ZIP archive
         run: zip -r imeko_acta_release.zip release
 
-
       - name: Download All Artifacts
         uses: actions/download-artifact@v4
-        - name: Display structure of downloaded files
-          run: ls -R
+        with:
+          name: imeko_acta_release.zip
+
       # - name: Upload Log as Artifact
       #   uses: actions/upload-artifact@v3
       #   with:

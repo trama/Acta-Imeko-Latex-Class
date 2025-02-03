@@ -34,6 +34,10 @@ jobs:
           docker run --rm -v ${{ github.workspace }}:/workdir latex-builder \
           -c "cd 'bare article template' && latexmk -c && rm -f *.bbl *.nav *.run.xml *.snm *-blx.bib *.synctex.gz *.auxlock *.md5 ./external/*"
 
+      - name: Compile imeko_acta_template.tex
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/workdir latex-builder \
+          -c "cd 'Original Acta IMEKO template' && pdflatex imeko_acta_template.tex && bibtex imeko_acta_template && pdflatex imeko_acta_template.tex && pdflatex imeko_acta_template.tex"
 
       - name: Compile guide.tex
         run: |
@@ -43,9 +47,10 @@ jobs:
       - name: Prepare release directory
         run: |
           mkdir release
-          cp -r class release/
+          cp class/imeko_acta.cls release/
+          cp class/imeko_acta.bst release/
           cp -r "bare article template" release/
-          cp -r "Original Acta IMEKO template" release/
+          cp "Original Acta IMEKO template"/imeko_acta_template.pdf release/
           cp guide/guide.pdf release/
           cp bare\ article\ template/imeko-bare-article.pdf release/bare\ article\ template/
 

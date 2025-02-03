@@ -22,7 +22,7 @@ jobs:
           rm -f imeko_acta_production.sty
           cd ..
           cp -r class/. "bare article template/"
-
+          cp -r class/. "Original Acta IMEKO template/"
 
       - name: Compile imeko-bare-article.tex
         run: |

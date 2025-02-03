@@ -1,0 +1,61 @@
+name: Build LaTeX Document with Docker
+
+on: [workflow_dispatch]
+
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Build Docker Image
+      run: docker build -t latex-project .
+
+    # - name: Run Container
+    #   run: docker run -d --name latex-compile-container latex-project tail -f /dev/null
+
+    # - name: Create Output Directory in Container
+    #   run: docker exec latex-compile-container mkdir -p /usr/src/app/output
+
+   - name: Prepare LaTeX Compilation (Copy Class Files)
+        run: |
+          cd class
+          rm -f imeko_acta_production.sty
+          cd ..
+          cp -r class/. "bare article template/"
+
+
+    - name: Compile imeko-bare-article.tex
+      run: |
+        docker run --rm -v ${{ github.workspace }}:/workdir latex-builder \
+        -c "cd 'bare article template' && pdflatex imeko-bare-article.tex && bibtex imeko-bare-article && pdflatex imeko-bare-article.tex && pdflatex imeko-bare-article.tex"
+
+    - name: Clean LaTeX Auxiliary Files
+      run: |
+        docker run --rm -v ${{ github.workspace }}:/workdir latex-builder \
+        -c "cd 'bare article template' && latexmk -c && rm -f *.bbl *.nav *.run.xml *.snm *-blx.bib *.synctex.gz *.auxlock *.md5 ./external/*"
+
+
+    - name: Compile guide.tex
+      run: |
+        docker run --rm -v ${{ github.workspace }}:/workdir latex-builder \
+        -c "cd guide && pdflatex guide.tex && pdflatex guide.tex"
+
+    - name: Prepare release directory
+      run: |
+        mkdir release
+        cp -r class release/
+        cp -r "bare article template" release/
+        cp -r "Original Acta IMEKO template" release/
+        cp guide/guide.pdf release/
+        cp bare\ article\ template/imeko-bare-article.pdf release/bare\ article\ template/
+
+    - name: Create ZIP archive
+      run: zip -r imeko_acta_release.zip release
+
+    # - name: Upload Log as Artifact
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: compile-log
+    #     path: lamonaca.log

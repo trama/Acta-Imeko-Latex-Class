@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker Image
-        run: docker build -t latex-project .
+        run: docker build -t latex-builder .
 
       # - name: Run Container
       #   run: docker run -d --name latex-compile-container latex-project tail -f /dev/null

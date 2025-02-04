@@ -1,10 +1,27 @@
 # ACTA IMEKO Latex class file
 
+This repository contains the source code of the LaTeX class for typesetting manuscripts for the international journal Acta IMEKO (https://acta.imeko.org/).
+The online journal of IMEKO - the [International Measurement Confederation](https://www.imeko.org/).
+
+You can download the current Release through the side link, in the **Releases** section.
+
 ## Author
 
-Federico Tramarin
-Univ. Modena and Reggio Emilia, Italy
-tramarin@unimore.it
+[**Federico Tramarin**](https://personale.unimore.it/rubrica/dettaglio/tramarin) @ University Modena and Reggio Emilia, Italy
+
+tramarin AT unimore.it
+
+## INSTALLATION
+
+At the moment the package has not yet been published on CTAN, and hence cannot be installed through the usual channels (TeX Live package manager, MikTeX, etc.).
+
+The most simple ways to have the package working properly are:
+- download the latest release and unpack it in a place of your preference;
+- inside, you can find a folder named _bare article template_  which serves as a skeleton to start typing your paper.
+
+Another convenient way could be to copy&paste the three files inside the folder _class_ (they are imeko_acta.cls, imeko_acta.bst and imeko.png) into the same folder of your LaTeX files (the sources of your paper)
+
+**NOTE**: if you plan to use it several times, you may consider to put them in your local TEXMF folder, usually under your home dir (please refer to online guides to locate the exact position of this folder).
 
 ## HISTORY
 A first draft of the class was produced by Corey Stambaugh (corey.stambaugh @ nist.gov) more or less 09/12/2018.
@@ -19,15 +36,18 @@ Then, in Sept. 2023 the journal EiC (prof. F. Lamonaca) asked to produce a stabl
 
 The main reasons for a rewrite are that matching the Word template requires quite a lot of font tunings, and obsolete commands (like \bf \it) do not support LaTeX2e's new font selection scheme, or NFSS{\bf foo}, for example, resets all font attributes which had been set earlier. also, we need new options to produce the camera ready and final version, etc.
 
-## INSTALLATION
-
-At the moment the package has not been yet published on CTAN, and hence cannot be installed through the usual channels (TeX Live package manager, MikTeX, etc.).
-
-Hence, at the moment the most simple ways to have the package working properly are:
-- copy the three files (imeko_acta.cls, imeko_acta.bst and imeko.png) in the same folder of your LaTeX files (the sources of your paper)
-- if you plan to use it several times, put it in your local TEXMF folder, usually under your home dir (please refer to online guides to locate the exact position of this folder).
-
 ## CHANGELOG
+
+### Version 2.0
+- Author: FT
+- Date: 08/02/2024
+- Notes
+  - Fixed microtypography features to match the Word template
+  - Completed the bibliography style class
+  - many other small fixes and bug corrections
+  - extensive tests for debugging carried out
+
+### Version 1.9
 
 ### Version 1.8
 - Author: FT

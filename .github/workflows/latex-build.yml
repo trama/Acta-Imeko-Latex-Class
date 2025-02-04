@@ -1,22 +1,15 @@
-name: Create Release ZIP
+name: Build LaTeX Document with Docker
 
-permissions:
-    contents: write
-
-on:
-  push:
-    tags:
-      - 'v*'  # Triggers on version tags (e.g., v1.0, v2.1)
+on: [workflow_dispatch]
 
 jobs:
-  build:
+  build_latex:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Build LaTeX Docker Image
+      - name: Build Docker Image
         run: docker build -t latex-builder .
 
       - name: Prepare LaTeX Compilation (Copy Class Files)
@@ -36,7 +29,7 @@ jobs:
         run: |
           docker run --rm -v ${{ github.workspace }}:/workdir latex-builder \
           -c "cd 'bare article template' && latexmk -c && rm -f *.bbl *.nav *.run.xml *.snm *-blx.bib *.synctex.gz *.auxlock *.md5 ./external/*"
-
+      
       - name: Compile imeko_acta_template.tex
         run: |
           docker run --rm -v ${{ github.workspace }}:/workdir latex-builder \
@@ -59,10 +52,3 @@ jobs:
 
       - name: Create ZIP archive
         run: zip -r imeko_acta_release.zip release
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: imeko_acta_release.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

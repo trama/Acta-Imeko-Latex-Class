@@ -302,11 +302,7 @@ TSWLatexianTemp*
 .DS_Store
 .gitignore
 imeko_acta_template.pdf
+bare article template work/
 example_paper/
 various_old_files/
-guide/document.pdf
-guide/document.tex
-bare article template/test.pdf
-bare article template/test.tex
-test.pdf
-test.tex
+Acta-IMEKO-Template_2024.pdf

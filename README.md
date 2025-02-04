@@ -1,29 +1,30 @@
 # ACTA IMEKO Latex class file
 
-This repository contains the source code of the LaTeX class for typesetting manuscripts for the international journal Acta IMEKO (https://acta.imeko.org/).
+This repository contains the source code of the **LaTeX class** for typesetting manuscripts for the international journal **[Acta IMEKO](https://acta.imeko.org/)**.
 The online journal of IMEKO - the [International Measurement Confederation](https://www.imeko.org/).
 
-You can download the current Release through the side link, in the **Releases** section.
+📥 **Download the Latest Release**\
+You can get the latest version from the **Releases** section (sidebar), or download it directly by clicking **[here](https://github.com/trama/Acta-Imeko-Latex-Class/releases/latest)**.
 
 ## Author
 
-[**Federico Tramarin**](https://personale.unimore.it/rubrica/dettaglio/tramarin) @ University Modena and Reggio Emilia, Italy
+[**Federico Tramarin**](https://personale.unimore.it/rubrica/dettaglio/tramarin)\
+📍 University of Modena and Reggio Emilia, Italy\
+✉️ **tramarin AT unimore.it**
 
-tramarin AT unimore.it
+## ⚙️ INSTALLATION
 
-## INSTALLATION
+> **Note**: At the moment the package has not yet been published on CTAN, and hence cannot be installed through the usual channels (TeX Live package manager, MikTeX, etc.).
 
-At the moment the package has not yet been published on CTAN, and hence cannot be installed through the usual channels (TeX Live package manager, MikTeX, etc.).
-
-The most simple ways to have the package working properly are:
+**Option 1:** The most simple ways to have the package working properly are:
 - download the latest release and unpack it in a place of your preference;
 - inside, you can find a folder named _bare article template_  which serves as a skeleton to start typing your paper.
 
-Another convenient way could be to copy&paste the three files inside the folder _class_ (they are imeko_acta.cls, imeko_acta.bst and imeko.png) into the same folder of your LaTeX files (the sources of your paper)
+**Option 2:** Another convenient way could be to copy&paste the three files inside the folder _class_ (they are imeko_acta.cls, imeko_acta.bst and imeko.png) into the same folder of your LaTeX files (the sources of your paper)
 
-**NOTE**: if you plan to use it several times, you may consider to put them in your local TEXMF folder, usually under your home dir (please refer to online guides to locate the exact position of this folder).
+📌 **For Frequent Use**: if you plan to use it several times, you may consider to put them in your local TEXMF folder, usually under your home dir (please refer to online guides to locate the exact position of this folder).
 
-## HISTORY
+##  HISTORY
 A first draft of the class was produced by Corey Stambaugh (corey.stambaugh @ nist.gov) more or less 09/12/2018.
 The class was written to mimic the template style of the ACTA IMEKO journal
 https://acta.imeko.org/ which is written as a .doc file by: Thomas Bruns, Dirk Röske, Paul P. L. Regtien, Francisco Alegria
